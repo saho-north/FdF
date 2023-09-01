@@ -16,8 +16,8 @@ HDR               = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
 SRCS_DIR          = ./srcs/
 SRCS_DIR_COMMON   = $(SRCS_DIR)/common/
-SRCS_DIR_FDF = $(SRCS_DIR)/fdf/
-SRCS_DIR_BONUS = $(SRCS_DIR)/bonusname/
+SRCS_DIR_FDF      = $(SRCS_DIR)/fdf/
+SRCS_DIR_BONUS    = $(SRCS_DIR)/bonusname/
 
 SRCS_COMMON    =
 SRCS_FDF = fdf.c
