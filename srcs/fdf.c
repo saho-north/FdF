@@ -19,17 +19,17 @@
 // 	int		**grid;
 // }			t_map;
 
-// static bool	check_file_extension(const char *filename)
-// {
-// 	size_t		len;
-// 	const char	*extension;
+ static bool	check_file_extension(const char *filename)
+ {
+ 	size_t		len;
+ 	const char	*extension;
 
-// 	len = ft_strlen(filename);
-// 	if (len < 5)
-// 		return (false);
-// 	extension = &filename[len - 4];
-// 	return (ft_strncmp(extension, ".fdf", 4) == 0);
-// }
+ 	len = ft_strlen(filename);
+ 	if (len < 5)
+ 		return (false);
+ 	extension = &filename[len - 4];
+ 	return (ft_strncmp(extension, ".fdf", 4) == 0);
+ }
 
 // static void	open_file(const char *filename)
 // {
