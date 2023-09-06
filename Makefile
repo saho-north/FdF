@@ -14,7 +14,7 @@ HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
 SRCS_DIR  = ./srcs/
-SRCS      = fdf.c
+SRCS      = fdf.c get_next_line.c
 OBJS      = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
 $(NAME): $(OBJS) $(LIBFT)
@@ -43,4 +43,4 @@ re: fclean all
 test: $(NAME)
 	./$(NAME) test_maps/42.fdf
 
-.PHONY: all clean fclean re bonus test
+.PHONY: all clean fclean re bonus
