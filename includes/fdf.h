@@ -13,7 +13,7 @@
 #ifndef FDF_H
 # define FDF_H
 
-# include "../libft/libft.h"
+# include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <stdbool.h>
