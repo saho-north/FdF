@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/09/07 03:47:46 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/09/07 04:14:20 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	check_file_extension(const char *filename)
 	return (ft_strncmp(extension, ".fdf", 4) == 0);
 }
 
-static void open_file(const char *filename)
+static void	open_file(const char *filename)
 {
 	int		fd;
 	char	*line;
@@ -77,6 +77,5 @@ int	main(int argc, const char *argv[])
 	}
 	open_file(argv[1]);
 	printf("Hello, world!\n");
-	system("leaks a.out");
 	return (0);
 }
