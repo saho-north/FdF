@@ -6,54 +6,62 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/09/07 02:29:36 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/09/07 03:47:46 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// typedef struct s_map
-// {
-// 	int		width;
-// 	int		height;
-// 	int		**grid;
-// }			t_map;
+typedef struct s_map
+{
+	int		width;
+	int		height;
+	int		**grid;
+}			t_map;
 
- static bool	check_file_extension(const char *filename)
- {
- 	size_t		len;
- 	const char	*extension;
+typedef struct s_point
+{
+	int		x;
+	int		y;
+	int		z;
+	int		color;
+}			t_point;
 
- 	len = ft_strlen(filename);
- 	if (len < 5)
- 		return (false);
- 	extension = &filename[len - 4];
- 	return (ft_strncmp(extension, ".fdf", 4) == 0);
- }
+static bool	check_file_extension(const char *filename)
+{
+	size_t		len;
+	const char	*extension;
 
-// static void	open_file(const char *filename)
-// {
-// 	int		fd;
-// 	char	**line;
-// 	size_t	i;
+	len = ft_strlen(filename);
+	if (len < 5)
+		return (false);
+	extension = &filename[len - 4];
+	return (ft_strncmp(extension, ".fdf", 4) == 0);
+}
 
-// 	i = 0;
-// 	fd = open(filename, O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		perror("Error opening file");
-// 		return (1);
-// 	}
-// 	while (true)
-// 	{
-// 		line[i] = get_next_line(fd);
-// 		if (!line[i])
-// 			break ;
-// 		printf("%s\n", line[i]);
-// 		i++;
-// 	}
-// 	close(fd);
-// }
+static char	**open_file(const char *filename)
+{
+	int		fd;
+	char	*line;
+	size_t	i;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Error opening file");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (true)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		printf("%s\n", line);
+		i++;
+	}
+	close(fd);
+}
 
 int	main(int argc, const char *argv[])
 {
@@ -67,7 +75,7 @@ int	main(int argc, const char *argv[])
 		write(2, "Error: Invalid file extension\n", 30);
 		return (1);
 	}
-	//open_file(argv[1]);
+	open_file(argv[1]);
 	printf("Hello, world!\n");
 	system("leaks a.out");
 	return (0);

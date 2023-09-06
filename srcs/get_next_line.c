@@ -6,11 +6,11 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 23:06:36 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/06/13 17:35:42 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/09/07 03:49:03 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "fdf.h"
 
 static char	*extract_next_line(char **buffered_text)
 {
