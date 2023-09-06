@@ -39,7 +39,7 @@ static bool	check_file_extension(const char *filename)
 	return (ft_strncmp(extension, ".fdf", 4) == 0);
 }
 
-static char	**open_file(const char *filename)
+static void open_file(const char *filename)
 {
 	int		fd;
 	char	*line;
