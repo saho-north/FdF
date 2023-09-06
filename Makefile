@@ -40,4 +40,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+test: $(NAME)
+	./$(NAME) test_maps/42.fdf
+
+.PHONY: all clean fclean re bonus test
