@@ -58,6 +58,8 @@ static void	open_file(const char *filename)
 		if (!line)
 			break ;
 		printf("%s", line);
+        free(line);
+        line = NULL;
 		i++;
 	}
 	close(fd);

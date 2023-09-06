@@ -41,6 +41,6 @@ fclean: clean
 re: fclean all
 
 test: $(NAME)
-	./$(NAME) test_maps/42.fdf
+	valgrind ./$(NAME) test_maps/42.fdf
 
 .PHONY: all clean fclean re bonus
