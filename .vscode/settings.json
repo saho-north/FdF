@@ -1,0 +1,6 @@
+{
+	"C_Cpp.default.compilerPath": "/usr/bin/clang",
+	"files.associations": {
+		"get_next_line.h": "c"
+	}
+}
