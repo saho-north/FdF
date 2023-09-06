@@ -57,7 +57,7 @@ static void open_file(const char *filename)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		printf("%s\n", line);
+		printf("%s", line);
 		i++;
 	}
 	close(fd);
