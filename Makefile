@@ -1,9 +1,9 @@
 NAME      = fdf_tmp
 CC        = cc
 CFLAGS    = -Wall -Wextra -Werror
-LDFLAGS   = -lm -lmlx
+LDFLAGS   = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm
 LIBRARY   = -L$(LIBFT_DIR) -lft
-INCLUDE   = -I$(HDR_DIR) -I$(LIBFT_DIR)
+INCLUDE   = -I$(HDR_DIR) -I$(LIBFT_DIR) -Imlx
 
 LIBFT     = $(LIBFT_DIR)libft.a
 LIBFT_DIR = ./libft/
@@ -18,7 +18,7 @@ SRCS      = fdf.c get_next_line.c
 OBJS      = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBRARY) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBRARY) $(LDFLAGS) $(INCLUDE)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -41,6 +41,6 @@ fclean: clean
 re: fclean all
 
 test: $(NAME)
-	valgrind ./$(NAME) test_maps/42.fdf
+	./$(NAME) test_maps/42.fdf
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus test
