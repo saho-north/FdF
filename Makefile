@@ -1,7 +1,8 @@
-NAME      = fdf_tmp
+NAME      = fdf
 CC        = cc
 CFLAGS    = -Wall -Wextra -Werror
-LDFLAGS   = -Lmlx -lmlx -framework OpenGL -framework AppKit -lm
+LDFLAGS = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
+
 LIBRARY   = -L$(LIBFT_DIR) -lft
 INCLUDE   = -I$(HDR_DIR) -I$(LIBFT_DIR) -Imlx
 
@@ -13,8 +14,8 @@ HDR_LIST  = fdf.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
+SRCS      = sample.c
 SRCS_DIR  = ./srcs/
-SRCS      = fdf.c get_next_line.c
 OBJS      = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
 $(NAME): $(OBJS) $(LIBFT)
@@ -28,7 +29,7 @@ all: $(NAME)
 bonus: $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE)
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
