@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/11/23 13:40:33 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:36:46 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-char	*get_next_line(int fd);
+typedef enum e_read_status
+{
+	READ_ERROR,
+	READ_SUCCESS,
+	READ_EOF
+}		t_read_status;
+
+char	*get_next_line(int fd, t_read_status *read_status);
+
 #endif
