@@ -33,8 +33,9 @@ int	main(void)
 	int				fd;
 	char			*line;
 	t_read_status	status;
+	char			command[1024];
 
-	fd = open("test_maps/plat.fdf", O_RDONLY);
+	fd = open("test.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening file");
@@ -60,5 +61,7 @@ int	main(void)
 		free(line);
 	}
 	close(fd);
+	sprintf(command, "leaks %d", getpid());
+	system(command);
 	return (0);
 }

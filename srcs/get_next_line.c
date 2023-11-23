@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 23:06:36 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/11/24 00:56:22 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/11/24 01:01:49 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ static t_read_status	extract_next_line(char **buffered_text, char **line)
 	{
 		*line = line_continued(buffered_text, marker);
 		if (!*line)
-		{
-			perror("Memory allocation failed");
 			return (READ_ERROR);
-		}
 		return (READ_SUCCESS);
 	}
 	*line = line_eof(buffered_text);
