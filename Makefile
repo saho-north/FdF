@@ -14,7 +14,7 @@ HDR_LIST  = fdf.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
-SRCS      = sample.c
+SRCS      = fdf.c get_next_line.c
 SRCS_DIR  = ./srcs/
 OBJS      = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
