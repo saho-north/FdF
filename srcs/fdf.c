@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/09/07 05:45:44 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:59:42 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,6 @@ typedef struct s_point
 	int		z;
 	int		color;
 }			t_point;
-
-static bool	check_file_extension(const char *filename)
-{
-	size_t		len;
-	const char	*extension;
-
-	len = ft_strlen(filename);
-	if (len < 5)
-		return (false);
-	extension = &filename[len - 4];
-	return (ft_strncmp(extension, ".fdf", 4) == 0);
-}
 
 static bool	is_valid_after_minus(const char *str)
 {
@@ -86,9 +74,13 @@ static void	check_line(const char *line)
 
 static void	open_file(const char *filename)
 {
-	int			fd;
-	const char	*line;
-	size_t		i;
+	int				fd;
+	const char		*line;
+	size_t			i;
+	int				fd;
+	char			*line;
+	t_read_status	status;
+	char			command[1024];
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -109,6 +101,91 @@ static void	open_file(const char *filename)
 		i++;
 	}
 	close(fd);
+	// ---
+	fd = open("test.txt", O_RDONLY);
+	if (fd == -1)
+	{
+		perror("Error opening file");
+		return (1);
+	}
+	while (1)
+	{
+		line = get_next_line(fd, &status);
+		if (status == READ_ERROR)
+		{
+			fprintf(stderr, "Error reading line.\n");
+			break ;
+		}
+		if (line == NULL)
+		{
+			if (status == READ_EOF)
+			{
+				printf("End of file reached.\n");
+			}
+			break ;
+		}
+		printf("Read line: %s", line);
+		free(line);
+	}
+	close(fd);
+	sprintf(command, "leaks %d", getpid());
+	system(command);
+	return (0);
+}
+
+static bool	check_extension(const char *filename, const char *extension)
+{
+	size_t	filename_len;
+	size_t	extension_len;
+	size_t	extension_index;
+	size_t	i;
+	char	file_extension[256];
+	char	expected_extension[256];
+
+	if (!filename || !extension)
+		return (false);
+	filename_len = ft_strlen(filename);
+	extension_len = ft_strlen(extension);
+	if (filename_len <= extension_len)
+		return (false);
+	extension_index = filename_len - extension_len;
+	i = 0;
+	while (i < extension_len)
+	{
+		file_extension[i] = ft_tolower(filename[extension_index + i]);
+		expected_extension[i] = ft_tolower(extension[i]);
+		i++;
+	}
+	file_extension[4] = '\0';
+	return (ft_strncmp(file_extension, expected_extension, extension_len) == 0);
+}
+
+static bool	check_extension(const char *filename, const char *extension)
+{
+	size_t	filename_len;
+	size_t	extension_len;
+	size_t	extension_index;
+	size_t	i;
+	char	file_extension[32];
+	char	expected_extension[32];
+
+	if (!filename || !extension)
+		return (false);
+	filename_len = ft_strlen(filename);
+	extension_len = ft_strlen(extension);
+	if (filename_len <= extension_len)
+		return (false);
+	extension_index = filename_len - extension_len;
+	i = 0;
+	while (i < extension_len)
+	{
+		file_extension[i] = ft_tolower(filename[extension_index + i]);
+		expected_extension[i] = ft_tolower(extension[i]);
+		i++;
+	}
+	file_extension[extension_len] = '\0';
+	expected_extension[extension_len] = '\0';
+	return (ft_strncmp(file_extension, expected_extension, extension_len) == 0);
 }
 
 int	main(int argc, const char *argv[])
