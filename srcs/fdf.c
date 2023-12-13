@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/11/27 17:59:42 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/11/28 23:19:52 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 typedef struct s_map
 {
-	int		width;
-	int		height;
-	int		**grid;
-}			t_map;
+	size_t		width;
+	size_t		height;
+	t_point		**points;
+}				t_map;
 
 typedef struct s_point
 {
-	int		x;
-	int		y;
-	int		z;
-	int		color;
-}			t_point;
+	int			x;
+	int			y;
+	int			z;
+	int			color;
+}				t_point;
+
+typedef struct s_line
+{
+	char		*line;
+	t_line		*next;
+
+}				t_line;
 
 static bool	is_valid_after_minus(const char *str)
 {
@@ -72,15 +79,27 @@ static void	check_line(const char *line)
 	}
 }
 
+static void	check_read_status(t_read_status read_status)
+{
+	if (read_status == READ_ERROR)
+	{
+		perror("Error reading line");
+		exit(EXIT_FAILURE);
+	}
+	if (read_status == READ_SUCCESS)
+	{
+		write(2, "Error: Unexpected null pointer\n", 31);
+		exit(EXIT_FAILURE);
+	}
+	if (read_status == READ_EOF)
+		write(1, "End of file reached.\n", 22);
+}
+
 static void	open_file(const char *filename)
 {
-	int				fd;
-	const char		*line;
-	size_t			i;
-	int				fd;
+	t_read_status	read_status;
 	char			*line;
-	t_read_status	status;
-	char			command[1024];
+	int				fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -88,118 +107,125 @@ static void	open_file(const char *filename)
 		perror("Error opening file");
 		exit(EXIT_FAILURE);
 	}
-	i = 0;
+	read_status = READ_SUCCESS;
 	while (true)
 	{
-		line = (const char *)get_next_line(fd);
+		line = get_next_line(fd, &read_status);
 		if (!line)
+		{
+			check_read_status(read_status);
 			break ;
+		}
 		check_line(line);
 		printf("%s", line);
 		free(line);
 		line = NULL;
-		i++;
 	}
 	close(fd);
-	// ---
-	fd = open("test.txt", O_RDONLY);
+}
+
+static size_t	check_last_char(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	if (i == 0 || str[i - 1] == '\n')
+	{
+		return (0);
+	}
+	return (1);
+}
+
+static size_t	count_new_line(char *str)
+{
+	size_t	new_line_count;
+
+	new_line_count = 0;
+	while (*str)
+	{
+		if (*str == '\n')
+		{
+			new_line_count++;
+		}
+		str++;
+	}
+	return (new_line_count);
+}
+
+static void	check_map_height(const char *filename, t_map *map)
+{
+	char	read_buffer[BUFFER_SIZE + 1];
+	ssize_t	bytes_read;
+	size_t	new_line_count;
+	int		fd;
+
+	new_line_count = 0;
+	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening file");
-		return (1);
+		exit(EXIT_FAILURE);
 	}
-	while (1)
+	while (true)
 	{
-		line = get_next_line(fd, &status);
-		if (status == READ_ERROR)
+		bytes_read = read(fd, read_buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
 		{
-			fprintf(stderr, "Error reading line.\n");
+			perror("File read failed");
+			exit(EXIT_FAILURE);
+		}
+		if (bytes_read == 0)
+		{
+			new_line_count += check_last_char(read_buffer);
 			break ;
 		}
-		if (line == NULL)
-		{
-			if (status == READ_EOF)
-			{
-				printf("End of file reached.\n");
-			}
-			break ;
-		}
-		printf("Read line: %s", line);
-		free(line);
+		read_buffer[bytes_read] = '\0';
+		new_line_count += count_new_line(read_buffer);
 	}
 	close(fd);
-	sprintf(command, "leaks %d", getpid());
-	system(command);
-	return (0);
+	map->height = new_line_count;
 }
 
-static bool	check_extension(const char *filename, const char *extension)
+static bool	check_file_extension(const char *filename, const char *extension)
 {
 	size_t	filename_len;
 	size_t	extension_len;
-	size_t	extension_index;
-	size_t	i;
-	char	file_extension[256];
-	char	expected_extension[256];
+	int		result;
 
 	if (!filename || !extension)
+	{
 		return (false);
+	}
 	filename_len = ft_strlen(filename);
 	extension_len = ft_strlen(extension);
 	if (filename_len <= extension_len)
-		return (false);
-	extension_index = filename_len - extension_len;
-	i = 0;
-	while (i < extension_len)
 	{
-		file_extension[i] = ft_tolower(filename[extension_index + i]);
-		expected_extension[i] = ft_tolower(extension[i]);
-		i++;
-	}
-	file_extension[4] = '\0';
-	return (ft_strncmp(file_extension, expected_extension, extension_len) == 0);
-}
-
-static bool	check_extension(const char *filename, const char *extension)
-{
-	size_t	filename_len;
-	size_t	extension_len;
-	size_t	extension_index;
-	size_t	i;
-	char	file_extension[32];
-	char	expected_extension[32];
-
-	if (!filename || !extension)
 		return (false);
-	filename_len = ft_strlen(filename);
-	extension_len = ft_strlen(extension);
-	if (filename_len <= extension_len)
-		return (false);
-	extension_index = filename_len - extension_len;
-	i = 0;
-	while (i < extension_len)
-	{
-		file_extension[i] = ft_tolower(filename[extension_index + i]);
-		expected_extension[i] = ft_tolower(extension[i]);
-		i++;
 	}
-	file_extension[extension_len] = '\0';
-	expected_extension[extension_len] = '\0';
-	return (ft_strncmp(file_extension, expected_extension, extension_len) == 0);
+	result = ft_strcasecmp(&filename[filename_len - extension_len], extension);
+	return (result == 0);
 }
 
 int	main(int argc, const char *argv[])
 {
+	t_map	map;
+	t_point	**points;
+
 	if (argc != 2)
 	{
 		write(2, "Usage: ./fdf <file_name>.fdf\n", 29);
 		return (1);
 	}
-	if (!check_file_extension(argv[1]))
+	if (!check_file_extension(argv[1], ".fdf"))
 	{
 		write(2, "Error: Invalid file extension\n", 30);
 		return (1);
 	}
+	check_map_height(argv[1], &map);
 	open_file(argv[1]);
 	printf("Hello, world!\n");
 	return (0);
