@@ -6,33 +6,17 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/11/28 23:19:52 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/20 00:17:49 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-typedef struct s_map
-{
-	size_t		width;
-	size_t		height;
-	t_point		**points;
-}				t_map;
-
-typedef struct s_point
-{
-	int			x;
-	int			y;
-	int			z;
-	int			color;
-}				t_point;
-
-typedef struct s_line
-{
-	char		*line;
-	t_line		*next;
-
-}				t_line;
+/**
+ * fdf.c:
+ * - main function
+ * - memory allocation
+ */
 
 static bool	is_valid_after_minus(const char *str)
 {
@@ -156,7 +140,7 @@ static size_t	count_new_line(char *str)
 	return (new_line_count);
 }
 
-static void	check_map_height(const char *filename, t_map *map)
+static void	count_map_height(const char *filename, t_map *map)
 {
 	char	read_buffer[BUFFER_SIZE + 1];
 	ssize_t	bytes_read;
@@ -190,6 +174,18 @@ static void	check_map_height(const char *filename, t_map *map)
 	map->height = new_line_count;
 }
 
+t_map	init_map(void)
+{
+	t_map	map;
+
+	map->height = 0;
+	map->width = 0;
+	map->max_z = 0;
+	map->min_z = 0;
+	map->grids = NULL;
+	return (map);
+}
+
 static bool	check_file_extension(const char *filename, const char *extension)
 {
 	size_t	filename_len;
@@ -210,22 +206,25 @@ static bool	check_file_extension(const char *filename, const char *extension)
 	return (result == 0);
 }
 
+static void	check_args(int argc, const char *argv[])
+{
+	if (argc != 2)
+	{
+		print_error_exit(ERR_ARGC);
+	}
+	if (!check_file_extension(argv[1], ".fdf"))
+	{
+		print_error_exit(ERR_FILE_EXT);
+	}
+}
+
 int	main(int argc, const char *argv[])
 {
 	t_map	map;
 	t_point	**points;
 
-	if (argc != 2)
-	{
-		write(2, "Usage: ./fdf <file_name>.fdf\n", 29);
-		return (1);
-	}
-	if (!check_file_extension(argv[1], ".fdf"))
-	{
-		write(2, "Error: Invalid file extension\n", 30);
-		return (1);
-	}
-	check_map_height(argv[1], &map);
+	check_args(argc, argv);
+	count_map_height(argv[1], &map);
 	open_file(argv[1]);
 	printf("Hello, world!\n");
 	return (0);
