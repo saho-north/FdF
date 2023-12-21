@@ -3,10 +3,9 @@
 
 int	main(void)
 {
-	int				fd;
-	char			*line;
-	t_read_status	status;
-	char			command[1024];
+	int			fd;
+	t_gnl_res	res;
+	char		command[1024];
 
 	fd = open("test_maps/plat.fdf", O_RDONLY);
 	if (fd == -1)
@@ -16,22 +15,22 @@ int	main(void)
 	}
 	while (1)
 	{
-		line = get_next_line(fd, &status);
-		if (status == READ_ERROR)
+		res = get_next_line(fd);
+		if (res.line_status == LINE_ERROR)
 		{
 			fprintf(stderr, "Error reading line.\n");
 			break ;
 		}
-		if (line == NULL)
+		if (res.line == NULL)
 		{
-			if (status == READ_EOF)
+			if (res.line_status == LINE_EOF_REACHED)
 			{
 				printf("End of file reached.\n");
 			}
 			break ;
 		}
-		printf("Read line: %s", line);
-		free(line);
+		printf("Read line: %s", res.line);
+		free(res.line);
 	}
 	close(fd);
 	sprintf(command, "leaks %d", getpid());

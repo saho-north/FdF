@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 23:06:36 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/11/28 23:22:25 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/20 23:03:28 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,104 +50,73 @@ static char	*line_continued(char **buffered_text, char *marker)
 	return (next_line);
 }
 
-static t_read_status	extract_next_line(char **buffered_text, char **line)
+static t_line_status	extract_next_line(char **buffered_text, char **line)
 {
 	char	*marker;
 
 	if (ft_strlen(*buffered_text) == 0)
 	{
 		*line = NULL;
-		return (READ_EOF);
+		return (LINE_EOF_REACHED);
 	}
 	marker = ft_strchr(*buffered_text, '\n');
 	if (marker)
 	{
 		*line = line_continued(buffered_text, marker);
 		if (!*line)
-			return (READ_ERROR);
-		return (READ_SUCCESS);
+			return (LINE_ERROR);
+		return (LINE_SUCCESS);
 	}
 	*line = line_eof(buffered_text);
 	if (!*line)
-		return (READ_ERROR);
-	return (READ_EOF);
+		return (LINE_ERROR);
+	return (LINE_EOF_REACHED);
 }
 
-static t_read_status	append_buffer(char **buffered_text, char *read_buffer)
+static t_line_status	read_from_file(int fd, char **buffered_text)
 {
+	char	read_buffer[BUFFER_SIZE + 1];
 	char	*tmp;
-
-	tmp = ft_strjoin(*buffered_text, read_buffer);
-	if (!tmp)
-	{
-		perror("Memory allocation failed");
-		return (READ_ERROR);
-	}
-	free(*buffered_text);
-	*buffered_text = tmp;
-	return (READ_SUCCESS);
-}
-
-static t_read_status	read_from_file(int fd, char **buffered_text)
-{
-	char			read_buffer[BUFFER_SIZE + 1];
-	ssize_t			bytes_read;
-	t_read_status	read_status;
+	ssize_t	bytes_read;
 
 	while (!ft_strchr(*buffered_text, '\n'))
 	{
 		bytes_read = read(fd, read_buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
-		{
-			perror("File read failed");
-			return (READ_ERROR);
-		}
+			return (LINE_ERROR);
 		if (bytes_read == 0)
 			break ;
 		read_buffer[bytes_read] = '\0';
-		read_status = append_buffer(buffered_text, read_buffer);
-		if (read_status == READ_ERROR)
-			return (READ_ERROR);
+		tmp = ft_strjoin(*buffered_text, read_buffer);
+		if (!tmp)
+			return (LINE_ERROR);
+		free(*buffered_text);
+		*buffered_text = tmp;
 	}
-	return (READ_SUCCESS);
+	return (LINE_SUCCESS);
 }
 
-static t_read_status	init_buffered_text(char **buffered_text)
-{
-	if (!*buffered_text)
-	{
-		*buffered_text = (char *)ft_calloc(1, sizeof(char));
-		if (!*buffered_text)
-		{
-			perror("Memory allocation failed");
-			return (READ_ERROR);
-		}
-	}
-	return (READ_SUCCESS);
-}
-
-char	*get_next_line(int fd, t_read_status *read_status)
+t_gnl_res	get_next_line(int fd)
 {
 	static char	*buffered_text;
-	char		*line;
+	t_gnl_res	res;
 
-	if (fd < 0)
-	{
-		perror("File open failed");
-		*read_status = READ_ERROR;
-		return (NULL);
-	}
-	*read_status = init_buffered_text(&buffered_text);
-	if (*read_status == READ_ERROR)
-		return (NULL);
-	*read_status = read_from_file(fd, &buffered_text);
-	if (*read_status == READ_ERROR)
+	if (!buffered_text)
+		buffered_text = (char *)ft_calloc(1, sizeof(char));
+	if (!buffered_text || fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
 	{
 		free(buffered_text);
-		return (NULL);
+		res.line_status = LINE_ERROR;
+		return (res);
 	}
-	*read_status = extract_next_line(&buffered_text, &line);
-	if (*read_status == READ_ERROR || *read_status == READ_EOF)
+	res.line_status = read_from_file(fd, &buffered_text);
+	if (res.line_status == LINE_ERROR)
+	{
 		free(buffered_text);
-	return (line);
+		return (res);
+	}
+	res.line_status = extract_next_line(&buffered_text, &res.line);
+	if (res.line_status == LINE_ERROR || res.line_status == LINE_EOF_REACHED)
+		free(buffered_text);
+	return (res);
 }

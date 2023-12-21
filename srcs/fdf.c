@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/20 00:17:49 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:17:07 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,82 +108,14 @@ static void	open_file(const char *filename)
 	close(fd);
 }
 
-static size_t	check_last_char(char *str)
+// t_envの変数が増えたら、初期化の中身も後で増やすこと
+static void	init_env_struct(t_env *env)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	if (i == 0 || str[i - 1] == '\n')
-	{
-		return (0);
-	}
-	return (1);
-}
-
-static size_t	count_new_line(char *str)
-{
-	size_t	new_line_count;
-
-	new_line_count = 0;
-	while (*str)
-	{
-		if (*str == '\n')
-		{
-			new_line_count++;
-		}
-		str++;
-	}
-	return (new_line_count);
-}
-
-static void	count_map_height(const char *filename, t_map *map)
-{
-	char	read_buffer[BUFFER_SIZE + 1];
-	ssize_t	bytes_read;
-	size_t	new_line_count;
-	int		fd;
-
-	new_line_count = 0;
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening file");
-		exit(EXIT_FAILURE);
-	}
-	while (true)
-	{
-		bytes_read = read(fd, read_buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
-		{
-			perror("File read failed");
-			exit(EXIT_FAILURE);
-		}
-		if (bytes_read == 0)
-		{
-			new_line_count += check_last_char(read_buffer);
-			break ;
-		}
-		read_buffer[bytes_read] = '\0';
-		new_line_count += count_new_line(read_buffer);
-	}
-	close(fd);
-	map->height = new_line_count;
-}
-
-t_map	init_map(void)
-{
-	t_map	map;
-
-	map->height = 0;
-	map->width = 0;
-	map->max_z = 0;
-	map->min_z = 0;
-	map->grids = NULL;
-	return (map);
+	env->points = NULL;
+	env->max_x = 0;
+	env->max_y = 0;
+	env->max_z = 0;
+	env->min_z = 0;
 }
 
 static bool	check_file_extension(const char *filename, const char *extension)
@@ -220,12 +152,20 @@ static void	check_args(int argc, const char *argv[])
 
 int	main(int argc, const char *argv[])
 {
-	t_map	map;
-	t_point	**points;
+	t_env	env;
 
 	check_args(argc, argv);
-	count_map_height(argv[1], &map);
+	init_env_struct(&env);
+	get_map_size(argv[1], &env);
 	open_file(argv[1]);
+	//以下は未整理の部分
 	printf("Hello, world!\n");
+	void *mlx;     //display
+	void *mlx_win; //window
+	t_data image;  //image
+	mlx = mlx_init();
+	//display init
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!"); //window init
+	image.img = mlx_new_image(mlx, 1920, 1080);                //image init
 	return (0);
 }
