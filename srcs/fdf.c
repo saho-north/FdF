@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 16:17:07 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:29:00 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,38 @@ static void	open_file(const char *filename)
 	close(fd);
 }
 
+static void	init_point_matrix(t_env *env)
+{
+	size_t	x;
+	size_t	y;
+
+	env->points = (t_point **)malloc(sizeof(t_point *) * (env->max_y + 1));
+	if (!env->points)
+	{
+		print_error_exit(ERR_MALLOC);
+	}
+	y = 0;
+	while (y < env->max_y)
+	{
+		env->points[y] = (t_point *)malloc(sizeof(t_point) * (env->max_x + 1));
+		if (!env->points[y])
+		{
+			free_point_matrix(env->points);
+			print_error_exit(ERR_MALLOC);
+		}
+		x = 0;
+		while (x < env->max_x)
+		{
+			env->points[y][x].x = x;
+			env->points[y][x].y = y;
+			env->points[y][x].z = 0;
+			env->points[y][x].color = 0;
+			x++;
+		}
+		y++;
+	}
+}
+
 // t_envの変数が増えたら、初期化の中身も後で増やすこと
 static void	init_env_struct(t_env *env)
 {
@@ -138,34 +170,26 @@ static bool	check_file_extension(const char *filename, const char *extension)
 	return (result == 0);
 }
 
-static void	check_args(int argc, const char *argv[])
-{
-	if (argc != 2)
-	{
-		print_error_exit(ERR_ARGC);
-	}
-	if (!check_file_extension(argv[1], ".fdf"))
-	{
-		print_error_exit(ERR_FILE_EXT);
-	}
-}
-
 int	main(int argc, const char *argv[])
 {
 	t_env	env;
 
-	check_args(argc, argv);
+	if (argc != 2 || !check_file_extension(argv[1], ".fdf"))
+	{
+		print_error_exit(ERR_ARG);
+	}
 	init_env_struct(&env);
 	get_map_size(argv[1], &env);
+	init_point_matrix(&env);
 	open_file(argv[1]);
 	//以下は未整理の部分
-	printf("Hello, world!\n");
-	void *mlx;     //display
-	void *mlx_win; //window
-	t_data image;  //image
-	mlx = mlx_init();
-	//display init
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!"); //window init
-	image.img = mlx_new_image(mlx, 1920, 1080);                //image init
+	// printf("Hello, world!\n");
+	// void *mlx;     //display
+	// void *mlx_win; //window
+	// t_data image;  //image
+	// mlx = mlx_init();
+	// //display init
+	// mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!"); //window init
+	// image.img = mlx_new_image(mlx, 1920, 1080);                //image init
 	return (0);
 }

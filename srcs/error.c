@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 16:15:26 by sakitaha         ###   ########.fr       */
+/*   Created: 2023/12/21 19:49:04 by sakitaha          #+#    #+#             */
+/*   Updated: 2023/12/21 19:50:09 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
  * error.c:
  * error handling (exit the program and display a message when called)
  */
+
+void	perror_exit(char *message)
+{
+	perror(message);
+	exit(EXIT_FAILURE);
+}
 
 void	print_error(char *message)
 {
@@ -29,8 +35,23 @@ void	print_error_exit(char *message)
 	exit(EXIT_FAILURE);
 }
 
-void	perror_exit(char *message)
+void	free_point_matrix(t_env *env)
 {
-	perror(message);
-	exit(EXIT_FAILURE);
+	size_t	i;
+
+	if (env->points == NULL)
+		return ;
+	i = 0;
+	while (i < env->max_y)
+	{
+		free(env->points[i]);
+		i++;
+	}
+	free(env->points);
+}
+
+void	free_and_print_error_exit(char *message, t_env *env)
+{
+	free_point_matrix(env);
+	print_error_exit(message);
 }
