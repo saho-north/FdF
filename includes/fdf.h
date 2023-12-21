@@ -6,14 +6,14 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 23:57:53 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/22 02:54:11 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "error_msg.h"
+# include "error.h"
 # include "get_next_line.h"
 # include "libft.h"
 

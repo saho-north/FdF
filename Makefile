@@ -1,5 +1,4 @@
 NAME       = fdf
-BONUS_NAME = fdf_bonus
 CC         = cc
 CFLAGS     = -Wall -Wextra -Werror
 LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
@@ -30,7 +29,7 @@ $(LIBFT):
 
 all: $(NAME)
 
-bonus: $(BONUS_NAME)
+bonus: $(ALL)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

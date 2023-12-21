@@ -6,12 +6,12 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:45:00 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 23:47:16 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/22 03:01:28 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#ifndef ERROR_MSG_H
+# define ERROR_MSG_H
 
 # define ERR_ARG "Usage: ./fdf <file_name>.fdf"
 # define ERR_FILE_OPEN "Error: Failed to open file"
