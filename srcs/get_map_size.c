@@ -6,11 +6,16 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 16:14:23 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/21 22:20:19 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/**
+ * Counts the number of elements in a line split by spaces.
+ * Used to determine the number of columns (max_x) in the map.
+ */
 
 static size_t	count_max_x(char *line)
 {
@@ -31,6 +36,12 @@ static size_t	count_max_x(char *line)
 	free(pieces);
 	return (index);
 }
+
+/**
+ * Counts the number of valid lines in the file, using the count_max_x function
+ * to ensure each line has the same number of elements.
+ * Used to determine the number of rows (max_y) in the map.
+ */
 
 static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
 {
@@ -60,6 +71,12 @@ static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
 	}
 	return (index);
 }
+
+/**
+ * Determines the size of the map by counting the number of rows and columns.
+ * Opens the file, reads lines using get_next_line, and uses count_max_x and
+ * count_max_y to set the max_x and max_y in the env structure.
+ */
 
 void	get_map_size(const char *filename, t_env *env)
 {

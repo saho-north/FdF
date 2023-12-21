@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 16:29:00 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/21 22:18:16 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,8 @@ static void	init_point_matrix(t_env *env)
 		env->points[y] = (t_point *)malloc(sizeof(t_point) * (env->max_x + 1));
 		if (!env->points[y])
 		{
-			free_point_matrix(env->points);
-			print_error_exit(ERR_MALLOC);
+			env->max_y = y;
+			free_and_print_error_exit(ERR_MALLOC, env);
 		}
 		x = 0;
 		while (x < env->max_x)
