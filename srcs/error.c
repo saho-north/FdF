@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 19:49:04 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 20:05:48 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/22 01:56:32 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,36 @@ void	print_error_exit(char *message)
  * is properly freed when an error occurs or when the program ends.
  */
 
-void	free_point_matrix(t_env *env)
+void	free_point_matrix(t_point **points, size_t max_y)
 {
 	size_t	i;
 
-	if (env->points == NULL)
+	if (points == NULL)
 		return ;
 	i = 0;
-	while (i < env->max_y)
+	while (i < max_y)
 	{
-		free(env->points[i]);
+		free(points[i]);
 		i++;
 	}
-	free(env->points);
+	free(points);
 }
 
 /**
- * Integrates the functionality of freeing the 2D array and then displaying
- * an error message before exiting. A higher-level function that simplifies
- * error handling by combining resource cleanup and error messaging in one call.
+ * Safely frees a dynamically allocated splited lines of str.
  */
 
-void	free_and_print_error_exit(char *message, t_env *env)
+void	free_split_line(char **split_line)
 {
-	free_point_matrix(env);
-	print_error_exit(message);
+	size_t	i;
+
+	if (split_line == NULL)
+		return ;
+	i = 0;
+	while (split_line[i])
+	{
+		free(split_line[i]);
+		i++;
+	}
+	free(split_line);
 }

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 22:20:52 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/22 01:53:30 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@
 
 static size_t	count_max_x(char *line)
 {
-	char	**pieces;
+	char	**split_line;
 	size_t	index;
 
-	pieces = ft_split(line, ' ');
-	if (!pieces)
+	split_line = ft_split(line, ' ');
+	if (!split_line)
 	{
 		return (0);
 	}
 	index = 0;
-	while (pieces[index])
+	while (split_line[index])
 	{
-		free(pieces[index]);
+		free(split_line[index]);
 		index++;
 	}
-	free(pieces);
+	free(split_line);
 	return (index);
 }
 

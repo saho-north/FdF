@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   error_msg.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:45:00 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 16:28:09 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/21 23:47:16 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,5 @@
 # define ERR_FDF_INIT "FdF initialization error"
 # define ERR_CONV_TO_ARR "Conversion to array"
 # define ERR_CAMERA_INIT "Camera initialization error"
-
-void	print_error_exit(char *message);
-void	perror_exit(char *message);
 
 #endif

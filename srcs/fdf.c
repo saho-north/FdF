@@ -6,17 +6,11 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 22:18:16 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/22 02:06:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-/**
- * fdf.c:
- * - main function
- * - memory allocation
- */
 
 static bool	is_valid_after_minus(const char *str)
 {
@@ -63,57 +57,86 @@ static void	check_line(const char *line)
 	}
 }
 
-static void	check_read_status(t_read_status read_status)
+void	assign_point(char **split_line, t_env *env, size_t x, size_t y)
 {
-	if (read_status == READ_ERROR)
+	t_point	*point;
+	char	*str;
+
+	point = &env->points[y][x];
+	point->source_z = ft_atoi(split_line[x]);
+	str = ft_itoa(point->source_z);
+	if (ft_strncmp(str, split_line[x], ft_strlen(str)) != 0)
 	{
-		perror("Error reading line");
-		exit(EXIT_FAILURE);
+		free(str);
+		free_split_line(split_line);
+		free_point_matrix(env->points, env->max_y);
+		print_error_exit(ERR_MAP);
 	}
-	if (read_status == READ_SUCCESS)
-	{
-		write(2, "Error: Unexpected null pointer\n", 31);
-		exit(EXIT_FAILURE);
-	}
-	if (read_status == READ_EOF)
-		write(1, "End of file reached.\n", 22);
+	point->x = (float)x;
+	point->y = (float)y;
+	point->z = (float)point->source_z;
+	if (point->z > env->max_z)
+		env->max_z = point->z;
+	if (point->z < env->min_z)
+		env->min_z = point->z;
 }
 
-static void	open_file(const char *filename)
+void	parse_line(const char *line, t_env *env, size_t current_y)
 {
-	t_read_status	read_status;
-	char			*line;
-	int				fd;
+	size_t	current_x;
+	char	**split_line;
+
+	split_line = ft_split(line, ' ');
+	if (!split_line)
+	{
+		free(line);
+		free_point_matrix(env->points, current_y);
+		print_error_exit(ERR_MALLOC);
+	}
+	current_x = 0;
+	while (split_line[current_x] && current_x < env->max_x)
+	{
+		assign_point(env, current_x, current_y, ft_atoi(split_line[current_x]));
+		current_x++;
+	}
+	free_split_line(split_line);
+}
+
+void	read_map_file(const char *filename, t_env *env)
+{
+	t_gnl_res	res;
+	int			fd;
+	size_t		current_y;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("Error opening file");
-		exit(EXIT_FAILURE);
+		free_point_matrix(env->points, env->max_y);
+		perror_exit(ERR_FILE_OPEN);
 	}
-	read_status = READ_SUCCESS;
-	while (true)
+	current_y = 0;
+	while (current_y < env->max_y)
 	{
-		line = get_next_line(fd, &read_status);
-		if (!line)
+		res = get_next_line(fd);
+		if (res.line_status == LINE_ERROR || !res.line)
 		{
-			check_read_status(read_status);
-			break ;
+			close(fd);
+			free_point_matrix(env->points, env->max_y);
+			print_error_exit(ERR_READ_LINE);
 		}
-		check_line(line);
-		printf("%s", line);
-		free(line);
-		line = NULL;
+		parse_line(res.line, env, current_y);
+		free(res.line);
+		res.line = NULL;
+		current_y++;
 	}
 	close(fd);
 }
 
 static void	init_point_matrix(t_env *env)
 {
-	size_t	x;
 	size_t	y;
 
-	env->points = (t_point **)malloc(sizeof(t_point *) * (env->max_y + 1));
+	env->points = (t_point **)ft_calloc(env->max_y, sizeof(t_point *));
 	if (!env->points)
 	{
 		print_error_exit(ERR_MALLOC);
@@ -121,33 +144,24 @@ static void	init_point_matrix(t_env *env)
 	y = 0;
 	while (y < env->max_y)
 	{
-		env->points[y] = (t_point *)malloc(sizeof(t_point) * (env->max_x + 1));
+		env->points[y] = (t_point *)ft_calloc(env->max_x, sizeof(t_point));
 		if (!env->points[y])
 		{
-			env->max_y = y;
-			free_and_print_error_exit(ERR_MALLOC, env);
-		}
-		x = 0;
-		while (x < env->max_x)
-		{
-			env->points[y][x].x = x;
-			env->points[y][x].y = y;
-			env->points[y][x].z = 0;
-			env->points[y][x].color = 0;
-			x++;
+			free_point_matrix(env->points, y);
+			print_error_exit(ERR_MALLOC);
 		}
 		y++;
 	}
 }
 
-// t_envの変数が増えたら、初期化の中身も後で増やすこと
 static void	init_env_struct(t_env *env)
 {
+	// t_envの変数が増えたら、初期化の中身も後で増やす
 	env->points = NULL;
 	env->max_x = 0;
 	env->max_y = 0;
-	env->max_z = 0;
-	env->min_z = 0;
+	env->max_z = INT_MIN;
+	env->min_z = INT_MAX;
 }
 
 static bool	check_file_extension(const char *filename, const char *extension)
@@ -181,8 +195,8 @@ int	main(int argc, const char *argv[])
 	init_env_struct(&env);
 	get_map_size(argv[1], &env);
 	init_point_matrix(&env);
-	open_file(argv[1]);
 	//以下は未整理の部分
+	read_map_file(argv[1], &env);
 	// printf("Hello, world!\n");
 	// void *mlx;     //display
 	// void *mlx_win; //window

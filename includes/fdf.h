@@ -6,22 +6,16 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/21 16:16:16 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/21 23:57:53 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "error.h"
+# include "error_msg.h"
 # include "get_next_line.h"
 # include "libft.h"
-// # include <errno.h>
-// # include <fcntl.h>
-// # include <stdbool.h>
-// # include <stdio.h>
-# include <stdlib.h>
-// # include <unistd.h>
 
 # define BUFFER_SIZE 1024
 
@@ -174,5 +168,10 @@ typedef struct s_env
 // }					t_env;
 
 void				get_map_size(const char *filename, t_env *env);
+
+void				perror_exit(char *message);
+void				print_error(char *message);
+void				print_error_exit(char *message);
+void				free_point_matrix(t_point **points, size_t max_y);
 
 #endif
