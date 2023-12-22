@@ -8,7 +8,7 @@ INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR) -Imlx
 
 LIBFT      = $(LIBFT_DIR)libft.a
 LIBFT_DIR  = ./libft/
-LIBFT_HDR  = $(LIBFT_DIR)libft.h
+LIBFT_HDR  = $(LIBFT_DIR)includes/libft.h
 
 HDR_LIST   = fdf.h
 HDR_DIR    = ./includes/
