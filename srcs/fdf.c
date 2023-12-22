@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/22 02:06:17 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/22 22:44:44 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,35 @@ static bool	is_valid_after_minus(const char *str)
 		return (false);
 	return (true);
 }
+// 8,0xFFFFFF
 
-static void	check_line(const char *line)
+static bool	check_split_line(const char *str)
 {
-	const char	*str;
-
-	str = line;
 	while (*str)
 	{
-		if (*str == '-' && !is_valid_after_minus(++str))
+		if (*str == '-' && is_valid_after_minus(str + 1))
 		{
-			write(2, "Error: Invalid character\n", 26);
-			free((void *)line);
-			exit(EXIT_FAILURE);
+			str++;
 		}
+		if (!ft_isdigit(*str))
+		{
+			return (false);
+		}
+		while (ft_isidigit(*str))
+		{
+			str++;
+		}
+		if (*str == '\0')
+		{
+			break ;
+		}
+		if (*str != ',' || *str != '0' ||)
+			if (*str == '-' && !is_valid_after_minus(++str))
+			{
+				write(2, "Error: Invalid character\n", 26);
+				free((void *)line);
+				exit(EXIT_FAILURE);
+			}
 		if (!ft_isdigit(*str))
 		{
 			write(2, "Error: Invalid character\n", 26);
@@ -61,9 +76,12 @@ void	assign_point(char **split_line, t_env *env, size_t x, size_t y)
 {
 	t_point	*point;
 	char	*str;
+	bool	is_valid_z;
+	char	**inputs;
 
+	check_split_line(split_line[x]);
 	point = &env->points[y][x];
-	point->source_z = ft_atoi(split_line[x]);
+	point->source_z = ft_atoi_endptr(split_line[x], is_valid_z);
 	str = ft_itoa(point->source_z);
 	if (ft_strncmp(str, split_line[x], ft_strlen(str)) != 0)
 	{
