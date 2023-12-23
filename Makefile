@@ -5,6 +5,8 @@ LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framewor
 LIBRARY    = -L$(LIBFT_DIR) -lft
 INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx
 
+#clang -o mlx-test main.o -L.. -lmlx -L/usr/X11/include/../lib -lXext -lX11 -lm
+
 LIBFT      = $(LIBFT_DIR)libft.a
 LIBFT_DIR  = ./libft/
 
