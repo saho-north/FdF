@@ -6,124 +6,141 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/09/07 05:45:44 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/23 22:16:13 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-typedef struct s_map
+void	parse_line(const char *line, t_env *env, size_t y)
 {
-	int		width;
-	int		height;
-	int		**grid;
-}			t_map;
+	size_t	x;
+	char	**split_line;
 
-typedef struct s_point
-{
-	int		x;
-	int		y;
-	int		z;
-	int		color;
-}			t_point;
-
-static bool	check_file_extension(const char *filename)
-{
-	size_t		len;
-	const char	*extension;
-
-	len = ft_strlen(filename);
-	if (len < 5)
-		return (false);
-	extension = &filename[len - 4];
-	return (ft_strncmp(extension, ".fdf", 4) == 0);
-}
-
-static bool	is_valid_after_minus(const char *str)
-{
-	while (*str == '0')
-		str++;
-	if (!ft_isdigit(*str))
-		return (false);
-	return (true);
-}
-
-static void	check_line(const char *line)
-{
-	const char	*str;
-
-	str = line;
-	while (*str)
+	split_line = ft_split(line, ' ');
+	if (!split_line)
 	{
-		if (*str == '-' && !is_valid_after_minus(++str))
-		{
-			write(2, "Error: Invalid character\n", 26);
-			free((void *)line);
-			exit(EXIT_FAILURE);
-		}
-		if (!ft_isdigit(*str))
-		{
-			write(2, "Error: Invalid character\n", 26);
-			free((void *)line);
-			exit(EXIT_FAILURE);
-		}
-		while (ft_isdigit(*str))
-			str++;
-		if (*str == ',' && !ft_isxdigit(*(++str)))
-		{
-			write(2, "Error: Invalid character\n", 26);
-			free((void *)line);
-			exit(EXIT_FAILURE);
-		}
-		if (!ft_isdigit(*line) && *line != ' ')
-		{
-			write(2, "Error: Invalid character\n", 26);
-			exit(EXIT_FAILURE);
-		}
-		line++;
+		free(line);
+		free_point_matrix(env->points, y);
+		print_error_exit(ERR_MALLOC);
 	}
+	x = 0;
+	while (split_line[x] && x < env->max_x)
+	{
+		if (!parse_point_input(split_line[x], env, x, y))
+		{
+			//これでいいかよくわからないから後でチェックする
+			free_split_line(split_line);
+			free_point_matrix(env->points, env->max_y);
+			print_error_exit(ERR_MAP);
+		}
+		x++;
+	}
+	free_split_line(split_line);
 }
 
-static void	open_file(const char *filename)
+void	read_map_file(const char *filename, t_env *env)
 {
+	t_gnl_res	res;
 	int			fd;
-	const char	*line;
-	size_t		i;
+	size_t		y;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("Error opening file");
-		exit(EXIT_FAILURE);
+		free_point_matrix(env->points, env->max_y);
+		perror_exit(ERR_FILE_OPEN);
 	}
-	i = 0;
-	while (true)
+	y = 0;
+	while (y < env->max_y)
 	{
-		line = (const char *)get_next_line(fd);
-		if (!line)
-			break ;
-		check_line(line);
-		printf("%s", line);
-		free(line);
-		line = NULL;
-		i++;
+		res = get_next_line(fd);
+		if (res.line_status == LINE_ERROR || !res.line)
+		{
+			close(fd);
+			free_point_matrix(env->points, env->max_y);
+			print_error_exit(ERR_READ_LINE);
+		}
+		parse_line(res.line, env, y);
+		free(res.line);
+		res.line = NULL;
+		y++;
 	}
 	close(fd);
 }
 
+static void	init_point_matrix(t_env *env)
+{
+	size_t	y;
+
+	env->points = (t_point **)ft_calloc(env->max_y, sizeof(t_point *));
+	if (!env->points)
+	{
+		print_error_exit(ERR_MALLOC);
+	}
+	y = 0;
+	while (y < env->max_y)
+	{
+		env->points[y] = (t_point *)ft_calloc(env->max_x, sizeof(t_point));
+		if (!env->points[y])
+		{
+			free_point_matrix(env->points, y);
+			print_error_exit(ERR_MALLOC);
+		}
+		y++;
+	}
+}
+
+static void	init_env_struct(t_env *env)
+{
+	// t_envの変数が増えたら、初期化の中身も後で増やす
+	env->points = NULL;
+	env->max_x = 0;
+	env->max_y = 0;
+	env->max_z = INT_MIN;
+	env->min_z = INT_MAX;
+}
+
+static bool	check_file_extension(const char *filename, const char *extension)
+{
+	size_t	filename_len;
+	size_t	extension_len;
+	int		result;
+
+	if (!filename || !extension)
+	{
+		return (false);
+	}
+	filename_len = ft_strlen(filename);
+	extension_len = ft_strlen(extension);
+	if (filename_len <= extension_len)
+	{
+		return (false);
+	}
+	result = ft_strcasecmp(&filename[filename_len - extension_len], extension);
+	return (result == 0);
+}
+
 int	main(int argc, const char *argv[])
 {
-	if (argc != 2)
+	t_env	env;
+
+	if (argc != 2 || !check_file_extension(argv[1], ".fdf"))
 	{
-		write(2, "Usage: ./fdf <file_name>.fdf\n", 29);
-		return (1);
+		print_error_exit(ERR_ARG);
 	}
-	if (!check_file_extension(argv[1]))
-	{
-		write(2, "Error: Invalid file extension\n", 30);
-		return (1);
-	}
-	open_file(argv[1]);
-	printf("Hello, world!\n");
+	init_env_struct(&env);
+	get_map_size(argv[1], &env);
+	init_point_matrix(&env);
+	//以下は未整理の部分
+	read_map_file(argv[1], &env);
+	// printf("Hello, world!\n");
+	// void *mlx;     //display
+	// void *mlx_win; //window
+	// t_data image;  //image
+	// mlx = mlx_init();
+	// //display init
+	// mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!"); //window init
+	// image.img = mlx_new_image(mlx, 1920, 1080);                //image init
 	return (0);
 }
