@@ -6,30 +6,33 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/22 02:54:11 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/23 22:58:29 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "error.h"
+# include "error_msg.h"
 # include "get_next_line.h"
 # include "libft.h"
+# include "libft_ext.h"
 
 # define BUFFER_SIZE 1024
 
 /**
  * color: 0xRRGGBBAA
  */
+
 typedef struct s_point
 {
 	int				source_z;
 	float			x;
 	float			y;
 	float			z;
-	unsigned int	color;
+	unsigned char	rgb[3];
 }					t_point;
+
 typedef struct s_env
 {
 	// map関連の情報
