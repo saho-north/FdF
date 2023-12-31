@@ -10,7 +10,7 @@ INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx
 LIBFT      = $(LIBFT_DIR)libft.a
 LIBFT_DIR  = ./libft/
 
-HDR_LIST  = *.h
+HDR_LIST  = fdf.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
