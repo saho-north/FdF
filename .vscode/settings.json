@@ -18,6 +18,7 @@
 		"string_view": "c",
 		"unordered_map": "c",
 		"vector": "c",
-		"ft_string.h": "c"
+		"ft_string.h": "c",
+		"bitset": "c"
 	}
 }
