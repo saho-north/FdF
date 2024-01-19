@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:07 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/23 22:58:44 by sakitaha         ###   ########.fr       */
+/*   Updated: 2023/12/25 14:54:25 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	set_rgb_color(t_point *point, char *str)
 	index = 0;
 	while (index < 3 && str[index * 2] != '\0' && str[index * 2 + 1] != '\0')
 	{
-		high_nibble = ft_hexchartoi(str[index * 2]);
-		low_nibble = ft_hexchartoi(str[index * 2 + 1]);
+		high_nibble = ft_digittoint(str[index * 2]);
+		low_nibble = ft_digittoint(str[index * 2 + 1]);
 		point->rgb[index] = (unsigned char)(high_nibble * 16 + low_nibble);
 		index++;
 	}

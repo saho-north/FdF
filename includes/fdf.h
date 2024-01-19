@@ -6,23 +6,19 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/23 22:58:29 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/19 23:37:37 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "error_msg.h"
-# include "get_next_line.h"
+# include "error.h"
 # include "libft.h"
-# include "libft_ext.h"
 
 # define BUFFER_SIZE 1024
-
-/**
- * color: 0xRRGGBBAA
- */
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 
 typedef struct s_point
 {
@@ -33,15 +29,43 @@ typedef struct s_point
 	unsigned char	rgb[3];
 }					t_point;
 
-typedef struct s_env
+typedef struct s_fdf
 {
-	// map関連の情報
+	void			*xvar;
+	void			*window;
+	void			*img;
+	char			*addr;
+	int				bpp;
+	int				stride;
+	int				endian;
 	t_point			**points;
 	size_t			max_x;
 	size_t			max_y;
 	int				max_z;
 	int				min_z;
-}					t_env;
+}					t_fdf;
+
+// typedef struct s_fdf
+// {
+// 	void			*mlx;
+// 	void			*win;
+// 	void			*img;
+// 	char			*addr;
+// 	int				bits_per_pixel;
+// 	int				line_length;
+// 	int				endian;
+// 	int				scale;
+// 	float			alpha;
+// 	float			sm_y;
+// 	float			bg_y;
+// 	float			sm_x;
+// 	float			bg_x;
+// 	t_vector2		offset;
+// 	t_map			map;
+// 	t_vector3		*points;
+// 	t_vector2		*final_points;
+// 	t_vector2		*rotated;
+// }					t_fdf;
 
 // typedef struct s_cam
 // {
@@ -93,7 +117,7 @@ typedef struct s_env
 // 	float			dy;
 // }					t_delta;
 
-// typedef struct s_env
+// typedef struct s_fdf
 // {
 // 	void			*mlx;
 // 	void			*win;
@@ -119,7 +143,7 @@ typedef struct s_env
 // 	t_ipoint		*initial_points;
 // 	t_fpoint		*final_points;
 // 	t_delta			*delta;
-// }					t_env;
+// }					t_fdf;
 
 // typedef struct s_vector3
 // {
@@ -148,33 +172,19 @@ typedef struct s_env
 // 	int				**i_grid;
 // }					t_map;
 
-// typedef struct s_env
-// {
-// 	void			*mlx;
-// 	void			*win;
-// 	void			*img;
-// 	char			*addr;
-// 	int				bits_per_pixel;
-// 	int				line_length;
-// 	int				endian;
-// 	int				scale;
-// 	float			alpha;
-// 	float			sm_y;
-// 	float			bg_y;
-// 	float			sm_x;
-// 	float			bg_x;
-// 	t_vector2		offset;
-// 	t_map			map;
-// 	t_vector3		*points;
-// 	t_vector2		*final_points;
-// 	t_vector2		*rotated;
-// }					t_env;
+//void				get_map_size(const char *filename, t_fdf *fdf);
 
-void				get_map_size(const char *filename, t_env *env);
-
+/* error.c */
 void				perror_exit(char *message);
 void				print_error(char *message);
 void				print_error_exit(char *message);
+
+/* free.c */
+void				free_mlx_ptr(t_fdf *fdf);
 void				free_point_matrix(t_point **points, size_t max_y);
+void				free_split_line(char **split_line);
+
+/* get_map_size.c */
+void				get_map_size(const char *filename, t_fdf *fdf);
 
 #endif
