@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:26:04 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 01:00:46 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,19 @@ void	get_map_size(const char *filename, t_fdf *fdf)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		free_mlx_ptr(fdf);
-		perror_exit(ERR_FILE_OPEN);
+		free_and_perror_exit(fdf, ERR_FILE_OPEN);
 	}
 	res = get_next_line(fd);
 	if (res.line_status == LINE_ERROR || res.line == NULL)
 	{
 		close(fd);
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_READ_LINE);
+		free_and_error_exit(fdf, ERR_READ_LINE);
 	}
 	fdf->max_x = count_max_x(res.line);
 	fdf->max_y = count_max_y(res, fdf->max_x, fd);
 	close(fd);
 	if (fdf->max_x == 0 || fdf->max_y == 0)
 	{
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_MAP);
+		free_and_error_exit(fdf, ERR_MAP);
 	}
 }

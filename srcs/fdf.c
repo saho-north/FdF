@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:50:11 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 00:59:54 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,18 @@ static void	init_mlx_env(t_fdf *fdf)
 	fdf->window = mlx_new_window(fdf->xvar, WIN_WIDTH, WIN_HEIGHT, "FdF");
 	if (!fdf->window)
 	{
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_FDF_INIT);
+		free_and_error_exit(fdf, ERR_FDF_INIT);
 	}
 	fdf->img = mlx_new_image(fdf->xvar, WIN_WIDTH, WIN_HEIGHT);
 	if (!fdf->img)
 	{
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_FDF_INIT);
+		free_and_error_exit(fdf, ERR_FDF_INIT);
 	}
 	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bpp, &fdf->stride,
 			&fdf->endian);
 	if (!fdf->addr)
 	{
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_FDF_INIT);
+		free_and_error_exit(fdf, ERR_FDF_INIT);
 	}
 }
 
@@ -98,8 +95,7 @@ static void	init_point_matrix(t_fdf *fdf)
 	fdf->points = (t_point **)ft_calloc(fdf->max_y, sizeof(t_point *));
 	if (!fdf->points)
 	{
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_MALLOC);
+		free_and_perror_exit(fdf, ERR_MALLOC);
 	}
 	y = 0;
 	while (y < fdf->max_y)
@@ -120,6 +116,7 @@ static void	init_point_matrix(t_fdf *fdf)
  * It checks the arguments and initializes the struct, mlx environment and map.
  * TODO: The function is not finished yet.
  * It will have more function calls to parse the map and render it.
+ *
  */
 int	main(int argc, const char *argv[])
 {
@@ -133,10 +130,11 @@ int	main(int argc, const char *argv[])
 	init_mlx_env(&fdf);
 	get_map_size(argv[1], &fdf);
 	init_point_matrix(&fdf);
-	printf("max_x: %zu\n", fdf.max_x);
-	printf("max_y: %zu\n", fdf.max_y);
-	printf("max_z: %d\n", fdf.max_z);
-	printf("min_z: %d\n", fdf.min_z);
+	printf("max_x: %zu, map_y: %zu, max_z: %d, min_z: %d\n",
+			fdf.max_x,
+			fdf.max_y,
+			fdf.max_z,
+			fdf.min_z);
 	free_mlx_ptr(&fdf);
 	free_point_matrix(fdf.points, fdf.max_y);
 	return (0);

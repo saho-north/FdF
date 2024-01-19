@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:37:37 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 00:56:12 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ typedef struct s_fdf
 void				perror_exit(char *message);
 void				print_error(char *message);
 void				print_error_exit(char *message);
+void				free_and_perror_exit(t_fdf *fdf, char *message);
+void				free_and_error_exit(t_fdf *fdf, char *message);
 
 /* free.c */
 void				free_mlx_ptr(t_fdf *fdf);
