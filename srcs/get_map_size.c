@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 21:06:36 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/19 23:26:04 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
  * Counts the number of elements in a line split by spaces.
  * Used to determine the number of columns (max_x) in the map.
  */
-
 static size_t	count_max_x(char *line)
 {
 	char	**split_line;
@@ -45,7 +44,6 @@ static size_t	count_max_x(char *line)
  * to ensure each line has the same number of elements.
  * Used to determine the number of rows (max_y) in the map.
  */
-
 static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
 {
 	size_t	index;
@@ -80,7 +78,6 @@ static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
  * Opens the file, reads lines using get_next_line, and uses count_max_x and
  * count_max_y to set the max_x and max_y in the fdf structure.
  */
-
 void	get_map_size(const char *filename, t_fdf *fdf)
 {
 	int			fd;

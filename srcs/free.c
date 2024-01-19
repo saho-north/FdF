@@ -6,18 +6,18 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:31:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 20:58:32 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/19 23:38:00 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "mlx.h"
 
 /**
  * Safely frees a dynamically allocated mlx pointer.
  * Essential for preventing memory leaks by ensuring that all allocated memory
  * is properly freed when an error occurs or when the program ends.
  */
-
 void	free_mlx_ptr(t_fdf *fdf)
 {
 	if (fdf->img)
@@ -43,7 +43,6 @@ void	free_mlx_ptr(t_fdf *fdf)
  * Essential for preventing memory leaks by ensuring that all allocated memory
  * is properly freed when an error occurs or when the program ends.
  */
-
 void	free_point_matrix(t_point **points, size_t max_y)
 {
 	size_t	i;
@@ -66,7 +65,6 @@ void	free_point_matrix(t_point **points, size_t max_y)
 /**
  * Safely frees a dynamically allocated splited lines of str.
  */
-
 void	free_split_line(char **split_line)
 {
 	size_t	i;
