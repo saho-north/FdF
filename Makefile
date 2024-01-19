@@ -1,20 +1,18 @@
 NAME       = fdf
 CC         = cc
-CFLAGS     = -Wall -Wextra -Werror
+CFLAGS     =
 LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
 LIBRARY    = -L$(LIBFT_DIR) -lft
 INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx
 
-#clang -o mlx-test main.o -L.. -lmlx -L/usr/X11/include/../lib -lXext -lX11 -lm
-
 LIBFT      = $(LIBFT_DIR)libft.a
 LIBFT_DIR  = ./libft/
 
-HDR_LIST  = fdf.h
+HDR_LIST  = fdf.h error.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
-SRCS       = *.c
+SRCS       = error.c fdf.c free.c get_map_size.c
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 

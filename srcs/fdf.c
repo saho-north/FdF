@@ -5,101 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/06 05:50:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/23 22:16:13 by sakitaha         ###   ########.fr       */
+/*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
+/*   Updated: 2024/01/19 21:09:09 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	parse_line(const char *line, t_env *env, size_t y)
-{
-	size_t	x;
-	char	**split_line;
-
-	split_line = ft_split(line, ' ');
-	if (!split_line)
-	{
-		free(line);
-		free_point_matrix(env->points, y);
-		print_error_exit(ERR_MALLOC);
-	}
-	x = 0;
-	while (split_line[x] && x < env->max_x)
-	{
-		if (!parse_point_input(split_line[x], env, x, y))
-		{
-			//これでいいかよくわからないから後でチェックする
-			free_split_line(split_line);
-			free_point_matrix(env->points, env->max_y);
-			print_error_exit(ERR_MAP);
-		}
-		x++;
-	}
-	free_split_line(split_line);
-}
-
-void	read_map_file(const char *filename, t_env *env)
-{
-	t_gnl_res	res;
-	int			fd;
-	size_t		y;
-
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		free_point_matrix(env->points, env->max_y);
-		perror_exit(ERR_FILE_OPEN);
-	}
-	y = 0;
-	while (y < env->max_y)
-	{
-		res = get_next_line(fd);
-		if (res.line_status == LINE_ERROR || !res.line)
-		{
-			close(fd);
-			free_point_matrix(env->points, env->max_y);
-			print_error_exit(ERR_READ_LINE);
-		}
-		parse_line(res.line, env, y);
-		free(res.line);
-		res.line = NULL;
-		y++;
-	}
-	close(fd);
-}
-
-static void	init_point_matrix(t_env *env)
-{
-	size_t	y;
-
-	env->points = (t_point **)ft_calloc(env->max_y, sizeof(t_point *));
-	if (!env->points)
-	{
-		print_error_exit(ERR_MALLOC);
-	}
-	y = 0;
-	while (y < env->max_y)
-	{
-		env->points[y] = (t_point *)ft_calloc(env->max_x, sizeof(t_point));
-		if (!env->points[y])
-		{
-			free_point_matrix(env->points, y);
-			print_error_exit(ERR_MALLOC);
-		}
-		y++;
-	}
-}
-
-static void	init_env_struct(t_env *env)
-{
-	// t_envの変数が増えたら、初期化の中身も後で増やす
-	env->points = NULL;
-	env->max_x = 0;
-	env->max_y = 0;
-	env->max_z = INT_MIN;
-	env->min_z = INT_MAX;
-}
+#include "mlx.h"
 
 static bool	check_file_extension(const char *filename, const char *extension)
 {
@@ -121,26 +33,83 @@ static bool	check_file_extension(const char *filename, const char *extension)
 	return (result == 0);
 }
 
+static void	init_fdf_struct(t_fdf *fdf)
+{
+	fdf->xvar = NULL;
+	fdf->window = NULL;
+	fdf->img = NULL;
+	fdf->addr = NULL;
+	fdf->bpp = 0;
+	fdf->stride = 0;
+	fdf->endian = 0;
+	fdf->points = NULL;
+	fdf->max_x = 0;
+	fdf->max_y = 0;
+	fdf->max_z = INT_MIN;
+	fdf->min_z = INT_MAX;
+}
+
+static void	init_mlx_env(t_fdf *fdf)
+{
+	fdf->xvar = mlx_init();
+	if (!fdf->xvar)
+	{
+		print_error_exit(ERR_FDF_INIT);
+	}
+	fdf->window = mlx_new_window(fdf->xvar, WIN_WIDTH, WIN_HEIGHT, "FdF");
+	if (!fdf->window)
+	{
+		free_mlx_ptr(fdf);
+		print_error_exit(ERR_FDF_INIT);
+	}
+	fdf->img = mlx_new_image(fdf->xvar, WIN_WIDTH, WIN_HEIGHT);
+	if (!fdf->img)
+	{
+		free_mlx_ptr(fdf);
+		print_error_exit(ERR_FDF_INIT);
+	}
+	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bpp, &fdf->stride,
+			&fdf->endian);
+	if (!fdf->addr)
+	{
+		free_mlx_ptr(fdf);
+		print_error_exit(ERR_FDF_INIT);
+	}
+}
+
+void	init_point_matrix(t_fdf *fdf)
+{
+	size_t	y;
+
+	fdf->points = (t_point **)ft_calloc(fdf->max_y, sizeof(t_point *));
+	if (!fdf->points)
+	{
+		print_error_exit(ERR_MALLOC);
+	}
+	y = 0;
+	while (y < fdf->max_y)
+	{
+		fdf->points[y] = (t_point *)ft_calloc(fdf->max_x, sizeof(t_point));
+		if (!fdf->points[y])
+		{
+			free_point_matrix(fdf->points, y);
+			print_error_exit(ERR_MALLOC);
+		}
+		y++;
+	}
+}
+
 int	main(int argc, const char *argv[])
 {
-	t_env	env;
+	t_fdf	fdf;
 
 	if (argc != 2 || !check_file_extension(argv[1], ".fdf"))
 	{
 		print_error_exit(ERR_ARG);
 	}
-	init_env_struct(&env);
-	get_map_size(argv[1], &env);
-	init_point_matrix(&env);
-	//以下は未整理の部分
-	read_map_file(argv[1], &env);
-	// printf("Hello, world!\n");
-	// void *mlx;     //display
-	// void *mlx_win; //window
-	// t_data image;  //image
-	// mlx = mlx_init();
-	// //display init
-	// mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!"); //window init
-	// image.img = mlx_new_image(mlx, 1920, 1080);                //image init
+	init_fdf_struct(&fdf);
+	init_mlx_env(&fdf);
+	get_map_size(argv[1], &fdf);
+	init_point_matrix(&fdf);
 	return (0);
 }

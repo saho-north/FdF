@@ -6,11 +6,12 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2023/12/22 01:53:30 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/19 21:06:36 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <fcntl.h>
 
 /**
  * Counts the number of elements in a line split by spaces.
@@ -31,9 +32,11 @@ static size_t	count_max_x(char *line)
 	while (split_line[index])
 	{
 		free(split_line[index]);
+		split_line[index] = NULL;
 		index++;
 	}
 	free(split_line);
+	split_line = NULL;
 	return (index);
 }
 
@@ -75,10 +78,10 @@ static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
 /**
  * Determines the size of the map by counting the number of rows and columns.
  * Opens the file, reads lines using get_next_line, and uses count_max_x and
- * count_max_y to set the max_x and max_y in the env structure.
+ * count_max_y to set the max_x and max_y in the fdf structure.
  */
 
-void	get_map_size(const char *filename, t_env *env)
+void	get_map_size(const char *filename, t_fdf *fdf)
 {
 	int			fd;
 	t_gnl_res	res;
@@ -86,19 +89,22 @@ void	get_map_size(const char *filename, t_env *env)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		free_mlx_ptr(fdf);
 		perror_exit(ERR_FILE_OPEN);
 	}
 	res = get_next_line(fd);
 	if (res.line_status == LINE_ERROR || res.line == NULL)
 	{
 		close(fd);
+		free_mlx_ptr(fdf);
 		print_error_exit(ERR_READ_LINE);
 	}
-	env->max_x = count_max_x(res.line);
-	env->max_y = count_max_y(res, env->max_x, fd);
+	fdf->max_x = count_max_x(res.line);
+	fdf->max_y = count_max_y(res, fdf->max_x, fd);
 	close(fd);
-	if (env->max_x == 0 || env->max_y == 0)
+	if (fdf->max_x == 0 || fdf->max_y == 0)
 	{
+		free_mlx_ptr(fdf);
 		print_error_exit(ERR_MAP);
 	}
 }

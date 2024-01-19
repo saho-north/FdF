@@ -19,6 +19,9 @@
 		"unordered_map": "c",
 		"vector": "c",
 		"ft_string.h": "c",
-		"bitset": "c"
+		"bitset": "c",
+		"typeinfo": "c",
+		"mlx_int.h": "c",
+		"libft.h": "c"
 	}
 }
