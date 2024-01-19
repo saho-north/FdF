@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/20 02:38:24 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 04:38:08 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int	main(int argc, const char *argv[])
 	}
 	free_mlx_ptr(&fdf);
 	free_point_matrix(fdf.points, fdf.max_y);
+	printf("\nfdf.max_x: %zu, max_y: %zu\n", fdf.max_x, fdf.max_y);
 	return (0);
 }
 
