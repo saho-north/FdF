@@ -1,33 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   points.c                                           :+:      :+:    :+:   */
+/*   parse_point_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:07 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/20 00:45:52 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 01:36:10 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	set_rgb_color(t_point *point, char *str)
+/**
+ * Sets the x y z values of the point.
+ */
+static void	set_point_values(t_fdf *fdf, size_t x, size_t y, int z)
 {
-	int		high_nibble;
-	int		low_nibble;
-	size_t	index;
+	t_point	*point;
 
-	index = 0;
-	while (index < 3 && str[index * 2] != '\0' && str[index * 2 + 1] != '\0')
+	point = &fdf->points[y][x];
+	point->source_z = z;
+	if (point->source_z > fdf->max_z)
 	{
-		high_nibble = ft_digittoint(str[index * 2]);
-		low_nibble = ft_digittoint(str[index * 2 + 1]);
-		point->rgb[index] = (unsigned char)(high_nibble * 16 + low_nibble);
-		index++;
+		fdf->max_z = point->source_z;
 	}
+	if (point->source_z < fdf->min_z)
+	{
+		fdf->min_z = point->source_z;
+	}
+	point->x = (float)x;
+	point->y = (float)y;
+	point->z = (float)point->source_z;
 }
 
+/**
+ * Sets the default color of the point.
+ */
+static void	set_default_color(t_point *point)
+{
+	point->rgb[0] = 255;
+	point->rgb[1] = 255;
+	point->rgb[2] = 255;
+}
+
+/**
+ * Checks if the given string is a valid hex color.
+ * It must be in the format of ",0xRRGGBB".
+ */
 static bool	is_valid_color(char *str)
 {
 	size_t	index;
@@ -53,32 +73,31 @@ static bool	is_valid_color(char *str)
 	return (true);
 }
 
-static void	set_default_color(t_point *point)
+/**
+ * Sets the rgb values of the point.
+ */
+static void	set_rgb_color(t_point *point, char *str)
 {
-	point->rgb[0] = 255;
-	point->rgb[1] = 255;
-	point->rgb[2] = 255;
+	int		high_nibble;
+	int		low_nibble;
+	size_t	index;
+
+	index = 0;
+	while (index < 3 && str[index * 2] != '\0' && str[index * 2 + 1] != '\0')
+	{
+		high_nibble = ft_digittoint(str[index * 2]);
+		low_nibble = ft_digittoint(str[index * 2 + 1]);
+		point->rgb[index] = (unsigned char)(high_nibble * 16 + low_nibble);
+		index++;
+	}
 }
 
-static void	set_point_values(t_fdf *fdf, size_t x, size_t y, int z)
-{
-	t_point	*point;
-
-	point = &fdf->points[y][x];
-	point->source_z = z;
-	point->x = (float)x;
-	point->y = (float)y;
-	point->z = (float)point->source_z;
-	if (point->source_z > fdf->max_z)
-		fdf->max_z = point->source_z;
-	if (point->source_z < fdf->min_z)
-		fdf->min_z = point->source_z;
-}
-
+/**
+ * Parses the input of each point and stores the result in the struct.
+ */
 bool	parse_point_input(char *point_input, t_fdf *fdf, size_t x, size_t y)
 {
 	t_atoi_res	atoi_res;
-	size_t		color_start_index;
 
 	atoi_res = ft_atoi_endptr(point_input);
 	if (atoi_res.is_valid == false)

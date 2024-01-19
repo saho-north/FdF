@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/20 00:56:12 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 02:36:12 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_fdf
 	size_t			max_y;
 	int				max_z;
 	int				min_z;
+	bool			is_valid_map;
 }					t_fdf;
 
 // typedef struct s_fdf
@@ -188,5 +189,12 @@ void				free_split_line(char **split_line);
 
 /* get_map_size.c */
 void				get_map_size(const char *filename, t_fdf *fdf);
+
+/* load_map_data.c */
+void				load_map_data(const char *filename, t_fdf *fdf);
+
+/* parse_point_input.c */
+bool				parse_point_input(char *point_input, t_fdf *fdf, size_t x,
+						size_t y);
 
 #endif

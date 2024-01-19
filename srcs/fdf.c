@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/20 00:59:54 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 02:38:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	init_fdf_struct(t_fdf *fdf)
 	fdf->max_y = 0;
 	fdf->max_z = INT_MIN;
 	fdf->min_z = INT_MAX;
+	fdf->is_valid_map = true;
 }
 
 /**
@@ -130,11 +131,11 @@ int	main(int argc, const char *argv[])
 	init_mlx_env(&fdf);
 	get_map_size(argv[1], &fdf);
 	init_point_matrix(&fdf);
-	printf("max_x: %zu, map_y: %zu, max_z: %d, min_z: %d\n",
-			fdf.max_x,
-			fdf.max_y,
-			fdf.max_z,
-			fdf.min_z);
+	load_map_data(argv[1], &fdf);
+	if (!fdf.is_valid_map)
+	{
+		free_and_error_exit(&fdf, ERR_MAP);
+	}
 	free_mlx_ptr(&fdf);
 	free_point_matrix(fdf.points, fdf.max_y);
 	return (0);

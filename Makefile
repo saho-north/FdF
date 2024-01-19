@@ -12,7 +12,7 @@ HDR_LIST  = fdf.h error.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
-SRCS       = error.c fdf.c free.c get_map_size.c
+SRCS       = error.c fdf.c free.c get_map_size.c load_map_data.c parse_point_input.c
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
