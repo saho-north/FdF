@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/22 21:38:37 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 03:50:28 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void				free_mlx_ptr(t_fdf *fdf);
 void				free_point_matrix(t_point **points, size_t max_y);
 void				free_split_line(char **split_line);
 
-/* get_map_height.c */
+/* get_map_size.c */
 void				get_map_size(const char *filename, t_fdf *fdf);
 
 /* load_map_data.c */

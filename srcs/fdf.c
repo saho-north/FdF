@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/22 21:42:13 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 03:49:52 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,28 +80,28 @@ static void	init_mlx_env(t_fdf *fdf)
 /**
  * Initializes the 2D array of points that will be used to store the map.
  */
-// static void	init_point_matrix(t_fdf *fdf)
-// {
-// 	size_t	y;
+static void	init_point_matrix(t_fdf *fdf)
+{
+	size_t	y;
 
-// 	fdf->points = (t_point **)ft_calloc(fdf->max_y, sizeof(t_point *));
-// 	if (!fdf->points)
-// 	{
-// 		free_and_perror_exit(fdf, ERR_MALLOC);
-// 	}
-// 	y = 0;
-// 	while (y < fdf->max_y)
-// 	{
-// 		fdf->points[y] = (t_point *)ft_calloc(fdf->max_x, sizeof(t_point));
-// 		if (!fdf->points[y])
-// 		{
-// 			free_mlx_ptr(fdf);
-// 			free_point_matrix(fdf->points, y);
-// 			print_error_exit(ERR_MALLOC);
-// 		}
-// 		y++;
-// 	}
-// }
+	fdf->points = (t_point **)ft_calloc(fdf->max_y, sizeof(t_point *));
+	if (!fdf->points)
+	{
+		free_and_perror_exit(fdf, ERR_MALLOC);
+	}
+	y = 0;
+	while (y < fdf->max_y)
+	{
+		fdf->points[y] = (t_point *)ft_calloc(fdf->max_x, sizeof(t_point));
+		if (!fdf->points[y])
+		{
+			free_mlx_ptr(fdf);
+			free_point_matrix(fdf->points, y);
+			print_error_exit(ERR_MALLOC);
+		}
+		y++;
+	}
+}
 
 /**
  * The main function of the program.
@@ -114,27 +114,26 @@ int	main(int argc, const char *argv[])
 {
 	t_fdf	fdf;
 
-	printf("----------------------------------\n");
+	printf("-------------------------------------------------\n");
 	if (argc != 2 || !check_file_extension(argv[1], ".fdf"))
 	{
 		print_error_exit(ERR_ARG);
 	}
 	init_fdf_struct(&fdf);
 	init_mlx_env(&fdf);
-	//get_map_height(argv[1], &fdf);
 	get_map_size(argv[1], &fdf);
-	//init_point_matrix(&fdf);
+	init_point_matrix(&fdf);
 	printf("fdf.max_x: %zu, fdf.max_y: %zu\n", fdf.max_x, fdf.max_y);
+	load_map_data(argv[1], &fdf);
 	// TODO: parse the map and render it
-	// load_map_data(argv[1], &fdf);
 	// if (!fdf.is_valid_map)
 	// {
 	// 	printf("fdf.is_valid_map: %d\n", fdf.is_valid_map);
 	// 	free_and_error_exit(&fdf, ERR_MAP);
 	// }
 	free_mlx_ptr(&fdf);
-	// free_point_matrix(fdf.points, fdf.max_y);
-	printf("----------------------------------\n\n");
+	free_point_matrix(fdf.points, fdf.max_y);
+	printf("-------------------------------------------------\n\n");
 	//exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -142,10 +141,10 @@ int	main(int argc, const char *argv[])
 /**
  * The destructor function of the program.
  * It is used to check for memory leaks using the leaks command.
+ * TODO: It will be deleted before the final submission.
+ */
 
-	* TODO: It will be deleted before the final submission.__attribute__((destructor)) static void destructor()
+__attribute__((destructor)) static void destructor()
 {
 	system("leaks -q fdf");
 }
-
- */
