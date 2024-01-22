@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/20 02:36:12 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:38:37 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include "libft.h"
 
 # define BUFFER_SIZE 1024
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 1600
+# define WIN_HEIGHT 900
 
 typedef struct s_point
 {
@@ -173,8 +173,6 @@ typedef struct s_fdf
 // 	int				**i_grid;
 // }					t_map;
 
-//void				get_map_size(const char *filename, t_fdf *fdf);
-
 /* error.c */
 void				perror_exit(char *message);
 void				print_error(char *message);
@@ -187,14 +185,15 @@ void				free_mlx_ptr(t_fdf *fdf);
 void				free_point_matrix(t_point **points, size_t max_y);
 void				free_split_line(char **split_line);
 
-/* get_map_size.c */
+/* get_map_height.c */
 void				get_map_size(const char *filename, t_fdf *fdf);
 
 /* load_map_data.c */
 void				load_map_data(const char *filename, t_fdf *fdf);
 
-/* parse_point_input.c */
-bool				parse_point_input(char *point_input, t_fdf *fdf, size_t x,
-						size_t y);
+/* point_properties.c */
+void				set_point_values(t_fdf *fdf, size_t x, size_t y, int z);
+void				set_default_color(t_point *point);
+void				set_rgb_color(t_point *point, char *str);
 
 #endif

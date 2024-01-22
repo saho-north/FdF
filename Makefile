@@ -12,7 +12,7 @@ HDR_LIST  = fdf.h error.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
-SRCS       = error.c fdf.c free.c get_map_size.c load_map_data.c parse_point_input.c
+SRCS       = error.c fdf.c free.c get_map_size.c load_map_data.c point_properties.c
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
@@ -40,6 +40,67 @@ re: fclean all
 bonus: $(ALL)
 
 test: $(NAME)
-	./$(NAME) test_maps/42.fdf
+	./$(NAME) test_maps/10-2.fdf
 
-.PHONY: all clean fclean re bonus test
+small: $(NAME)
+	./$(NAME) test_maps/10-2.fdf
+	./$(NAME) test_maps/10-70.fdf
+	./$(NAME) test_maps/20-60.fdf
+	./$(NAME) test_maps/42.fdf
+	./$(NAME) test_maps/basictest.fdf
+	./$(NAME) test_maps/elem.fdf
+	./$(NAME) test_maps/elem2.fdf
+	./$(NAME) test_maps/pentenegpos.fdf
+	./$(NAME) test_maps/plat.fdf
+	./$(NAME) test_maps/pnp_flat.fdf
+	./$(NAME) test_maps/pyra.fdf
+
+medium: $(NAME)
+	./$(NAME) test_maps/50-4.fdf
+	./$(NAME) test_maps/pylone.fdf
+
+large: $(NAME)
+	./$(NAME) test_maps/100-6.fdf
+
+color: $(NAME)
+	./$(NAME) test_maps/elem-col.fdf
+	./$(NAME) test_maps/pyramide.fdf
+
+fract: $(NAME)
+	./$(NAME) test_maps/elem-fract.fdf
+
+julia: $(NAME)
+	./$(NAME) test_maps/julia.fdf
+
+mars: $(NAME)
+	./$(NAME) test_maps/mars.fdf
+
+t1: $(NAME)
+	./$(NAME) test_maps/t1.fdf
+
+t2: $(NAME)
+	./$(NAME) test_maps/t2.fdf
+
+testall: $(NAME)
+	./$(NAME) test_maps/10-2.fdf
+	./$(NAME) test_maps/10-70.fdf
+	./$(NAME) test_maps/20-60.fdf
+	./$(NAME) test_maps/42.fdf
+	./$(NAME) test_maps/50-4.fdf
+	./$(NAME) test_maps/100-6.fdf
+	./$(NAME) test_maps/basictest.fdf
+	./$(NAME) test_maps/elem-col.fdf
+	./$(NAME) test_maps/elem-fract.fdf
+	./$(NAME) test_maps/elem.fdf
+	./$(NAME) test_maps/elem2.fdf
+	./$(NAME) test_maps/julia.fdf
+	./$(NAME) test_maps/mars.fdf
+	./$(NAME) test_maps/pentenegpos.fdf
+	./$(NAME) test_maps/plat.fdf
+	./$(NAME) test_maps/pnp_flat.fdf
+	./$(NAME) test_maps/pyra.fdf
+	./$(NAME) test_maps/pyramide.fdf
+	./$(NAME) test_maps/t1.fdf
+	./$(NAME) test_maps/t2.fdf
+
+.PHONY: all clean fclean re bonus test small medium large color fract julia mars t1 t2 testall

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/20 01:00:46 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:21:22 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,27 @@
 static size_t	count_max_x(char *line)
 {
 	char	**split_line;
-	size_t	index;
+	char	**current;
+	size_t	count;
 
 	split_line = ft_split(line, ' ');
 	if (!split_line)
 	{
 		return (0);
 	}
-	index = 0;
-	while (split_line[index])
+	current = split_line;
+	count = 0;
+	while (*current)
 	{
-		free(split_line[index]);
-		split_line[index] = NULL;
-		index++;
+		if (**current != '\0' && **current != '\n')
+		{
+			count++;
+		}
+		free(*current);
+		current++;
 	}
 	free(split_line);
-	split_line = NULL;
-	return (index);
+	return (count);
 }
 
 /**
@@ -56,8 +60,11 @@ static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
 			free(res.line);
 			break ;
 		}
-		if (count_max_x(res.line) != max_x)
+		if (count_max_x(res.line) > max_x)
 		{
+			printf("wrong length of line: %zu\n", index);
+			printf("count_max_x(res.line): %zu\n", count_max_x(res.line));
+			printf("max_x: %zu\n", max_x);
 			free(res.line);
 			return (0);
 		}
