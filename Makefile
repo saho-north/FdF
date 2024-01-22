@@ -98,6 +98,7 @@ testall: $(NAME)
 	./$(NAME) test_maps/pentenegpos.fdf
 	./$(NAME) test_maps/plat.fdf
 	./$(NAME) test_maps/pnp_flat.fdf
+	./$(NAME) test_maps/pylone.fdf
 	./$(NAME) test_maps/pyra.fdf
 	./$(NAME) test_maps/pyramide.fdf
 	./$(NAME) test_maps/t1.fdf
