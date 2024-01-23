@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 03:50:28 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:02:34 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_point
 	float			y;
 	float			z;
 	unsigned char	rgb[3];
+	unsigned int	color;
 }					t_point;
 
 typedef struct s_fdf
@@ -43,7 +44,6 @@ typedef struct s_fdf
 	size_t			max_y;
 	int				max_z;
 	int				min_z;
-	bool			is_valid_map;
 }					t_fdf;
 
 // typedef struct s_fdf
@@ -188,12 +188,15 @@ void				free_split_line(char **split_line);
 /* get_map_size.c */
 void				get_map_size(const char *filename, t_fdf *fdf);
 
-/* load_map_data.c */
-void				load_map_data(const char *filename, t_fdf *fdf);
+/* init.c */
+void				init_fdf_struct(t_fdf *fdf);
+void				init_mlx_env(t_fdf *fdf);
+void				init_point_matrix(t_fdf *fdf);
 
-/* point_properties.c */
-void				set_point_values(t_fdf *fdf, size_t x, size_t y, int z);
-void				set_default_color(t_point *point);
-void				set_rgb_color(t_point *point, char *str);
+/* parse_point.c */
+bool				parse_point(t_fdf *fdf, t_point *point, char *str);
+
+/* process_map.c */
+void				process_map(const char *filename, t_fdf *fdf);
 
 #endif

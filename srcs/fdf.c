@@ -6,12 +6,11 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 03:49:52 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:09:59 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include "mlx.h"
 
 /**
  * Checks if the given filename has the given extension.
@@ -38,67 +37,27 @@ static bool	check_file_extension(const char *filename, const char *extension)
 }
 
 /**
- * Initializes the fdf struct with default values.
+ * Print out the points struct for debugging.
+ * TODO: Delete this function later.
  */
 
-static void	init_fdf_struct(t_fdf *fdf)
+static void	print_points(t_fdf *fdf)
 {
-	ft_memset(fdf, 0, sizeof(t_fdf));
-	fdf->max_z = INT_MIN;
-	fdf->min_z = INT_MAX;
-	fdf->is_valid_map = true;
-}
-
-/**
- * Initializes the mlx environment for graphics rendering.
- */
-static void	init_mlx_env(t_fdf *fdf)
-{
-	fdf->xvar = mlx_init();
-	if (!fdf->xvar)
-	{
-		print_error_exit(ERR_FDF_INIT);
-	}
-	fdf->window = mlx_new_window(fdf->xvar, WIN_WIDTH, WIN_HEIGHT, "FdF");
-	if (!fdf->window)
-	{
-		free_and_error_exit(fdf, ERR_FDF_INIT);
-	}
-	fdf->img = mlx_new_image(fdf->xvar, WIN_WIDTH, WIN_HEIGHT);
-	if (!fdf->img)
-	{
-		free_and_error_exit(fdf, ERR_FDF_INIT);
-	}
-	fdf->addr = mlx_get_data_addr(fdf->img, &fdf->bpp, &fdf->stride,
-			&fdf->endian);
-	if (!fdf->addr)
-	{
-		free_and_error_exit(fdf, ERR_FDF_INIT);
-	}
-}
-
-/**
- * Initializes the 2D array of points that will be used to store the map.
- */
-static void	init_point_matrix(t_fdf *fdf)
-{
+	size_t	x;
 	size_t	y;
 
-	fdf->points = (t_point **)ft_calloc(fdf->max_y, sizeof(t_point *));
-	if (!fdf->points)
-	{
-		free_and_perror_exit(fdf, ERR_MALLOC);
-	}
 	y = 0;
+	printf("fdf.max_x: %zu, fdf.max_y: %zu\n", fdf->max_x, fdf->max_y);
 	while (y < fdf->max_y)
 	{
-		fdf->points[y] = (t_point *)ft_calloc(fdf->max_x, sizeof(t_point));
-		if (!fdf->points[y])
+		x = 0;
+		printf("point[%zu]: ", y);
+		while (x < fdf->max_x)
 		{
-			free_mlx_ptr(fdf);
-			free_point_matrix(fdf->points, y);
-			print_error_exit(ERR_MALLOC);
+			printf("%d ", fdf->points[y][x].source_z);
+			x++;
 		}
+		printf("\n");
 		y++;
 	}
 }
@@ -108,7 +67,6 @@ static void	init_point_matrix(t_fdf *fdf)
  * It checks the arguments and initializes the struct, mlx environment and map.
  * TODO: The function is not finished yet.
  * It will have more function calls to parse the map and render it.
- *
  */
 int	main(int argc, const char *argv[])
 {
@@ -123,8 +81,8 @@ int	main(int argc, const char *argv[])
 	init_mlx_env(&fdf);
 	get_map_size(argv[1], &fdf);
 	init_point_matrix(&fdf);
-	printf("fdf.max_x: %zu, fdf.max_y: %zu\n", fdf.max_x, fdf.max_y);
-	load_map_data(argv[1], &fdf);
+	process_map(argv[1], &fdf);
+	print_points(&fdf);
 	// TODO: parse the map and render it
 	// if (!fdf.is_valid_map)
 	// {
