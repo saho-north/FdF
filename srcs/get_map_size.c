@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:26:04 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 03:42:45 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,94 +14,85 @@
 #include <fcntl.h>
 
 /**
- * Counts the number of elements in a line split by spaces.
- * Used to determine the number of columns (max_x) in the map.
+ * Counts the number of point elements in the given line.
  */
-static size_t	count_max_x(char *line)
+static size_t	count_points_in_line(char *str, char delimiter)
 {
-	char	**split_line;
-	size_t	index;
+	size_t	point_count;
+	bool	is_point;
 
-	split_line = ft_split(line, ' ');
-	if (!split_line)
+	if (!str)
 	{
 		return (0);
 	}
-	index = 0;
-	while (split_line[index])
+	point_count = 0;
+	is_point = false;
+	while (*str)
 	{
-		free(split_line[index]);
-		split_line[index] = NULL;
-		index++;
+		if (!is_point && *str != delimiter && *str != '\n')
+		{
+			point_count++;
+			is_point = true;
+		}
+		else if (is_point && *str == delimiter)
+		{
+			is_point = false;
+		}
+		str++;
 	}
-	free(split_line);
-	split_line = NULL;
-	return (index);
+	return (point_count);
 }
 
 /**
- * Counts the number of valid lines in the file, using the count_max_x function
- * to ensure each line has the same number of elements.
- * Used to determine the number of rows (max_y) in the map.
+ * Counts the number of rows and columns in the map.
+ * The empty line is ignored.
  */
-static size_t	count_max_y(t_gnl_res res, size_t max_x, int fd)
+static void	count_lines(t_fdf *fdf, int fd)
 {
-	size_t	index;
+	t_gnl_res	res;
 
-	index = 0;
-	while (res.line && res.line_status != LINE_ERROR)
+	ft_memset(&res, 0, sizeof(t_gnl_res));
+	while (res.line_status != LINE_EOF_REACHED)
 	{
-		if (res.line[0] == '\n' || res.line[0] == '\0')
+		res = get_next_line(fd);
+		if (res.line_status == LINE_ERROR)
 		{
-			free(res.line);
+			close(fd);
+			free_and_error_exit(fdf, ERR_READ_LINE);
+		}
+		if (res.line == NULL)
+		{
 			break ;
 		}
-		if (count_max_x(res.line) != max_x)
+		if (fdf->max_x == 0)
 		{
-			free(res.line);
-			return (0);
+			fdf->max_x = count_points_in_line(res.line, ' ');
 		}
-		index++;
+		if (res.line[0] != '\n' && res.line[0] != '\0')
+		{
+			fdf->max_y++;
+		}
 		free(res.line);
-		res = get_next_line(fd);
 	}
-	if (res.line_status == LINE_ERROR)
-	{
-		free(res.line);
-		return (0);
-	}
-	return (index);
 }
 
 /**
- * Determines the size of the map by counting the number of rows and columns.
- * Opens the file, reads lines using get_next_line, and uses count_max_x and
- * count_max_y to set the max_x and max_y in the fdf structure.
+ * Opens the file and counts the number of rows and columns in the map.
+ * If the file cannot be opened or the map is empty, the program exits.
  */
 void	get_map_size(const char *filename, t_fdf *fdf)
 {
-	int			fd;
-	t_gnl_res	res;
+	int	fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		free_mlx_ptr(fdf);
-		perror_exit(ERR_FILE_OPEN);
+		free_and_perror_exit(fdf, ERR_FILE_OPEN);
 	}
-	res = get_next_line(fd);
-	if (res.line_status == LINE_ERROR || res.line == NULL)
-	{
-		close(fd);
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_READ_LINE);
-	}
-	fdf->max_x = count_max_x(res.line);
-	fdf->max_y = count_max_y(res, fdf->max_x, fd);
+	count_lines(fdf, fd);
 	close(fd);
 	if (fdf->max_x == 0 || fdf->max_y == 0)
 	{
-		free_mlx_ptr(fdf);
-		print_error_exit(ERR_MAP);
+		free_and_error_exit(fdf, ERR_MAP);
 	}
 }

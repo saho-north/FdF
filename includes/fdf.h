@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:37:37 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:02:34 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include "libft.h"
 
 # define BUFFER_SIZE 1024
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 1600
+# define WIN_HEIGHT 900
 
 typedef struct s_point
 {
@@ -27,6 +27,7 @@ typedef struct s_point
 	float			y;
 	float			z;
 	unsigned char	rgb[3];
+	unsigned int	color;
 }					t_point;
 
 typedef struct s_fdf
@@ -172,12 +173,12 @@ typedef struct s_fdf
 // 	int				**i_grid;
 // }					t_map;
 
-//void				get_map_size(const char *filename, t_fdf *fdf);
-
 /* error.c */
 void				perror_exit(char *message);
 void				print_error(char *message);
 void				print_error_exit(char *message);
+void				free_and_perror_exit(t_fdf *fdf, char *message);
+void				free_and_error_exit(t_fdf *fdf, char *message);
 
 /* free.c */
 void				free_mlx_ptr(t_fdf *fdf);
@@ -186,5 +187,16 @@ void				free_split_line(char **split_line);
 
 /* get_map_size.c */
 void				get_map_size(const char *filename, t_fdf *fdf);
+
+/* init.c */
+void				init_fdf_struct(t_fdf *fdf);
+void				init_mlx_env(t_fdf *fdf);
+void				init_point_matrix(t_fdf *fdf);
+
+/* parse_point.c */
+bool				parse_point(t_fdf *fdf, t_point *point, char *str);
+
+/* process_map.c */
+void				process_map(const char *filename, t_fdf *fdf);
 
 #endif

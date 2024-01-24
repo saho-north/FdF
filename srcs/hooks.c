@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 20:40:07 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/13 23:38:03 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/20 01:22:03 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int	close(void *param)
 ** Connect functions-controllers to windowdow
 */
 
-void	setup_controls(t_fdf *fdf)
-{
-	mlx_hook(fdf->window, 2, 0, key_press, fdf);
-	mlx_hook(fdf->window, 17, 0, close, fdf);
-	mlx_hook(fdf->window, 4, 0, mouse_press, fdf);
-	mlx_hook(fdf->window, 5, 0, mouse_release, fdf);
-	mlx_hook(fdf->window, 6, 0, mouse_move, fdf);
-}
+// void	setup_controls(t_fdf *fdf)
+// {
+// 	mlx_hook(fdf->window, 2, 0, key_press, fdf);
+// 	mlx_hook(fdf->window, 17, 0, close, fdf);
+// 	mlx_hook(fdf->window, 4, 0, mouse_press, fdf);
+// 	mlx_hook(fdf->window, 5, 0, mouse_release, fdf);
+// 	mlx_hook(fdf->window, 6, 0, mouse_move, fdf);
+// }

@@ -5,67 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 21:10:39 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 21:10:39 by sakitaha         ###   ########.fr       */
+/*   Created: 2024/01/20 01:22:39 by sakitaha          #+#    #+#             */
+/*   Updated: 2024/01/20 01:22:42 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// void	parse_line(const char *line, t_fdf *fdf, size_t y)
-// {
-// 	size_t	x;
-// 	char	**split_line;
-
-// 	split_line = ft_split(line, ' ');
-// 	if (!split_line)
-// 	{
-// 		free(line);
-// 		free_point_matrix(fdf->points, y);
-// 		print_error_exit(ERR_MALLOC);
-// 	}
-// 	x = 0;
-// 	while (split_line[x] && x < fdf->max_x)
-// 	{
-// 		if (!parse_point_input(split_line[x], fdf, x, y))
-// 		{
-// 			//これでいいかよくわからないから後でチェックする
-// 			free_split_line(split_line);
-// 			free_point_matrix(fdf->points, fdf->max_y);
-// 			print_error_exit(ERR_MAP);
-// 		}
-// 		x++;
-// 	}
-// 	free_split_line(split_line);
-// }
-
-// void	read_map_file(const char *filename, t_fdf *fdf)
-// {
-// 	t_gnl_res	res;
-// 	int			fd;
-// 	size_t		y;
-
-// 	fd = open(filename, O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		free_point_matrix(fdf->points, fdf->max_y);
-// 		perror_exit(ERR_FILE_OPEN);
-// 	}
-// 	y = 0;
-// 	while (y < fdf->max_y)
-// 	{
-// 		res = get_next_line(fd);
-// 		if (res.line_status == LINE_ERROR || !res.line)
-// 		{
-// 			close(fd);
-// 			free_point_matrix(fdf->points, fdf->max_y);
-// 			print_error_exit(ERR_READ_LINE);
-// 		}
-// 		parse_line(res.line, fdf, y);
-// 		free(res.line);
-// 		res.line = NULL;
-// 		y++;
-// 	}
-// 	close(fd);
-// }
 
 // int	button_press(int button, int x, int y, t_fdf *fdf)
 // {
