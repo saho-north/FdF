@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 14:00:50 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/26 23:44:59 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	init_mlx_env(t_fdf *fdf)
 
 /**
  * Initializes the point struct with default values.
+ * TODO: 0xFFFFFF or 0xFFFFFFFF? Should I include alpha?
  */
 static void	init_point_row(t_point *point, size_t max_x, size_t current_y)
 {
@@ -65,9 +66,11 @@ static void	init_point_row(t_point *point, size_t max_x, size_t current_y)
 		point->x = (float)current_x;
 		point->y = (float)current_y;
 		point->z = 0;
+		point->color = 0xFFFFFF;
 		point->rgb[0] = 255;
 		point->rgb[1] = 255;
 		point->rgb[2] = 255;
+		point->is_exist = false;
 		current_x++;
 	}
 }

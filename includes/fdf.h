@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 17:02:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/26 23:42:45 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_point
 	float			z;
 	unsigned char	rgb[3];
 	unsigned int	color;
+	bool			is_exist;
 }					t_point;
 
 typedef struct s_fdf
