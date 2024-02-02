@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 23:06:40 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/24 23:09:33 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:15:09 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,4 +275,30 @@ void	zoom_out(t_point *point)
 	point->x *= ZOOM_OUT_FACTOR;
 	point->y *= ZOOM_OUT_FACTOR;
 	point->z *= ZOOM_OUT_FACTOR;
+}
+
+void	bresenham(int x1, int y1, int x2, int y2)
+{
+	int	slope_error_new;
+	int	m_new;
+	int	dx;
+	int	y;
+	int	x;
+
+	m_new = 2 * (y2 - y1);
+	dx = x2 - x1;
+	slope_error_new = m_new - dx;
+	x = x1;
+	y = y1;
+	while (x <= x2)
+	{
+		printf("(%d, %d)\n", x, y);
+		slope_error_new += m_new;
+		if (slope_error_new >= 0)
+		{
+			y++;
+			slope_error_new -= 2 * dx;
+		}
+		x++;
+	}
 }

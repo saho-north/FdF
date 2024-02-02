@@ -17,8 +17,8 @@ SRCS       = error.c \
 			 free.c	\
 			 get_map_size.c \
 			 init.c \
-			 parse_point.c \
-			 process_map.c
+			 parse_map.c \
+			 parse_point.c
 
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))

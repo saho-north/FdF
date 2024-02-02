@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/26 23:42:45 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/02 01:05:29 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@
 
 typedef struct s_point
 {
-	int				source_z;
+	int				height;
 	float			x;
 	float			y;
 	float			z;
+	float			x_2d;
+	float			y_2d;
 	unsigned char	rgb[3];
 	unsigned int	color;
 	bool			is_exist;
@@ -33,8 +35,8 @@ typedef struct s_point
 
 typedef struct s_fdf
 {
-	void			*xvar;
-	void			*window;
+	void			*mlx_ptr;
+	void			*win_ptr;
 	void			*img;
 	char			*addr;
 	int				bpp;
@@ -100,52 +102,55 @@ typedef struct s_fdf
 
 // // ??
 
-// typedef struct s_ivector
-// {
-// 	int				x;
-// 	int				y;
-// 	int				z;
-// }					t_ipoint;
+/*
+typedef struct s_ivector
+{
+	int				x;
+	int				y;
+	int				z;
+}					t_ipoint;
 
-// typedef struct s_fpoint
-// {
-// 	float			x;
-// 	float			y;
-// }					t_fpoint;
+typedef struct s_fpoint
+{
+	float			x;
+	float			y;
+}					t_fpoint;
 
-// typedef struct s_delta
-// {
-// 	float			dx;
-// 	float			dy;
-// }					t_delta;
+typedef struct s_delta
+{
+	float			dx;
+	float			dy;
+}					t_delta;
 
-// typedef struct s_fdf
-// {
-// 	void			*mlx;
-// 	void			*win;
-// 	void			*image;
-// 	char			*address;
-// 	char			*map_path;
-// 	int				**final_tab;
-// 	int				map_w;
-// 	int				map_h;
-// 	int				x;
-// 	int				y;
-// 	int				i;
-// 	int				c_x;
-// 	int				c_y;
-// 	int				bits_per_pixel;
-// 	int				line_length;
-// 	int				endian;
-// 	int				scale;
-// 	int				translation;
-// 	float			altitude;
-// 	float			zoom;
-// 	float			alpha;
-// 	t_ipoint		*initial_points;
-// 	t_fpoint		*final_points;
-// 	t_delta			*delta;
-// }					t_fdf;
+typedef struct s_fdf
+{
+	void			*mlx;
+	void			*win;
+	void			*image;
+	char			*address;
+	char			*map_path;
+	int				**final_tab;
+	int				map_w;
+	int				map_h;
+	int				x;
+	int				y;
+	int				i;
+	int				c_x;
+	int				c_y;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	int				scale;
+	int				translation;
+	float			altitude;
+	float			zoom;
+	float			alpha;
+	t_ipoint		*initial_points;
+	t_fpoint		*final_points;
+	t_delta			*delta;
+}					t_fdf;
+
+ */
 
 // typedef struct s_vector3
 // {
@@ -194,10 +199,10 @@ void				init_fdf_struct(t_fdf *fdf);
 void				init_mlx_env(t_fdf *fdf);
 void				init_point_matrix(t_fdf *fdf);
 
+/* parse_map.c */
+void				parse_map(const char *filename, t_fdf *fdf);
+
 /* parse_point.c */
 bool				parse_point(t_fdf *fdf, t_point *point, char *str);
-
-/* process_map.c */
-void				process_map(const char *filename, t_fdf *fdf);
 
 #endif

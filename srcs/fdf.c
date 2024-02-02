@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/27 00:21:07 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:14:22 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	print_points(t_fdf *fdf)
 		printf("point[%zu]: ", y);
 		while (x < fdf->max_x)
 		{
-			printf("%d ", fdf->points[y][x].source_z);
+			printf("%d ", fdf->points[y][x].height);
 			x++;
 		}
 		printf("\n");
@@ -80,20 +80,16 @@ int	main(int argc, const char *argv[])
 	init_mlx_env(&fdf);
 	get_map_size(argv[1], &fdf);
 	init_point_matrix(&fdf);
-	process_map(argv[1], &fdf);
-	print_points(&fdf);
-	draw_map(&fdf);
+	parse_map(argv[1], &fdf);
+	print_points(&fdf); // TODO: Delete this function later.
+	transform_points(&fdf);
 	// TODO: parse the map and render it
-	// if (!fdf.is_valid_map)
-	// {
-	// 	printf("fdf.is_valid_map: %d\n", fdf.is_valid_map);
-	// 	free_and_error_exit(&fdf, ERR_MAP);
-	// }
-	mlx_loop(fdf.xvar);
+	// mlx_key_hook(fdf.window, key_hook, &fdf);
+	// mlx_hook(fdf.window, 17, 1L << 17, close_window, &fdf);
+	// mlx_loop_hook(fdf.xvar, loop_hook, &fdf);
+	mlx_loop(fdf.mlx_ptr);
 	free_mlx_ptr(&fdf);
 	free_point_matrix(fdf.points, fdf.max_y);
-	printf("-------------------------------------------------\n\n");
-	//exit(EXIT_SUCCESS);
 	return (0);
 }
 
