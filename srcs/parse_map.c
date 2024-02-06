@@ -16,7 +16,6 @@
 /**
  * Parses the single line and stores the result in the struct.
  * Returns false if an error occurs during the process.
- * TODO: Delete debug printf later.
  */
 static bool	parse_line(char *line, t_fdf *fdf, size_t y)
 {
@@ -33,7 +32,6 @@ static bool	parse_line(char *line, t_fdf *fdf, size_t y)
 	{
 		if (!parse_point(fdf, &fdf->points[y][x], split_line[x]))
 		{
-			printf("FAILED at parsing split_line[%zu]: %s\n", x, split_line[x]);
 			free_split_line(split_line);
 			return (false);
 		}

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/02 16:14:22 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/04 00:45:19 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	main(int argc, const char *argv[])
 	parse_map(argv[1], &fdf);
 	print_points(&fdf); // TODO: Delete this function later.
 	transform_points(&fdf);
+	draw_wireframe(&fdf);
 	// TODO: parse the map and render it
 	// mlx_key_hook(fdf.window, key_hook, &fdf);
 	// mlx_hook(fdf.window, 17, 1L << 17, close_window, &fdf);

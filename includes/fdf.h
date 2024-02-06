@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/02 01:05:29 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/04 00:47:33 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@ typedef struct s_point
 	unsigned int	color;
 	bool			is_exist;
 }					t_point;
+
+typedef struct s_mappoint
+{
+	double			x;
+	double			y;
+	double			z;
+	double			vx;
+	double			vy;
+	double			vz;
+	uint32_t		color;
+}					t_mappoint;
 
 typedef struct s_fdf
 {

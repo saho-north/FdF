@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/26 23:44:59 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:51:34 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ void	init_fdf_struct(t_fdf *fdf)
  */
 void	init_mlx_env(t_fdf *fdf)
 {
-	fdf->xvar = mlx_init();
-	if (!fdf->xvar)
+	fdf->mlx_ptr = mlx_init();
+	if (!fdf->mlx_ptr)
 	{
 		print_error_exit(ERR_FDF_INIT);
 	}
-	fdf->window = mlx_new_window(fdf->xvar, WIN_WIDTH, WIN_HEIGHT, "FdF");
-	if (!fdf->window)
+	fdf->win_ptr = mlx_new_window(fdf->mlx_ptr, WIN_WIDTH, WIN_HEIGHT, "FdF");
+	if (!fdf->win_ptr)
 	{
 		free_and_error_exit(fdf, ERR_FDF_INIT);
 	}
-	fdf->img = mlx_new_image(fdf->xvar, WIN_WIDTH, WIN_HEIGHT);
+	fdf->img = mlx_new_image(fdf->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	if (!fdf->img)
 	{
 		free_and_error_exit(fdf, ERR_FDF_INIT);
@@ -62,10 +62,12 @@ static void	init_point_row(t_point *point, size_t max_x, size_t current_y)
 	current_x = 0;
 	while (current_x < max_x)
 	{
-		point->source_z = 0;
+		point->height = 0;
 		point->x = (float)current_x;
 		point->y = (float)current_y;
 		point->z = 0;
+		point->x_2d = 0;
+		point->y_2d = 0;
 		point->color = 0xFFFFFF;
 		point->rgb[0] = 255;
 		point->rgb[1] = 255;

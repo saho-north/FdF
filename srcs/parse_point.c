@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:57:10 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/26 23:46:15 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:46:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ static char	*set_point_num(t_fdf *fdf, t_point *point, char *str)
 	{
 		return (NULL);
 	}
-	point->source_z = (int)num;
-	point->z = (float)point->source_z;
-	if (point->source_z > fdf->max_z)
+	point->height = (int)num;
+	point->z = (float)point->height;
+	if (point->height > fdf->max_z)
 	{
-		fdf->max_z = point->source_z;
+		fdf->max_z = point->height;
 	}
-	if (point->source_z < fdf->min_z)
+	if (point->height < fdf->min_z)
 	{
-		fdf->min_z = point->source_z;
+		fdf->min_z = point->height;
 	}
 	return (endptr);
 }
