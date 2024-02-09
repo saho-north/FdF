@@ -155,8 +155,24 @@ int	main(void)
 	mlx_destroy_display(xvar);
 	free(xvar);
 	*/
+// これいつ使うのか？
+//int		mlx_clear_window(t_xvar *xvar,t_win_list *win)
 	return (0);
 }
+
+void	h_management(t_fdf *fdf)
+{
+	mlx_key_hook(fdf->win, key_handler, fdf);
+	mlx_hook(fdf->win, 17, 0, close_win, fdf);
+	mlx_hook(fdf->win, 4, 0, mouse_handler, fdf);
+	mlx_hook(fdf->win, 2, 1L << 0, key_handler, fdf);
+	//-------------------------------------------------------------------
+	mlx_hook(fdf.win, 4, 0, mouse_handler, &fdf);
+	mlx_hook(fdf.win, 2, 1L << 0, key_handler, &fdf);
+	mlx_hook(fdf.win, 17, 1L << 0, close_window, &fdf);
+}
+
+
 
 /**
  * The destructor function of the program.

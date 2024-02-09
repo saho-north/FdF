@@ -24,8 +24,19 @@ void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
-//int		mlx_clear_window(t_xvar *xvar,t_win_list *win)
+/**
+ * TODO : unsigned char でいいのか？uint8_tでred green blueを管理しなくてもいいか確認する
+ */
+unsigned int	encode_rgb(unsigned char red, unsigned char green, unsigned char blue)
+{
+	return (red << 16 | green << 8 | blue);
+}
 
+
+
+/**
+ * rendering function 修正前
+ */
 int	render(t_data *data)
 {
 	if (data->win_ptr == NULL)

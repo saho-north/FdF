@@ -12,14 +12,6 @@
 
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, unsigned int color)
-{
-	char	*dst;
-
-	dst = fdf->addr + (y * fdf->stride + x * (fdf->bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
 static void	bresenham(t_point p1, t_point p2, t_fdf *fdf)
 {
 	int	slope_error_new;
@@ -46,6 +38,9 @@ static void	bresenham(t_point p1, t_point p2, t_fdf *fdf)
 	}
 }
 
+/**
+ * Clipping は後で実装する。今は簡易のもの
+ */
 static bool	is_line_exist(t_point p1, t_point p2)
 {
 	int	x1;

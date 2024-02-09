@@ -57,56 +57,7 @@ void	perspective_projection(t_point *point)
 	point->z = z;
 }
 
-// x軸周りの回転
-void	rotate_x(t_point *point, float degrees)
-{
-	float	x;
-	float	y;
-	float	z;
-	float	radians;
 
-	x = point->x;
-	y = point->y;
-	z = point->z;
-	radians = degrees * M_PI / 180.0;
-	point->x = x;
-	point->y = y * cos(radians) - z * sin(radians);
-	point->z = y * sin(radians) + z * cos(radians);
-}
-
-// y軸周りの回転
-void	rotate_y(t_point *point, float degrees)
-{
-	float	x;
-	float	y;
-	float	z;
-	float	radians;
-
-	x = point->x;
-	y = point->y;
-	z = point->z;
-	radians = degrees * M_PI / 180.0;
-	point->x = x * cos(radians) + z * sin(radians);
-	point->y = y;
-	point->z = -x * sin(radians) + z * cos(radians);
-}
-
-// z軸周りの回転
-void	rotate_z(t_point *point, float degrees)
-{
-	float	x;
-	float	y;
-	float	z;
-	float	radians;
-
-	x = point->x;
-	y = point->y;
-	z = point->z;
-	radians = degrees * M_PI / 180.0;
-	point->x = x * cos(radians) - y * sin(radians);
-	point->y = x * sin(radians) + y * cos(radians);
-	point->z = z;
-}
 
 #define ZOOM_IN_FACTOR 1.5
 #define ZOOM_OUT_FACTOR 0.5
