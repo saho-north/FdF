@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/04 00:47:33 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:46:13 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,6 @@ typedef struct s_point
 	bool			is_exist;
 }					t_point;
 
-typedef struct s_mappoint
-{
-	double			x;
-	double			y;
-	double			z;
-	double			vx;
-	double			vy;
-	double			vz;
-	uint32_t		color;
-}					t_mappoint;
-
 typedef struct s_fdf
 {
 	void			*mlx_ptr;
@@ -53,22 +42,17 @@ typedef struct s_fdf
 	int				bpp;
 	int				stride;
 	int				endian;
-	t_point			**points;
 	size_t			max_x;
 	size_t			max_y;
 	int				max_z;
 	int				min_z;
+	t_point			**points;
+	int				translation;
 }					t_fdf;
 
 // typedef struct s_fdf
 // {
-// 	void			*mlx;
-// 	void			*win;
-// 	void			*img;
-// 	char			*addr;
-// 	int				bits_per_pixel;
-// 	int				line_length;
-// 	int				endian;
+
 // 	int				scale;
 // 	float			alpha;
 // 	float			sm_y;
@@ -82,63 +66,9 @@ typedef struct s_fdf
 // 	t_vector2		*rotated;
 // }					t_fdf;
 
-// typedef struct s_cam
-// {
-// 	int				projection;
-// 	float			scale_factor;
-// 	float			move_x;
-// 	float			move_y;
-// 	double alpha; // X軸回転
-// 	double beta;  // Y軸回転
-// 	double gamma; // Z軸回転
-// }					t_cam;
-
-// typedef struct s_image
-// {
-// 	void			*image;
-// 	char			*buffer;
-// 	int				pixel_bits;
-// 	int				line_bytes;
-// 	int				endian;
-// }					t_image;
-
-// typedef struct s_fdf
-// {
-// 	t_map			*map;
-// 	t_cam			*cam;
-// 	t_image			*image;
-// 	void			*mlx;
-// 	void			*win;
-// }					t_fdf;
-
-// // ??
-
 /*
-typedef struct s_ivector
-{
-	int				x;
-	int				y;
-	int				z;
-}					t_ipoint;
-
-typedef struct s_fpoint
-{
-	float			x;
-	float			y;
-}					t_fpoint;
-
-typedef struct s_delta
-{
-	float			dx;
-	float			dy;
-}					t_delta;
-
 typedef struct s_fdf
 {
-	void			*mlx;
-	void			*win;
-	void			*image;
-	char			*address;
 	char			*map_path;
 	int				**final_tab;
 	int				map_w;
@@ -148,9 +78,7 @@ typedef struct s_fdf
 	int				i;
 	int				c_x;
 	int				c_y;
-	int				bits_per_pixel;
-	int				line_length;
-	int				endian;
+
 	int				scale;
 	int				translation;
 	float			altitude;
@@ -160,35 +88,7 @@ typedef struct s_fdf
 	t_fpoint		*final_points;
 	t_delta			*delta;
 }					t_fdf;
-
  */
-
-// typedef struct s_vector3
-// {
-// 	float			x;
-// 	float			y;
-// 	float			z;
-// }					t_vector3;
-
-// typedef struct s_stvector2
-// {
-// 	size_t			x;
-// 	size_t			y;
-// }					t_stvector2;
-
-// typedef struct s_vector2
-// {
-// 	float			x;
-// 	float			y;
-// }					t_vector2;
-
-// typedef struct s_map
-// {
-// 	char			*path;
-// 	size_t			h;
-// 	size_t			w;
-// 	int				**i_grid;
-// }					t_map;
 
 /* error.c */
 void				perror_exit(char *message);

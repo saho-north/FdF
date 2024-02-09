@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:31:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:38:00 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:11:30 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ void	free_mlx_ptr(t_fdf *fdf)
 {
 	if (fdf->img)
 	{
-		mlx_destroy_image(fdf->xvar, fdf->img);
+		mlx_destroy_image(fdf->mlx_ptr, fdf->img);
 		fdf->img = NULL;
 	}
-	if (fdf->window)
+	if (fdf->win_ptr)
 	{
-		mlx_destroy_window(fdf->xvar, fdf->window);
-		fdf->window = NULL;
+		mlx_destroy_window(fdf->mlx_ptr, fdf->win_ptr);
+		fdf->win_ptr = NULL;
 	}
-	if (fdf->xvar)
+	if (fdf->mlx_ptr)
 	{
-		mlx_destroy_display(fdf->xvar);
-		free(fdf->xvar);
-		fdf->xvar = NULL;
+		mlx_destroy_display(fdf->mlx_ptr);
+		free(fdf->mlx_ptr);
+		fdf->mlx_ptr = NULL;
 	}
 }
 

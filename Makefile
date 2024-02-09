@@ -3,7 +3,7 @@ CC         = cc
 CFLAGS     = -Wall -Wextra -Werror
 LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
 LIBRARY    = -L$(LIBFT_DIR) -lft
-INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx
+INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx -I/opt/X11/include
 
 LIBFT      = $(LIBFT_DIR)libft.a
 LIBFT_DIR  = ./libft/

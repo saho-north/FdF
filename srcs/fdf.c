@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/04 00:45:19 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:46:12 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,70 @@ int	main(int argc, const char *argv[])
 	mlx_loop(fdf.mlx_ptr);
 	free_mlx_ptr(&fdf);
 	free_point_matrix(fdf.points, fdf.max_y);
+	return (0);
+}
+
+int	main(void)
+{
+	t_fdf	fdf;
+
+	fdf.xvar = mlx_init();
+	if (!fdf.xvar)
+	{
+		write(1, "Error\n", 6);
+		return (1);
+	}
+	fdf.width = 640;
+	fdf.height = 480;
+	fdf.name = "Hello, world!";
+	fdf.window = mlx_new_window(fdf.xvar, fdf.width, fdf.height, fdf.name);
+	if (!fdf.window)
+	{
+		write(1, "Error\n", 6);
+		return (1);
+	}
+	fdf.img = mlx_new_image(fdf.xvar, fdf.width, fdf.height);
+	if (!fdf.img)
+	{
+		mlx_destroy_window(fdf.xvar, fdf.window);
+		mlx_destroy_display(fdf.xvar);
+		free(fdf.xvar);
+		write(1, "Error\n", 6);
+		return (1);
+	}
+	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bpp, &fdf.stride, &fdf.endian);
+	if (!fdf.addr)
+	{
+		mlx_destroy_image(fdf.xvar, fdf.img);
+		mlx_destroy_window(fdf.xvar, fdf.window);
+		mlx_destroy_display(fdf.xvar);
+		free(fdf.xvar);
+		write(1, "Error\n", 6);
+		return (1);
+	}
+	printf("stride %d <-> width %d\n"
+			"bpp %d\n"
+			"endian %d\n",
+			fdf.stride,
+			fdf.width,
+			fdf.bpp,
+			fdf.endian);
+	mlx_key_hook(fdf.window, key_hook, &fdf);
+	mlx_mouse_hook(fdf.window, button_press, &fdf);
+	h_management(env);
+	mlx_loop_hook(env->mlx, render, env);
+	mlx_loop(env->mlx);
+	mlx_loop_hook(fdf.xvar, change_color, &fdf);
+	mlx_loop(fdf.xvar);
+	/* Setup hooks */
+	mlx_loop_hook(data.mlx_ptr, &render, &data);
+	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
+	mlx_loop(data.mlx_ptr);
+	/*
+	mlx_destroy_window(xvar, mlx_window);
+	mlx_destroy_display(xvar);
+	free(xvar);
+	*/
 	return (0);
 }
 
