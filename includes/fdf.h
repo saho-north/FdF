@@ -29,28 +29,13 @@ typedef struct s_point
 	float			x_2d;
 	float			y_2d;
 	unsigned char	rgb[3];
-	unsigned int	color;
+	unsigned int	color; // TODO: check if I need this
 	bool			is_exist;
 }					t_point;
 
 /**
- * The control struct for the fdf struct.
- * : Do I need scale?
- */
-typedef struct s_ctrl
-{
-	float			zoom;
-	int				x_translation;
-	int				y_translation;
-	int				x_degree;
-	int				y_degree;
-	int				z_degree;
-}					t_ctrl;
-
-/**
  * The main struct for the fdf program.
  */
-//TODO: Should I separate the mlx variables?
 typedef struct s_fdf
 {
 	void			*mlx_ptr;
@@ -64,8 +49,13 @@ typedef struct s_fdf
 	size_t			max_y;
 	int				max_z;
 	int				min_z;
+	float			scale;
+	int				x_move;
+	int				y_move;
+	int				x_degree;
+	int				y_degree;
+	int				z_degree;
 	t_point			**points;
-	t_ctrl			ctrl;
 }					t_fdf;
 
 // typedef struct s_fdf

@@ -75,3 +75,35 @@ void	zoom_out(t_point *point)
 	point->y *= ZOOM_OUT_FACTOR;
 	point->z *= ZOOM_OUT_FACTOR;
 }
+
+// TODO: x_min, x_max, y_min, y_maxも構造体に入れるか後で考える
+ void centering_preparation(t_fdf *fdf)
+ {
+	size_t	x;
+	size_t	y;
+	int		x_min = INT_MAX;
+	int		x_max = INT_MIN;
+	int		y_min = INT_MAX;
+	int		y_max = INT_MIN;
+
+	x = 0;
+	y = 0;
+	while (y < fdf->max_y)
+	{
+		x = 0;
+		while (x < fdf->max_x)
+		{
+			if(fdf->points[y][x].is_exist == false)
+			{
+				break;
+			}
+			x_min = min((int)fdf->points[y][x].x_2d, x_min);
+			x_max = max((int)fdf->points[y][x].x_2d, x_max);
+			y_min = min((int)fdf->points[y][x].y_2d, y_min);
+			y_max = max((int)fdf->points[y][x].y_2d, y_max);
+		}
+		y++;
+	}
+	fdf->x_move = WIN_WIDTH / 2 - (x_max + x_min) / 2;
+	fdf->y_move = WIN_HEIGHT / 2 - (y_max + y_min) / 2;
+ }
