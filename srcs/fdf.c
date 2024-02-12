@@ -6,11 +6,12 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/08 20:46:12 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/11 01:16:58 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <X11/X.h>
 
 /**
  * Checks if the given filename has the given extension.
@@ -38,8 +39,9 @@ static bool	check_file_extension(const char *filename, const char *extension)
 
 /**
  * Print out the points struct for debugging.
- * TODO: Delete this function later.
+ *
  */
+// TODO: Delete this function later.
 static void	print_points(t_fdf *fdf)
 {
 	size_t	x;
@@ -64,9 +66,13 @@ static void	print_points(t_fdf *fdf)
 /**
  * The main function of the program.
  * It checks the arguments and initializes the struct, mlx environment and map.
- * TODO: The function is not finished yet.
+ *
  * It will have more function calls to parse the map and render it.
  */
+// TODO: The function is not finished yet.
+
+int			expose_hook(t_fdf *fdf);
+
 int	main(int argc, const char *argv[])
 {
 	t_fdf	fdf;
@@ -81,64 +87,28 @@ int	main(int argc, const char *argv[])
 	get_map_size(argv[1], &fdf);
 	init_point_matrix(&fdf);
 	parse_map(argv[1], &fdf);
-	print_points(&fdf); // TODO: Delete this function later.
+	// TODO: Delete this function later.
+	print_points(&fdf);
 	transform_points(&fdf);
 	draw_wireframe(&fdf);
-	// TODO: parse the map and render it
+	//-------------------------------------------------------------------
+	// the below is the calling hook function
+	// TODO: Check if I understand mlx_expose_hook correctly.
+	mlx_expose_hook(fdf.win_ptr, expose_hook, &fdf);
+	mlx_key_hook(fdf.win_ptr, press_key, &fdf);
+	mlx_mouse_hook(fdf.win_ptr, press_mouse, &fdf);
+	mlx_loop(fdf.mlx);
 	// mlx_key_hook(fdf.window, key_hook, &fdf);
 	// mlx_hook(fdf.window, 17, 1L << 17, close_window, &fdf);
 	// mlx_loop_hook(fdf.xvar, loop_hook, &fdf);
+	mlx_key_hook(fdf->win, key_handler, fdf);
+	mlx_hook(fdf->win, 17, 0, close_win, fdf);
+	mlx_hook(fdf->win, 4, 0, mouse_handler, fdf);
+	mlx_hook(fdf->win, 2, 1L << 0, key_handler, fdf);
+	mlx_hook(fdf.win, 4, 0, mouse_handler, &fdf);
+	mlx_hook(fdf.win, 2, 1L << 0, key_handler, &fdf);
+	mlx_hook(fdf.win, 17, 1L << 0, close_window, &fdf);
 	mlx_loop(fdf.mlx_ptr);
-	free_mlx_ptr(&fdf);
-	free_point_matrix(fdf.points, fdf.max_y);
-	return (0);
-}
-
-int	main(void)
-{
-	t_fdf	fdf;
-
-	fdf.xvar = mlx_init();
-	if (!fdf.xvar)
-	{
-		write(1, "Error\n", 6);
-		return (1);
-	}
-	fdf.width = 640;
-	fdf.height = 480;
-	fdf.name = "Hello, world!";
-	fdf.window = mlx_new_window(fdf.xvar, fdf.width, fdf.height, fdf.name);
-	if (!fdf.window)
-	{
-		write(1, "Error\n", 6);
-		return (1);
-	}
-	fdf.img = mlx_new_image(fdf.xvar, fdf.width, fdf.height);
-	if (!fdf.img)
-	{
-		mlx_destroy_window(fdf.xvar, fdf.window);
-		mlx_destroy_display(fdf.xvar);
-		free(fdf.xvar);
-		write(1, "Error\n", 6);
-		return (1);
-	}
-	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bpp, &fdf.stride, &fdf.endian);
-	if (!fdf.addr)
-	{
-		mlx_destroy_image(fdf.xvar, fdf.img);
-		mlx_destroy_window(fdf.xvar, fdf.window);
-		mlx_destroy_display(fdf.xvar);
-		free(fdf.xvar);
-		write(1, "Error\n", 6);
-		return (1);
-	}
-	printf("stride %d <-> width %d\n"
-			"bpp %d\n"
-			"endian %d\n",
-			fdf.stride,
-			fdf.width,
-			fdf.bpp,
-			fdf.endian);
 	mlx_key_hook(fdf.window, key_hook, &fdf);
 	mlx_mouse_hook(fdf.window, button_press, &fdf);
 	h_management(env);
@@ -155,24 +125,16 @@ int	main(void)
 	mlx_destroy_display(xvar);
 	free(xvar);
 	*/
-// これいつ使うのか？
-//int		mlx_clear_window(t_xvar *xvar,t_win_list *win)
+	// これいつ使うのか？
+	//int		mlx_clear_window(t_xvar *xvar,t_win_list *win)
+	mlx_expose_hook(fdf.win, expose_hook, &fdf);
+	mlx_key_hook(fdf.win, press_key, &fdf);
+	mlx_mouse_hook(fdf.win, press_mouse, &fdf);
+	mlx_loop(fdf.mlx);
+	free_mlx_ptr(&fdf);
+	free_point_matrix(fdf.points, fdf.max_y);
 	return (0);
 }
-
-void	h_management(t_fdf *fdf)
-{
-	mlx_key_hook(fdf->win, key_handler, fdf);
-	mlx_hook(fdf->win, 17, 0, close_win, fdf);
-	mlx_hook(fdf->win, 4, 0, mouse_handler, fdf);
-	mlx_hook(fdf->win, 2, 1L << 0, key_handler, fdf);
-	//-------------------------------------------------------------------
-	mlx_hook(fdf.win, 4, 0, mouse_handler, &fdf);
-	mlx_hook(fdf.win, 2, 1L << 0, key_handler, &fdf);
-	mlx_hook(fdf.win, 17, 1L << 0, close_window, &fdf);
-}
-
-
 
 /**
  * The destructor function of the program.

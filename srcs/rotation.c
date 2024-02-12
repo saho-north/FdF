@@ -49,7 +49,7 @@ void	rotate_z(t_point *point, float degrees)
 /**
  * Rotates the map around the X, Y and Z axes.
 */
-void	rotattion(t_fdf *fdf)
+void	rotation(t_fdf *fdf)
 {
 	size_t	x;
 	size_t	y;

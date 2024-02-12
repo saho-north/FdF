@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/08 20:46:00 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/11 01:15:30 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "mlx.h"
 #include <X11/keysym.h>
 #include <stdlib.h>
-
 
 /**
  * hooks.c:
@@ -25,6 +24,19 @@
  * mouse_move()
  * <stdlib.h> for exit()
  */
+
+/**
+ * mlx_expose_hookの使い方がわからないので検索したら、キーやループなどと一緒にフックとして記述。
+第ニ引数には何を入れるのか悩んで調べたところ、mlx_put_image_to_windowを使って画面を描写する関数をコピペしたものを作成してその関数名を入れ、画面描写関数はvoidで作成していたのでintにして最後にreturn (0);を追記したところ対応できました。 (編集済) Based on discord
+ */
+
+int	expose_hook(t_fdf *fdf)
+{
+	// TODO: shuould I use render_func()?
+	//mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->img, 0, 0);
+	//TODO: What is the return value?
+	return (0);
+}
 
 /*
 int	mlx_hook(t_win_list *win, int x_event, int x_mask,
@@ -58,7 +70,6 @@ int	mlx_mouse_hook(t_win_list *win,int (*funct)(),void *param)
 }
  */
 
-
 int	mouse_handler(int mousecode, int x, int y, t_fdf *fdf)
 {
 	(void)x;
@@ -69,7 +80,6 @@ int	mouse_handler(int mousecode, int x, int y, t_fdf *fdf)
 		fdf->scale++;
 	return (0);
 }
-
 
 /*
 ** Connect functions-controllers to windowdow
@@ -93,8 +103,6 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 	return (0);
 }
 
-
-
 void	color_screen(t_fdf *fdf, unsigned int color)
 {
 	size_t	y;
@@ -113,7 +121,6 @@ void	color_screen(t_fdf *fdf, unsigned int color)
 	}
 }
 
-
 int	mouse_handler(int mousecode, int x, int y, t_fdf *fdf)
 {
 	(void)x;
@@ -125,9 +132,6 @@ int	mouse_handler(int mousecode, int x, int y, t_fdf *fdf)
 	return (0);
 }
 
-
-
-
 //------
 
 void	close_window(t_fdf *fdf)
@@ -138,8 +142,10 @@ void	close_window(t_fdf *fdf)
 
 /**
  * Based on keysym defined in /opt/X11/include/X11/keysymdef.h
- * TODO : Later to delete debug printf
+ *
   */
+
+//TODO : Later to delete debug printf
 int	key_hook(int keysym, t_fdf *fdf)
 {
 	if (keysym == XK_Escape)
@@ -148,22 +154,22 @@ int	key_hook(int keysym, t_fdf *fdf)
 		close_window(fdf);
 		exit(0);
 	}
-	if (keysym == XK_Up || keysym == XK_w || keysym == XK_W )
+	if (keysym == XK_Up || keysym == XK_w || keysym == XK_W)
 	{
 		printf("The %d key (W) or up arrow has been pressed\n\n", keysym);
 		color_screen(fdf, encode_rgb(0, 255, 0));
 	}
-	else if (keysym == XK_Left || keysym == XK_a || keysym == XK_A )
+	else if (keysym == XK_Left || keysym == XK_a || keysym == XK_A)
 	{
 		printf("The %d key (A) or left arrow has been pressed\n\n", keysym);
 		color_screen(fdf, encode_rgb(255, 0, 0));
 	}
-	else if (keysym == XK_Down || keysym == XK_s || keysym == XK_S )
+	else if (keysym == XK_Down || keysym == XK_s || keysym == XK_S)
 	{
 		printf("The %d key (S) or down arrow has been pressed\n\n", keysym);
 		color_screen(fdf, encode_rgb(0, 255, 0));
 	}
-	else if (keysym == XK_Right || keysym == XK_d || keysym == XK_D )
+	else if (keysym == XK_Right || keysym == XK_d || keysym == XK_D)
 	{
 		printf("The %d key (D) or right arrow has been pressed\n\n", keysym);
 		color_screen(fdf, encode_rgb(0, 0, 255));

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/02 16:51:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:57:49 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	init_fdf_struct(t_fdf *fdf)
 
 /**
  * Initializes the mlx environment for graphics rendering.
+ *
  */
+
+// TODO: Should I create a separate function for having new image?
 void	init_mlx_env(t_fdf *fdf)
 {
 	fdf->mlx_ptr = mlx_init();
@@ -53,8 +56,10 @@ void	init_mlx_env(t_fdf *fdf)
 
 /**
  * Initializes the point struct with default values.
- * TODO: 0xFFFFFF or 0xFFFFFFFF? Should I include alpha?
+ *
  */
+
+// TODO: 0xFFFFFF or 0xFFFFFFFF? Should I include alpha?
 static void	init_point_row(t_point *point, size_t max_x, size_t current_y)
 {
 	size_t	current_x;

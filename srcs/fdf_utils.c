@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 14:40:15 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/08 20:46:11 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:56:18 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ void	my_mlx_pixel_put(t_fdf *fdf, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
-/**
- * TODO : unsigned char でいいのか？uint8_tでred green blueを管理しなくてもいいか確認する
- */
-unsigned int	encode_rgb(unsigned char red, unsigned char green, unsigned char blue)
+//TODO : unsigned char でいいのか？uint8_tでred green blueを管理しなくてもいいか確認する
+
+unsigned int	encode_rgb(unsigned char red, unsigned char green,
+		unsigned char blue)
 {
 	return (red << 16 | green << 8 | blue);
 }
-
-
 
 /**
  * rendering function 修正前

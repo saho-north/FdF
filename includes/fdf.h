@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/08 20:46:13 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:56:40 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ typedef struct s_point
 	bool			is_exist;
 }					t_point;
 
+/**
+ * The control struct for the fdf struct.
+ * : Do I need scale?
+ */
+typedef struct s_ctrl
+{
+	float			zoom;
+	int				x_translation;
+	int				y_translation;
+	int				x_degree;
+	int				y_degree;
+	int				z_degree;
+}					t_ctrl;
+
+/**
+ * The main struct for the fdf program.
+ */
+//TODO: Should I separate the mlx variables?
 typedef struct s_fdf
 {
 	void			*mlx_ptr;
@@ -47,7 +65,7 @@ typedef struct s_fdf
 	int				max_z;
 	int				min_z;
 	t_point			**points;
-	int				translation;
+	t_ctrl			ctrl;
 }					t_fdf;
 
 // typedef struct s_fdf
