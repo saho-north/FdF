@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 03:42:45 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:57:01 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	count_lines(t_fdf *fdf, int fd)
  * Opens the file and counts the number of rows and columns in the map.
  * If the file cannot be opened or the map is empty, the program exits.
  */
-void	get_map_size(const char *filename, t_fdf *fdf)
+void	get_map_size(t_fdf *fdf, const char *filename)
 {
 	int	fd;
 

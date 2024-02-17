@@ -17,10 +17,10 @@
  * Parses the single line and stores the result in the struct.
  * Returns false if an error occurs during the process.
  */
-static bool	parse_line(char *line, t_fdf *fdf, size_t y)
+static bool	parse_line(char *line, t_fdf *fdf, int y)
 {
 	char	**split_line;
-	size_t	x;
+	int		x;
 
 	split_line = ft_split(line, ' ');
 	if (!split_line)
@@ -49,7 +49,7 @@ void	parse_map(const char *filename, t_fdf *fdf)
 {
 	int			fd;
 	t_gnl_res	res;
-	size_t		y;
+	int			y;
 	bool		is_valid_map;
 
 	fd = open(filename, O_RDONLY);

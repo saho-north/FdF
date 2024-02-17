@@ -12,13 +12,8 @@ HDR_LIST  = fdf.h error.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
-SRCS       = error.c \
-			 fdf.c \
-			 free.c	\
-			 get_map_size.c \
-			 init.c \
-			 parse_map.c \
-			 parse_point.c
+SRCS       = draw.c error.c fdf.c free.c get_map_size.c hook.c init.c key_hook.c \
+			 parse_map.c parse_point.c projection.c render.c rotation.c transform.c
 
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
@@ -47,7 +42,7 @@ re: fclean all
 bonus: $(ALL)
 
 test: $(NAME)
-	./$(NAME) test_maps/10-2.fdf
+	./$(NAME) test_maps/42.fdf
 
 small: $(NAME)
 	./$(NAME) test_maps/10-2.fdf

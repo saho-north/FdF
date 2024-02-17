@@ -6,13 +6,40 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/16 01:23:53 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/18 00:16:04 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
 #include <X11/keysym.h>
+
+/**
+ * Handles the key press event.
+ * It changes the projection type and sets the flag to redraw the window.
+ */
+int	key_press(int keysym, t_fdf *fdf)
+{
+	printf("Keypress: %d\n", keysym);
+	if (keysym == XK_Escape)
+	{
+		clean_exit(fdf);
+	}
+	else if (keysym == XK_0)
+	{
+		fdf->projection = ISOMETRIC;
+	}
+	else if (keysym == XK_1)
+	{
+		fdf->projection = ORTHOGRAPHIC;
+	}
+	else if (keysym == XK_2)
+	{
+		fdf->projection = OBLIQUE;
+	}
+	fdf->needs_redraw = true;
+	return (0);
+}
 
 static void	handle_scale(int keysym, t_fdf *fdf)
 {
@@ -74,6 +101,11 @@ static void	handle_rotation(int keysym, t_fdf *fdf)
 	}
 }
 
+/**
+ * Handles the key release event.
+ * It changes the scale, movement, and rotation of the map.
+ * It sets the flag to redraw the window.
+ */
 int	key_release(int keysym, t_fdf *fdf)
 {
 	if (keysym == XK_plus || keysym == XK_minus)
@@ -89,29 +121,6 @@ int	key_release(int keysym, t_fdf *fdf)
 			|| keysym == XK_d || keysym == XK_q || keysym == XK_e)
 	{
 		handle_rotation(keysym, fdf);
-	}
-	fdf->needs_redraw = true;
-	return (0);
-}
-
-int	key_press(int keysym, t_fdf *fdf)
-{
-	printf("Keypress: %d\n", keysym);
-	if (keysym == XK_Escape)
-	{
-		clean_exit(fdf);
-	}
-	else if (keysym == XK_0)
-	{
-		fdf->projection = ISOMETRIC;
-	}
-	else if (keysym == XK_1)
-	{
-		fdf->projection = ORTHOGRAPHIC;
-	}
-	else if (keysym == XK_2)
-	{
-		fdf->projection = OBLIQUE;
 	}
 	fdf->needs_redraw = true;
 	return (0);

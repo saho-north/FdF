@@ -6,137 +6,144 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/08 14:39:06 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/18 02:33:43 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <math.h>
 
-static void	bresenham(t_point p1, t_point p2, t_fdf *fdf)
+void	pixel_put(t_fdf *fdf, int x, int y, unsigned int color)
 {
-	int	slope_error_new;
-	int	m_new;
-	int	dx;
+	char	*dst;
+
+	if (x < 0 || x >= WIN_WIDTH || y < 0 || y >= WIN_HEIGHT)
+	{
+		return ;
+	}
+	dst = fdf->addr + (y * fdf->stride + x * (fdf->bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+/*
+if (dx <= dy)
+{
+	draw_steep(fdf, p, end);
+}
+1以上（垂直に近い）の場合の描画方法
+線は垂直に近いため、`y`座標を基準にして線を描画します。各ステップで`y`を増加（または減少）
+条件に応じて`x`の値を調整します。このケースでは`draw_steep`関数が使用されます。
+ */
+static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
+{
+	int	err;
+	int	x;
+	int	y;
+	int	i;
+
+	err = 2 * line_data->dx - line_data->dy;
+	x = p->x_2d;
+	y = p->y_2d;
+	i = 0;
+	while (i++ <= line_data->dy)
+	{
+		pixel_put(fdf, x, y, WHITE);
+		err += 2 * line_data->dx;
+		if (err > 0)
+		{
+			x += line_data->x_direction;
+			err -= 2 * line_data->dy;
+		}
+		y += line_data->y_direction;
+	}
+}
+
+/*
+if (dx > dy)
+{
+	draw_shallow(fdf, p, end);
+}
+線の傾斜が1未満（水平に近い）の場合の描画方法
+線は水平に近いため、`x`座標を基準にして線を描画します。各ステップで`x`を増加（または減少）
+条件に応じて`y`の値を調整します。このケースでは`draw_shallow`関数が使用されます。
+ */
+static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
+{
+	int	err;
+	int	x;
+	int	y;
+	int	i;
+
+	err = 2 * line_data->dy - line_data->dx;
+	x = p->x_2d;
+	y = p->y_2d;
+	i = 0;
+	while (i++ <= line_data->dx)
+	{
+		pixel_put(fdf, x, y, WHITE);
+		err += 2 * line_data->dy;
+		if (err > 0)
+		{
+			y += line_data->y_direction;
+			err -= 2 * line_data->dx;
+		}
+		x += line_data->x_direction;
+	}
+}
+
+static void	draw_line(t_fdf *fdf, t_point *start, t_point *end)
+{
+	t_line_draw_data	line_data;
+
+	line_data.dx = abs(end->x_2d - start->x_2d);
+	line_data.dy = abs(end->y_2d - start->y_2d);
+	line_data.x_direction = 1;
+	if (end->x_2d < start->x_2d)
+	{
+		line_data.x_direction = -1;
+	}
+	line_data.y_direction = 1;
+	if (end->y_2d < start->y_2d)
+	{
+		line_data.y_direction = -1;
+	}
+	if (line_data.dx > line_data.dy)
+	{
+		draw_shallow(fdf, start, &line_data);
+	}
+	else
+	{
+		draw_steep(fdf, start, &line_data);
+	}
+}
+
+void	clear_image(t_fdf *fdf)
+{
+	ft_bzero(fdf->addr, WIN_WIDTH * WIN_HEIGHT * fdf->bpp);
+}
+
+void	draw_wireframe(t_fdf *fdf)
+{
 	int	x;
 	int	y;
 
-	m_new = 2 * ((int)p2.y - (int)p1.y);
-	dx = (int)p2.x - (int)p1.x;
-	slope_error_new = m_new - dx;
-	x = (int)p1.x;
-	y = (int)p1.y;
-	while (x <= (int)p2.x)
-	{
-		my_mlx_pixel_put(fdf, x, y, 0xFFFFFF);
-		slope_error_new += m_new;
-		if (slope_error_new >= 0)
-		{
-			y++;
-			slope_error_new -= 2 * dx;
-		}
-		x++;
-	}
-}
-
-/**
- * Clipping は後で実装する。今は簡易のもの
- */
-static bool	is_line_exist(t_point p1, t_point p2)
-{
-	int	x1;
-	int	y1;
-	int	x2;
-	int	y2;
-
-	if (!p1.is_exist || !p2.is_exist)
-	{
-		return (false);
-	}
-	x1 = (int)p1.x_2d;
-	y1 = (int)p1.y_2d;
-	x2 = (int)p2.x_2d;
-	y2 = (int)p2.y_2d;
-	if (x1 >= 0 && x1 < WIN_WIDTH && y1 >= 0 && y1 < WIN_HEIGHT)
-	{
-		return (true);
-	}
-	if (x2 >= 0 && x2 < WIN_WIDTH && y2 >= 0 && y2 < WIN_HEIGHT)
-	{
-		return (true);
-	}
-	if ((x1 < 0 && x2 < 0) || (x1 >= WIN_WIDTH && x2 >= WIN_WIDTH))
-	{
-		return (false);
-	}
-	if ((y1 < 0 && y2 < 0) || (y1 >= WIN_HEIGHT && y2 >= WIN_HEIGHT))
-	{
-		return (false);
-	}
-	return (true);
-}
-
-static void	draw_from_start(t_fdf *fdf)
-{
-	size_t	x;
-	size_t	y;
-
 	y = 0;
+	clear_image(fdf);
 	while (y < fdf->max_y)
 	{
 		x = 0;
 		while (x < fdf->max_x)
 		{
-			if (x + 1 < fdf->max_x && is_line_exist(fdf->points[y][x],
-					fdf->points[y][x + 1]))
+			if (x + 1 < fdf->max_x)
 			{
-				bresenham(fdf->points[y][x], fdf->points[y][x + 1], fdf);
+				draw_line(fdf, &fdf->points[y][x], &fdf->points[y][x + 1]);
 			}
-			if (y + 1 < fdf->max_y && is_line_exist(fdf->points[y][x],
-					fdf->points[y + 1][x]))
+			if (y + 1 < fdf->max_y)
 			{
-				bresenham(fdf->points[y][x], fdf->points[y + 1][x], fdf);
+				draw_line(fdf, &fdf->points[y][x], &fdf->points[y + 1][x]);
 			}
 			x++;
 		}
 		y++;
-	}
-}
-
-static void	draw_from_end(t_fdf *fdf)
-{
-	int	x;
-	int	y;
-
-	y = fdf->max_y - 1;
-	while (y >= 0)
-	{
-		x = fdf->max_x - 1;
-		while (x >= 0)
-		{
-			if (x > 0 && is_line_exist(fdf->points[y][x], fdf->points[y][x
-					- 1]))
-			{
-				bresenham(fdf->points[y][x], fdf->points[y][x - 1], fdf);
-			}
-			if (y > 0 && is_line_exist(fdf->points[y][x], fdf->points[y
-					- 1][x]))
-			{
-				bresenham(fdf->points[y][x], fdf->points[y - 1][x], fdf);
-			}
-			x--;
-		}
-		y--;
-	}
-}
-
-void	draw_wireframe(t_fdf *fdf)
-{
-	if (fdf->points[0][0].x < fdf->points[fdf->max_y - 1][fdf->max_x - 1].x)
-	{
-		draw_from_start(fdf);
-	}
-	else
-	{
-		draw_from_end(fdf);
 	}
 }
