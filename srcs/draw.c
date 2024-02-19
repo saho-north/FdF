@@ -6,14 +6,14 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/18 02:33:43 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:45:46 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
 
-void	pixel_put(t_fdf *fdf, int x, int y, unsigned int color)
+static void	pixel_put(t_fdf *fdf, int x, int y, int color)
 {
 	char	*dst;
 
@@ -25,21 +25,13 @@ void	pixel_put(t_fdf *fdf, int x, int y, unsigned int color)
 	*(unsigned int *)dst = color;
 }
 
-/*
-if (dx <= dy)
-{
-	draw_steep(fdf, p, end);
-}
-1以上（垂直に近い）の場合の描画方法
-線は垂直に近いため、`y`座標を基準にして線を描画します。各ステップで`y`を増加（または減少）
-条件に応じて`x`の値を調整します。このケースでは`draw_steep`関数が使用されます。
- */
 static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 {
 	int	err;
 	int	x;
 	int	y;
 	int	i;
+	int	color;
 
 	err = 2 * line_data->dx - line_data->dy;
 	x = p->x_2d;
@@ -47,7 +39,9 @@ static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	i = 0;
 	while (i++ <= line_data->dy)
 	{
-		pixel_put(fdf, x, y, WHITE);
+		color = ft_lerpcolor(line_data->color_start, line_data->color_end,
+				(float)i / line_data->dy);
+		pixel_put(fdf, x, y, color);
 		err += 2 * line_data->dx;
 		if (err > 0)
 		{
@@ -58,21 +52,13 @@ static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	}
 }
 
-/*
-if (dx > dy)
-{
-	draw_shallow(fdf, p, end);
-}
-線の傾斜が1未満（水平に近い）の場合の描画方法
-線は水平に近いため、`x`座標を基準にして線を描画します。各ステップで`x`を増加（または減少）
-条件に応じて`y`の値を調整します。このケースでは`draw_shallow`関数が使用されます。
- */
 static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 {
 	int	err;
 	int	x;
 	int	y;
 	int	i;
+	int	color;
 
 	err = 2 * line_data->dy - line_data->dx;
 	x = p->x_2d;
@@ -80,7 +66,9 @@ static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	i = 0;
 	while (i++ <= line_data->dx)
 	{
-		pixel_put(fdf, x, y, WHITE);
+		color = ft_lerpcolor(line_data->color_start, line_data->color_end,
+				(float)i / line_data->dx);
+		pixel_put(fdf, x, y, color);
 		err += 2 * line_data->dy;
 		if (err > 0)
 		{
@@ -107,6 +95,14 @@ static void	draw_line(t_fdf *fdf, t_point *start, t_point *end)
 	{
 		line_data.y_direction = -1;
 	}
+	line_data.color_start = start->color;
+	line_data.color_end = end->color;
+	if (line_data.color_start != line_data.color_end)
+	{
+		printf("color_start != color_end\n");
+		printf("color_start: %x\n", line_data.color_start);
+		printf("color_end: %x\n", line_data.color_end);
+	}
 	if (line_data.dx > line_data.dy)
 	{
 		draw_shallow(fdf, start, &line_data);
@@ -117,18 +113,12 @@ static void	draw_line(t_fdf *fdf, t_point *start, t_point *end)
 	}
 }
 
-void	clear_image(t_fdf *fdf)
-{
-	ft_bzero(fdf->addr, WIN_WIDTH * WIN_HEIGHT * fdf->bpp);
-}
-
 void	draw_wireframe(t_fdf *fdf)
 {
 	int	x;
 	int	y;
 
 	y = 0;
-	clear_image(fdf);
 	while (y < fdf->max_y)
 	{
 		x = 0;

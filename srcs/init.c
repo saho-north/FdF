@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/18 02:29:13 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:11:49 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ static void	init_point_row(t_point *point, int max_x, int current_y)
 	{
 		point[current_x].original_x = current_x;
 		point[current_x].original_y = current_y;
-		point[current_x].color = WHITE; // ?
-		point[current_x].rgb[0] = 255;
-		point[current_x].rgb[1] = 255;
-		point[current_x].rgb[2] = 255;
+		point[current_x].color = WHITE;
 		point[current_x].is_exist = false;
 		current_x++;
 	}
@@ -149,5 +146,4 @@ void	init_fdf(t_fdf *fdf, const char *filename)
 	printf("Initial scale / depth scale: %f\n", fdf->scale / fdf->depth_scale);
 	printf("Initial x_move: %d\n", fdf->x_move);
 	printf("Initial y_move: %d\n", fdf->y_move);
-	fdf->needs_redraw = true;
 }

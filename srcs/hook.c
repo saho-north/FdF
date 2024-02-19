@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/16 12:47:29 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:16:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 	{
 		fdf->scale--;
 	}
-	fdf->needs_redraw = true;
 	return (0);
 }
 
@@ -77,16 +76,5 @@ int	button_release(int button, int x, int y, t_fdf *fdf)
 	// {
 	// 	fdf->scale--;
 	// }
-	fdf->needs_redraw = true;
-	return (0);
-}
-
-int	handle_loop_hook(t_fdf *fdf)
-{
-	if (!fdf->needs_redraw)
-	{
-		return (0);
-	}
-	render(fdf);
 	return (0);
 }

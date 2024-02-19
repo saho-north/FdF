@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/17 23:50:30 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:04:28 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,45 +24,6 @@ static void	translate(t_point *point, int x_move, int y_move)
 {
 	point->x_2d += x_move;
 	point->y_2d += y_move;
-}
-
-static void	print_points_for_debug(t_fdf *fdf)
-{
-	int	x;
-	int	y;
-
-	printf("<<print_points_for_debug>>\n");
-	printf("scale: %f, z_scale: %f, x_move: %d, y_move: %d\n",
-			fdf->scale,
-			fdf->scale / fdf->depth_scale,
-			fdf->x_move,
-			fdf->y_move);
-	y = 0;
-	printf("fdf.max_x: %d, fdf.max_y: %d\n", fdf->max_x, fdf->max_y);
-	while (y < fdf->max_y)
-	{
-		x = 0;
-		printf("<<point[%d]>>\n", y);
-		while (x < fdf->max_x)
-		{
-			printf("point[%d][%d]: ", y, x);
-			printf("y: %d, x: %d, z: %d, color: %X, is_exist: %d\n",
-					fdf->points[y][x].original_y,
-					fdf->points[y][x].original_x,
-					fdf->points[y][x].original_z,
-					fdf->points[y][x].color,
-					fdf->points[y][x].is_exist);
-			printf("y: %f, x: %f, z: %f x_2d: %d, y_2d: %d\n",
-					fdf->points[y][x].y,
-					fdf->points[y][x].x,
-					fdf->points[y][x].z,
-					fdf->points[y][x].x_2d,
-					fdf->points[y][x].y_2d);
-			x++;
-		}
-		printf("\n");
-		y++;
-	}
 }
 
 void	transform(t_fdf *fdf, float scale, float z_scale, int x_move,
@@ -85,8 +46,6 @@ void	transform(t_fdf *fdf, float scale, float z_scale, int x_move,
 		}
 		y++;
 	}
-	if (x == 0)
-		print_points_for_debug(fdf);
 }
 
 /*

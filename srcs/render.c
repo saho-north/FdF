@@ -6,12 +6,17 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/18 02:35:49 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:11:36 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+
+static void	clear_image(t_fdf *fdf)
+{
+	ft_bzero(fdf->addr, WIN_WIDTH * WIN_HEIGHT * fdf->bpp);
+}
 
 static void	draw_usage(t_fdf *fdf)
 {
@@ -36,9 +41,9 @@ int	render(t_fdf *fdf)
 	x_move = fdf->x_move;
 	y_move = fdf->y_move;
 	transform(fdf, scale, z_scale, x_move, y_move);
+	clear_image(fdf);
 	draw_wireframe(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	draw_usage(fdf);
-	fdf->needs_redraw = false;
 	return (0);
 }

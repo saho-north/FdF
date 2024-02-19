@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/18 00:16:04 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:17:50 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 /**
  * Handles the key press event.
- * It changes the projection type and sets the flag to redraw the window.
  */
 int	key_press(int keysym, t_fdf *fdf)
 {
@@ -37,7 +36,6 @@ int	key_press(int keysym, t_fdf *fdf)
 	{
 		fdf->projection = OBLIQUE;
 	}
-	fdf->needs_redraw = true;
 	return (0);
 }
 
@@ -100,11 +98,10 @@ static void	handle_rotation(int keysym, t_fdf *fdf)
 		fdf->z_degree -= ROTATE_STEP;
 	}
 }
-
 /**
  * Handles the key release event.
  * It changes the scale, movement, and rotation of the map.
- * It sets the flag to redraw the window.
+ * It sets the flag to  the window.
  */
 int	key_release(int keysym, t_fdf *fdf)
 {
@@ -122,6 +119,5 @@ int	key_release(int keysym, t_fdf *fdf)
 	{
 		handle_rotation(keysym, fdf);
 	}
-	fdf->needs_redraw = true;
 	return (0);
 }

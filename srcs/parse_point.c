@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:57:10 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/16 00:26:16 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:59:44 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,6 @@ static bool	is_valid_end(char *str)
 }
 
 /**
- * Sets the rgb values of the point based on the given color.
- */
-static void	set_rgb_color(t_point *point, unsigned int color)
-{
-	point->rgb[0] = (unsigned char)(color >> 16);
-	point->rgb[1] = (unsigned char)(color >> 8);
-	point->rgb[2] = (unsigned char)color;
-}
-
-/**
  * Sets the color of the point. Returns the endptr of the string.
  * Returns NULL if the color is invalid.
  */
@@ -84,7 +74,6 @@ static char	*set_point_color(t_point *point, char *str)
 		return (NULL);
 	}
 	point->color = (unsigned int)num;
-	set_rgb_color(point, point->color);
 	return (endptr);
 }
 

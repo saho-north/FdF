@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/18 00:37:01 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:16:32 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@ typedef enum e_projections
 
 typedef struct s_point
 {
-	unsigned char	rgb[3];
-	unsigned int	color;
 	int				original_x;
 	int				original_y;
 	int				original_z;
+	int				color;
 	float			x;
 	float			y;
 	float			z;
@@ -73,7 +72,6 @@ typedef struct s_fdf
 	int				z_degree;
 	int				oblique_angle;
 	t_projections	projection;
-	bool			needs_redraw;
 
 }					t_fdf;
 
@@ -83,13 +81,14 @@ typedef struct s_line_draw_data
 	int				dy;
 	int				x_direction;
 	int				y_direction;
+	int				color_start;
+	int				color_end;
 }					t_line_draw_data;
 
 /* color.c */
 //まだ何もない
 
 /* draw.c */
-void				pixel_put(t_fdf *fdf, int x, int y, unsigned int color);
 void				draw_wireframe(t_fdf *fdf);
 
 /* error.c */
@@ -112,7 +111,6 @@ void				get_map_size(t_fdf *fdf, const char *filename);
 
 int					button_press(int button, int x, int y, t_fdf *fdf);
 int					button_release(int button, int x, int y, t_fdf *fdf);
-int					handle_loop_hook(t_fdf *fdf);
 
 /* init.c */
 void				init_fdf(t_fdf *fdf, const char *filename);
