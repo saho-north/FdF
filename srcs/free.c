@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 18:31:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/19 23:38:00 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/18 02:36:27 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ void	free_mlx_ptr(t_fdf *fdf)
 {
 	if (fdf->img)
 	{
-		mlx_destroy_image(fdf->xvar, fdf->img);
+		mlx_destroy_image(fdf->mlx, fdf->img);
 		fdf->img = NULL;
 	}
-	if (fdf->window)
+	if (fdf->win)
 	{
-		mlx_destroy_window(fdf->xvar, fdf->window);
-		fdf->window = NULL;
+		mlx_destroy_window(fdf->mlx, fdf->win);
+		fdf->win = NULL;
 	}
-	if (fdf->xvar)
+	if (fdf->mlx)
 	{
-		mlx_destroy_display(fdf->xvar);
-		free(fdf->xvar);
-		fdf->xvar = NULL;
+		mlx_destroy_display(fdf->mlx);
+		free(fdf->mlx);
+		fdf->mlx = NULL;
 	}
 }
 
@@ -52,7 +52,7 @@ void	free_point_matrix(t_point **points, size_t max_y)
 		return ;
 	}
 	i = 0;
-	while (i < max_y)
+	while (i < max_y && points[i])
 	{
 		free(points[i]);
 		points[i] = NULL;
@@ -82,4 +82,16 @@ void	free_split_line(char **split_line)
 	}
 	free(split_line);
 	split_line = NULL;
+}
+
+/**
+ * Frees all dynamically allocated memory and exits the program.
+ * Called for successfully terminating the program.
+  */
+int	clean_exit(t_fdf *fdf)
+{
+	free_mlx_ptr(fdf);
+	free_point_matrix(fdf->points, fdf->max_y);
+	exit(0);
+	return (0);
 }

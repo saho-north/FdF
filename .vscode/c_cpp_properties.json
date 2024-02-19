@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/mlx",
-                "${workspaceFolder}/includes"
+                "${workspaceFolder}/includes",
+                "/opt/X11/include/",
+                "${workspaceFolder}/libft/includes"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_map.c                                      :+:      :+:    :+:   */
+/*   parse_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 00:43:47 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 17:01:03 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/01/26 23:47:40 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 /**
  * Parses the single line and stores the result in the struct.
  * Returns false if an error occurs during the process.
- * TODO: Delete debug printf later.
  */
-static bool	parse_line(char *line, t_fdf *fdf, size_t y)
+static bool	parse_line(char *line, t_fdf *fdf, int y)
 {
 	char	**split_line;
-	size_t	x;
+	int		x;
 
 	split_line = ft_split(line, ' ');
 	if (!split_line)
@@ -33,7 +32,6 @@ static bool	parse_line(char *line, t_fdf *fdf, size_t y)
 	{
 		if (!parse_point(fdf, &fdf->points[y][x], split_line[x]))
 		{
-			printf("FAILED at parsing split_line[%zu]: %s\n", x, split_line[x]);
 			free_split_line(split_line);
 			return (false);
 		}
@@ -47,11 +45,11 @@ static bool	parse_line(char *line, t_fdf *fdf, size_t y)
  * Processes the map file and stores the result in the struct.
  * Exits the program if an error occurs during the process.
  */
-void	process_map(const char *filename, t_fdf *fdf)
+void	parse_map(const char *filename, t_fdf *fdf)
 {
 	int			fd;
 	t_gnl_res	res;
-	size_t		y;
+	int			y;
 	bool		is_valid_map;
 
 	fd = open(filename, O_RDONLY);

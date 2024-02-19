@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 17:02:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:16:32 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,158 +20,76 @@
 # define WIN_WIDTH 1600
 # define WIN_HEIGHT 900
 
+# define MOVE_STEP 10
+# define ROTATE_STEP 5
+
+# define WHITE 0xFFFFFF
+# define BLACK 0x000000
+
+typedef enum e_projections
+{
+	ISOMETRIC,
+	ORTHOGRAPHIC,
+	OBLIQUE
+}					t_projections;
+
 typedef struct s_point
 {
-	int				source_z;
+	int				original_x;
+	int				original_y;
+	int				original_z;
+	int				color;
 	float			x;
 	float			y;
 	float			z;
-	unsigned char	rgb[3];
-	unsigned int	color;
+	int				x_2d;
+	int				y_2d;
+	bool			is_exist;
+
 }					t_point;
 
+// TODO: Do I need max_z and min_z?
 typedef struct s_fdf
 {
-	void			*xvar;
-	void			*window;
+	void			*mlx;
+	void			*win;
 	void			*img;
 	char			*addr;
 	int				bpp;
 	int				stride;
 	int				endian;
-	t_point			**points;
-	size_t			max_x;
-	size_t			max_y;
+	int				max_x;
+	int				max_y;
 	int				max_z;
 	int				min_z;
+	t_point			**points;
+	float			scale;
+	float			depth_scale;
+	int				x_move;
+	int				y_move;
+	int				x_degree;
+	int				y_degree;
+	int				z_degree;
+	int				oblique_angle;
+	t_projections	projection;
+
 }					t_fdf;
 
-// typedef struct s_fdf
-// {
-// 	void			*mlx;
-// 	void			*win;
-// 	void			*img;
-// 	char			*addr;
-// 	int				bits_per_pixel;
-// 	int				line_length;
-// 	int				endian;
-// 	int				scale;
-// 	float			alpha;
-// 	float			sm_y;
-// 	float			bg_y;
-// 	float			sm_x;
-// 	float			bg_x;
-// 	t_vector2		offset;
-// 	t_map			map;
-// 	t_vector3		*points;
-// 	t_vector2		*final_points;
-// 	t_vector2		*rotated;
-// }					t_fdf;
+typedef struct s_line_draw_data
+{
+	int				dx;
+	int				dy;
+	int				x_direction;
+	int				y_direction;
+	int				color_start;
+	int				color_end;
+}					t_line_draw_data;
 
-// typedef struct s_cam
-// {
-// 	int				projection;
-// 	float			scale_factor;
-// 	float			move_x;
-// 	float			move_y;
-// 	double alpha; // X軸回転
-// 	double beta;  // Y軸回転
-// 	double gamma; // Z軸回転
-// }					t_cam;
+/* color.c */
+//まだ何もない
 
-// typedef struct s_image
-// {
-// 	void			*image;
-// 	char			*buffer;
-// 	int				pixel_bits;
-// 	int				line_bytes;
-// 	int				endian;
-// }					t_image;
-
-// typedef struct s_fdf
-// {
-// 	t_map			*map;
-// 	t_cam			*cam;
-// 	t_image			*image;
-// 	void			*mlx;
-// 	void			*win;
-// }					t_fdf;
-
-// // ??
-
-// typedef struct s_ivector
-// {
-// 	int				x;
-// 	int				y;
-// 	int				z;
-// }					t_ipoint;
-
-// typedef struct s_fpoint
-// {
-// 	float			x;
-// 	float			y;
-// }					t_fpoint;
-
-// typedef struct s_delta
-// {
-// 	float			dx;
-// 	float			dy;
-// }					t_delta;
-
-// typedef struct s_fdf
-// {
-// 	void			*mlx;
-// 	void			*win;
-// 	void			*image;
-// 	char			*address;
-// 	char			*map_path;
-// 	int				**final_tab;
-// 	int				map_w;
-// 	int				map_h;
-// 	int				x;
-// 	int				y;
-// 	int				i;
-// 	int				c_x;
-// 	int				c_y;
-// 	int				bits_per_pixel;
-// 	int				line_length;
-// 	int				endian;
-// 	int				scale;
-// 	int				translation;
-// 	float			altitude;
-// 	float			zoom;
-// 	float			alpha;
-// 	t_ipoint		*initial_points;
-// 	t_fpoint		*final_points;
-// 	t_delta			*delta;
-// }					t_fdf;
-
-// typedef struct s_vector3
-// {
-// 	float			x;
-// 	float			y;
-// 	float			z;
-// }					t_vector3;
-
-// typedef struct s_stvector2
-// {
-// 	size_t			x;
-// 	size_t			y;
-// }					t_stvector2;
-
-// typedef struct s_vector2
-// {
-// 	float			x;
-// 	float			y;
-// }					t_vector2;
-
-// typedef struct s_map
-// {
-// 	char			*path;
-// 	size_t			h;
-// 	size_t			w;
-// 	int				**i_grid;
-// }					t_map;
+/* draw.c */
+void				draw_wireframe(t_fdf *fdf);
 
 /* error.c */
 void				perror_exit(char *message);
@@ -184,19 +102,41 @@ void				free_and_error_exit(t_fdf *fdf, char *message);
 void				free_mlx_ptr(t_fdf *fdf);
 void				free_point_matrix(t_point **points, size_t max_y);
 void				free_split_line(char **split_line);
+int					clean_exit(t_fdf *fdf);
 
 /* get_map_size.c */
-void				get_map_size(const char *filename, t_fdf *fdf);
+void				get_map_size(t_fdf *fdf, const char *filename);
+
+/* hook.c */
+
+int					button_press(int button, int x, int y, t_fdf *fdf);
+int					button_release(int button, int x, int y, t_fdf *fdf);
 
 /* init.c */
-void				init_fdf_struct(t_fdf *fdf);
-void				init_mlx_env(t_fdf *fdf);
-void				init_point_matrix(t_fdf *fdf);
+void				init_fdf(t_fdf *fdf, const char *filename);
+
+/* key_hook.c */
+int					key_press(int keysym, t_fdf *fdf);
+int					key_release(int keysym, t_fdf *fdf);
+
+/* parse_map.c */
+void				parse_map(const char *filename, t_fdf *fdf);
 
 /* parse_point.c */
 bool				parse_point(t_fdf *fdf, t_point *point, char *str);
 
-/* process_map.c */
-void				process_map(const char *filename, t_fdf *fdf);
+/* projection.c */
+float				deg_to_rad(float degrees);
+void				projection(t_fdf *fdf, t_point *point);
+
+/* render.c */
+int					render(t_fdf *fdf);
+
+/* rotation.c */
+void				rotation(t_fdf *fdf, t_point *point);
+
+/* transform.c */
+void				transform(t_fdf *fdf, float scale, float z_scale,
+						int x_move, int y_move);
 
 #endif

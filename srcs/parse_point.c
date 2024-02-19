@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:57:10 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 17:02:02 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:59:44 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,14 @@ static char	*set_point_num(t_fdf *fdf, t_point *point, char *str)
 	{
 		return (NULL);
 	}
-	point->source_z = (int)num;
-	point->z = (float)point->source_z;
-	if (point->source_z > fdf->max_z)
+	point->original_z = (int)num;
+	if (point->original_z > fdf->max_z)
 	{
-		fdf->max_z = point->source_z;
+		fdf->max_z = point->original_z;
 	}
-	if (point->source_z < fdf->min_z)
+	if (point->original_z < fdf->min_z)
 	{
-		fdf->min_z = point->source_z;
+		fdf->min_z = point->original_z;
 	}
 	return (endptr);
 }
@@ -51,16 +50,6 @@ static bool	is_valid_end(char *str)
 		return (true);
 	}
 	return (false);
-}
-
-/**
- * Sets the rgb values of the point based on the given color.
- */
-static void	set_rgb_color(t_point *point, unsigned int color)
-{
-	point->rgb[0] = (unsigned char)(color >> 16);
-	point->rgb[1] = (unsigned char)(color >> 8);
-	point->rgb[2] = (unsigned char)color;
 }
 
 /**
@@ -85,7 +74,6 @@ static char	*set_point_color(t_point *point, char *str)
 		return (NULL);
 	}
 	point->color = (unsigned int)num;
-	set_rgb_color(point, point->color);
 	return (endptr);
 }
 
@@ -104,6 +92,7 @@ bool	parse_point(t_fdf *fdf, t_point *point, char *str)
 	}
 	if (is_valid_end(endptr))
 	{
+		point->is_exist = true;
 		return (true);
 	}
 	endptr = set_point_color(point, endptr);
@@ -111,5 +100,6 @@ bool	parse_point(t_fdf *fdf, t_point *point, char *str)
 	{
 		return (false);
 	}
+	point->is_exist = true;
 	return (true);
 }

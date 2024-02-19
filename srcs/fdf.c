@@ -6,17 +6,19 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/01/23 17:09:59 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:16:44 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "mlx.h"
+#include <X11/X.h>
 
 /**
  * Checks if the given filename has the given extension.
  * It ignores the case of the filename and extension.
  */
-static bool	check_file_extension(const char *filename, const char *extension)
+static bool	is_valid_extension(const char *filename, const char *extension)
 {
 	size_t	filename_len;
 	size_t	extension_len;
@@ -36,63 +38,25 @@ static bool	check_file_extension(const char *filename, const char *extension)
 	return (result == 0);
 }
 
-/**
- * Print out the points struct for debugging.
- * TODO: Delete this function later.
- */
-
-static void	print_points(t_fdf *fdf)
-{
-	size_t	x;
-	size_t	y;
-
-	y = 0;
-	printf("fdf.max_x: %zu, fdf.max_y: %zu\n", fdf->max_x, fdf->max_y);
-	while (y < fdf->max_y)
-	{
-		x = 0;
-		printf("point[%zu]: ", y);
-		while (x < fdf->max_x)
-		{
-			printf("%d ", fdf->points[y][x].source_z);
-			x++;
-		}
-		printf("\n");
-		y++;
-	}
-}
-
-/**
- * The main function of the program.
- * It checks the arguments and initializes the struct, mlx environment and map.
- * TODO: The function is not finished yet.
- * It will have more function calls to parse the map and render it.
- */
 int	main(int argc, const char *argv[])
 {
 	t_fdf	fdf;
 
-	printf("-------------------------------------------------\n");
-	if (argc != 2 || !check_file_extension(argv[1], ".fdf"))
+	if (argc != 2 || !is_valid_extension(argv[1], ".fdf"))
 	{
 		print_error_exit(ERR_ARG);
 	}
-	init_fdf_struct(&fdf);
-	init_mlx_env(&fdf);
-	get_map_size(argv[1], &fdf);
-	init_point_matrix(&fdf);
-	process_map(argv[1], &fdf);
-	print_points(&fdf);
-	// TODO: parse the map and render it
-	// if (!fdf.is_valid_map)
-	// {
-	// 	printf("fdf.is_valid_map: %d\n", fdf.is_valid_map);
-	// 	free_and_error_exit(&fdf, ERR_MAP);
-	// }
-	free_mlx_ptr(&fdf);
-	free_point_matrix(fdf.points, fdf.max_y);
-	printf("-------------------------------------------------\n\n");
-	//exit(EXIT_SUCCESS);
+	init_fdf(&fdf, argv[1]);
+	parse_map(argv[1], &fdf);
+	mlx_hook(fdf.win, KeyPress, KeyPressMask, &key_press, &fdf);
+	mlx_key_hook(fdf.win, &key_release, &fdf);
+	mlx_mouse_hook(fdf.win, &button_press, &fdf);
+	mlx_hook(fdf.win, ButtonRelease, ButtonReleaseMask, &button_release, &fdf);
+	mlx_hook(fdf.win, DestroyNotify, StructureNotifyMask, &clean_exit, &fdf);
+	mlx_loop_hook(fdf.mlx, &render, &fdf);
+	mlx_loop(fdf.mlx);
+	// これいつ使うの？
+	//int		(t_xvar *mlx,t_win_list *win)
 	return (0);
 }
 
@@ -106,3 +70,31 @@ __attribute__((destructor)) static void destructor()
 {
 	system("leaks -q fdf");
 }
+
+/*
+<<< 課題の内容のメモ >>>
+
+TODO: Mandetory
+
+Each number represents a point in space:
+• The horizontal position corresponds to its axis.
+• The vertical position corresponds to its ordinate.
+• The value corresponds to its altitude.
+
+V.2 Graphic management
+• Your program has to display the image in a window.
+• The management of your window must remain smooth (changing to another win-
+dow, minimizing, and so forth).
+• Pressing ESC must close the window and quit the program in a clean way.
+• Clicking on the cross on the window’s frame must close the window and quit the program in a clean way.
+• The use of the images of the MiniLibX is mandatory
+
+TODO: bonus
+You will get some extra points if you can:
+
+• Include one extra projection (such as parallel or conic)!
+• Zoom in and out.
+• Translate your model.
+• Rotate your model.
+• Add one more bonus of your choice
+ */
