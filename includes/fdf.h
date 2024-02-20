@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 15:23:29 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:01:42 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_fdf
 	int				x_degree;
 	int				y_degree;
 	int				z_degree;
-	int				oblique_angle;
 	t_projections	projection;
 
 }					t_fdf;

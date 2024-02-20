@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 02:26:01 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:57:23 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,18 @@ TODO: 以下の関数を実装する
     マウス: マウスの右ボタンを押しながらドラッグすることで、モデルを回転させることができます。マウス移動の方向と距離に応じて回転角度を調整します。
 
 TODO: depth_scaleを変更する関数を実装する
-TODO: Later to implement the translate function
-TODO: Later to implement the translate function
  */
 
 int	button_press(int button, int x, int y, t_fdf *fdf)
 {
-	printf("Buttonpress: %d\n", button);
 	if (button == Button1)
 	{
+		//TODO: Later to implement the translate function
 		printf("Left mouse button pressed at (%d, %d)!\n", x, y);
 	}
 	else if (button == Button3)
 	{
+		//TODO: Later to implement the translate function
 		printf("Right mouse button pressed at (%d, %d)!\n", x, y);
 	}
 	else if (button == Button4)
@@ -57,7 +56,6 @@ int	button_release(int button, int x, int y, t_fdf *fdf)
 	(void)x;
 	(void)y;
 	(void)fdf;
-	printf("Buttonrelease: %d\n", button);
 	// if (button == Button1)
 	// {
 	// 	printf("Left mouse button pressed at (%d, %d)!\n", x, y);
