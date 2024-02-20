@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 15:55:55 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:15:55 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int	main(int argc, const char *argv[])
 	mlx_hook(fdf.win, DestroyNotify, StructureNotifyMask, &clean_exit, &fdf);
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
 	mlx_loop(fdf.mlx);
-	// これいつ使うの？
-	//int		(t_xvar *mlx,t_win_list *win)
 	return (0);
 }
 
@@ -70,31 +68,3 @@ __attribute__((destructor)) static void destructor()
 {
 	system("leaks -q fdf");
 }
-
-/*
-<<< 課題の内容のメモ >>>
-
-TODO: Mandetory
-
-Each number represents a point in space:
-• The horizontal position corresponds to its axis.
-• The vertical position corresponds to its ordinate.
-• The value corresponds to its altitude.
-
-V.2 Graphic management
-• Your program has to display the image in a window.
-• The management of your window must remain smooth (changing to another win-
-dow, minimizing, and so forth).
-• Pressing ESC must close the window and quit the program in a clean way.
-• Clicking on the cross on the window’s frame must close the window and quit the program in a clean way.
-• The use of the images of the MiniLibX is mandatory
-
-TODO: bonus
-You will get some extra points if you can:
-
-• Include one extra projection (such as parallel or conic)!
-• Zoom in and out.
-• Translate your model.
-• Rotate your model.
-• Add one more bonus of your choice
- */

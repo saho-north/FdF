@@ -6,13 +6,12 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:01:50 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:42:36 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
-#include <math.h>
 
 /**
  * Initializes the mlx environment for graphics rendering.
@@ -87,21 +86,6 @@ static void	init_point_matrix(t_fdf *fdf)
 	}
 }
 
-void	set_initial_scale(t_fdf *fdf)
-{
-	float	x_len;
-	float	y_len;
-
-	x_len = (float)WIN_WIDTH / fdf->max_x / 2;
-	y_len = (float)WIN_HEIGHT / fdf->max_y / 2;
-	fdf->scale = fmin(x_len, y_len);
-	if (fdf->scale > 3)
-	{
-		fdf->scale /= 1.2;
-	}
-	fdf->depth_scale = 5;
-}
-
 /**
  * Initializes the fdf struct with default values.
  */
@@ -112,12 +96,10 @@ void	init_fdf(t_fdf *fdf, const char *filename)
 	init_mlx_env(fdf);
 	get_map_size(fdf, filename);
 	init_point_matrix(fdf);
-	set_initial_scale(fdf);
 	fdf->max_z = INT_MIN; // TODO: これはなんのために？
 	fdf->min_z = INT_MAX; // TODO: これはなんのために？
 	fdf->projection = ISOMETRIC;
-	fdf->x_move = ((float)WIN_WIDTH - (fdf->max_x - 1) * fdf->scale) / 1.6;
-	fdf->y_move = ((float)WIN_HEIGHT - (fdf->max_y - 1) * fdf->scale) / 2;
+	reset_render_param(fdf);
 	// TODO: Later to delete the debug printf
 	printf("Initial scale: %f\n", fdf->scale);
 	printf("Initial depth scale: %f\n", fdf->depth_scale);

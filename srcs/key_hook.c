@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:08:50 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:58:34 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,29 @@
 int	key_press(int key, t_fdf *fdf)
 {
 	if (key == XK_Escape)
+	{
 		clean_exit(fdf);
+	}
+	else if (key == XK_r)
+	{
+		fdf->projection = ISOMETRIC;
+		reset_render_param(fdf);
+	}
 	else if (key == XK_0)
 	{
 		fdf->projection = ISOMETRIC;
-		fdf->x_degree = 0;
-		fdf->y_degree = 0;
-		fdf->z_degree = 0;
 	}
 	else if (key == XK_1)
 	{
 		fdf->projection = ORTHOGRAPHIC;
-		fdf->x_degree = 0;
-		fdf->y_degree = 0;
-		fdf->z_degree = 0;
 	}
 	else if (key == XK_2)
 	{
 		fdf->projection = OBLIQUE;
-		fdf->x_degree = 0;
-		fdf->y_degree = 0;
-		fdf->z_degree = 0;
+	}
+	else if (key == XK_3)
+	{
+		fdf->projection = CAVALIER;
 	}
 	return (0);
 }

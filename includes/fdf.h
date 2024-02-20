@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:01:42 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:40:45 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef enum e_projections
 {
 	ISOMETRIC,
 	ORTHOGRAPHIC,
-	OBLIQUE
+	OBLIQUE,
+	CAVALIER
 }					t_projections;
 
 typedef struct s_point
@@ -131,6 +132,9 @@ void				projection(t_fdf *fdf, t_point *point);
 /* render.c */
 void				pixel_put(t_fdf *fdf, int x, int y, int color);
 int					render(t_fdf *fdf);
+
+/* reset.c */
+void				reset_render_param(t_fdf *fdf);
 
 /* rotation.c */
 void				rotation(t_fdf *fdf, t_point *point);

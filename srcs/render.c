@@ -6,12 +6,13 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 15:22:58 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:05:25 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+#include "usage.h"
 
 void	pixel_put(t_fdf *fdf, int x, int y, int color)
 {
@@ -37,8 +38,15 @@ static void	draw_usage(t_fdf *fdf)
 
 	x = 20;
 	y = 10;
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, "<< Usage >>");
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, "EXIT: 'ESC' Key");
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, TITLE_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, EXIT_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, RESET_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, PROJ_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, SCALE_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, MOVE_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEX_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEY_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEZ_USAGE);
 }
 
 int	render(t_fdf *fdf)
