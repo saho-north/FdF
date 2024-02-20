@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 01:16:32 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:23:29 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,13 @@ typedef struct s_fdf
 
 typedef struct s_line_draw_data
 {
-	int				dx;
-	int				dy;
+	int				abs_dx;
+	int				abs_dy;
 	int				x_direction;
 	int				y_direction;
-	int				color_start;
-	int				color_end;
+	int				color0;
+	int				color1;
 }					t_line_draw_data;
-
-/* color.c */
-//まだ何もない
 
 /* draw.c */
 void				draw_wireframe(t_fdf *fdf);
@@ -119,6 +116,9 @@ void				init_fdf(t_fdf *fdf, const char *filename);
 int					key_press(int keysym, t_fdf *fdf);
 int					key_release(int keysym, t_fdf *fdf);
 
+/* liang_barsky.c */
+bool				liang_barsky(t_point *point0, t_point *point1);
+
 /* parse_map.c */
 void				parse_map(const char *filename, t_fdf *fdf);
 
@@ -130,6 +130,7 @@ float				deg_to_rad(float degrees);
 void				projection(t_fdf *fdf, t_point *point);
 
 /* render.c */
+void				pixel_put(t_fdf *fdf, int x, int y, int color);
 int					render(t_fdf *fdf);
 
 /* rotation.c */

@@ -6,24 +6,12 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 00:45:46 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:28:12 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
-
-static void	pixel_put(t_fdf *fdf, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= WIN_WIDTH || y < 0 || y >= WIN_HEIGHT)
-	{
-		return ;
-	}
-	dst = fdf->addr + (y * fdf->stride + x * (fdf->bpp / 8));
-	*(unsigned int *)dst = color;
-}
 
 static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 {
@@ -33,20 +21,20 @@ static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	int	i;
 	int	color;
 
-	err = 2 * line_data->dx - line_data->dy;
+	err = 2 * line_data->abs_dx - line_data->abs_dy;
 	x = p->x_2d;
 	y = p->y_2d;
 	i = 0;
-	while (i++ <= line_data->dy)
+	while (i++ <= line_data->abs_dy)
 	{
-		color = ft_lerpcolor(line_data->color_start, line_data->color_end,
-				(float)i / line_data->dy);
+		color = ft_lerpcolor(line_data->color0, line_data->color1, (float)i
+				/ line_data->abs_dy);
 		pixel_put(fdf, x, y, color);
-		err += 2 * line_data->dx;
+		err += 2 * line_data->abs_dx;
 		if (err > 0)
 		{
 			x += line_data->x_direction;
-			err -= 2 * line_data->dy;
+			err -= 2 * line_data->abs_dy;
 		}
 		y += line_data->y_direction;
 	}
@@ -60,56 +48,59 @@ static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	int	i;
 	int	color;
 
-	err = 2 * line_data->dy - line_data->dx;
+	err = 2 * line_data->abs_dy - line_data->abs_dx;
 	x = p->x_2d;
 	y = p->y_2d;
 	i = 0;
-	while (i++ <= line_data->dx)
+	while (i++ <= line_data->abs_dx)
 	{
-		color = ft_lerpcolor(line_data->color_start, line_data->color_end,
-				(float)i / line_data->dx);
+		color = ft_lerpcolor(line_data->color0, line_data->color1, (float)i
+				/ line_data->abs_dx);
 		pixel_put(fdf, x, y, color);
-		err += 2 * line_data->dy;
+		err += 2 * line_data->abs_dy;
 		if (err > 0)
 		{
 			y += line_data->y_direction;
-			err -= 2 * line_data->dx;
+			err -= 2 * line_data->abs_dx;
 		}
 		x += line_data->x_direction;
 	}
 }
 
-static void	draw_line(t_fdf *fdf, t_point *start, t_point *end)
+static void	set_line_data(t_line_draw_data *line_data, t_point *p0, t_point *p1)
+{
+	line_data->abs_dx = abs(p1->x_2d - p0->x_2d);
+	line_data->abs_dy = abs(p1->y_2d - p0->y_2d);
+	line_data->x_direction = 1;
+	if (p1->x_2d < p0->x_2d)
+	{
+		line_data->x_direction = -1;
+	}
+	line_data->y_direction = 1;
+	if (p1->y_2d < p0->y_2d)
+	{
+		line_data->y_direction = -1;
+	}
+	line_data->color0 = p0->color;
+	line_data->color1 = p1->color;
+}
+
+static void	draw_line(t_fdf *fdf, t_point *p0, t_point *p1)
 {
 	t_line_draw_data	line_data;
 
-	line_data.dx = abs(end->x_2d - start->x_2d);
-	line_data.dy = abs(end->y_2d - start->y_2d);
-	line_data.x_direction = 1;
-	if (end->x_2d < start->x_2d)
+	if (!p0->is_exist || !p1->is_exist || !liang_barsky(p0, p1))
 	{
-		line_data.x_direction = -1;
+		return ;
 	}
-	line_data.y_direction = 1;
-	if (end->y_2d < start->y_2d)
+	set_line_data(&line_data, p0, p1);
+	if (line_data.abs_dx > line_data.abs_dy)
 	{
-		line_data.y_direction = -1;
-	}
-	line_data.color_start = start->color;
-	line_data.color_end = end->color;
-	if (line_data.color_start != line_data.color_end)
-	{
-		printf("color_start != color_end\n");
-		printf("color_start: %x\n", line_data.color_start);
-		printf("color_end: %x\n", line_data.color_end);
-	}
-	if (line_data.dx > line_data.dy)
-	{
-		draw_shallow(fdf, start, &line_data);
+		draw_shallow(fdf, p0, &line_data);
 	}
 	else
 	{
-		draw_steep(fdf, start, &line_data);
+		draw_steep(fdf, p0, &line_data);
 	}
 }
 

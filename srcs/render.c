@@ -6,12 +6,24 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 01:11:36 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:22:58 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+
+void	pixel_put(t_fdf *fdf, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || x >= WIN_WIDTH || y < 0 || y >= WIN_HEIGHT)
+	{
+		return ;
+	}
+	dst = fdf->addr + (y * fdf->stride + x * (fdf->bpp / 8));
+	*(unsigned int *)dst = color;
+}
 
 static void	clear_image(t_fdf *fdf)
 {
