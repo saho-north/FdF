@@ -6,13 +6,15 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:58:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 18:15:01 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
 #include <X11/keysym.h>
+
+//TODO: depth_scaleを変更する関数を実装する
 
 int	key_press(int key, t_fdf *fdf)
 {
