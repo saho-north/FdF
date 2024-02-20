@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:41:08 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/16 12:32:50 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:01:21 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ void	projection(t_fdf *fdf, t_point *point)
 	}
 	else if (fdf->projection == OBLIQUE)
 	{
-		oblique_projection(point, fdf->oblique_angle);
+		oblique_projection(point, 45);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 01:11:49 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:01:50 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,33 +87,11 @@ static void	init_point_matrix(t_fdf *fdf)
 	}
 }
 
-/**
- * Sets the initial scale for the map.
- * max_x and max_y are not 0. (checked in get_map_size)
- */
-
-/*
-
-void	ft_checkzoom(t_fdfvariables	*fdf)
-{
-	if (fdf->zoom <= 0)
-	{
-		if ((HEIGHT / fdf->map_height) > (WIDTH / fdf->map_width))
-			fdf->zoom = (HEIGHT / fdf->map_height) / 2;
-		else
-			fdf->zoom = (WIDTH / fdf->map_width) / 2;
-	}
-}
-
- */
-// TODO: Later to delete the debug printf
 void	set_initial_scale(t_fdf *fdf)
 {
 	float	x_len;
 	float	y_len;
 
-	printf("WIN_WIDTH: %d, WIN_HEIGHT: %d\n", WIN_WIDTH, WIN_HEIGHT);
-	printf("fdf->max_x: %d, fdf->max_y: %d\n", fdf->max_x, fdf->max_y);
 	x_len = (float)WIN_WIDTH / fdf->max_x / 2;
 	y_len = (float)WIN_HEIGHT / fdf->max_y / 2;
 	fdf->scale = fmin(x_len, y_len);
@@ -135,12 +113,12 @@ void	init_fdf(t_fdf *fdf, const char *filename)
 	get_map_size(fdf, filename);
 	init_point_matrix(fdf);
 	set_initial_scale(fdf);
-	fdf->max_z = INT_MIN;
-	fdf->min_z = INT_MAX;
+	fdf->max_z = INT_MIN; // TODO: これはなんのために？
+	fdf->min_z = INT_MAX; // TODO: これはなんのために？
 	fdf->projection = ISOMETRIC;
-	fdf->oblique_angle = 45;
 	fdf->x_move = ((float)WIN_WIDTH - (fdf->max_x - 1) * fdf->scale) / 1.6;
 	fdf->y_move = ((float)WIN_HEIGHT - (fdf->max_y - 1) * fdf->scale) / 2;
+	// TODO: Later to delete the debug printf
 	printf("Initial scale: %f\n", fdf->scale);
 	printf("Initial depth scale: %f\n", fdf->depth_scale);
 	printf("Initial scale / depth scale: %f\n", fdf->scale / fdf->depth_scale);
