@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:15:55 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 18:39:13 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	main(int argc, const char *argv[])
 	mlx_key_hook(fdf.win, &key_release, &fdf);
 	mlx_mouse_hook(fdf.win, &button_press, &fdf);
 	mlx_hook(fdf.win, ButtonRelease, ButtonReleaseMask, &button_release, &fdf);
+	mlx_hook(fdf.win, MotionNotify, PointerMotionMask, &motion_notify, &fdf);
 	mlx_hook(fdf.win, DestroyNotify, StructureNotifyMask, &clean_exit, &fdf);
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
 	mlx_loop(fdf.mlx);
