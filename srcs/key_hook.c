@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 18:15:01 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:43:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ int	key_press(int key, t_fdf *fdf)
 	{
 		fdf->projection = CAVALIER;
 	}
+	else
+	{
+		return (0);
+	}
+	fdf->redraw = true;
 	return (0);
 }
 
@@ -124,5 +129,10 @@ int	key_release(int key, t_fdf *fdf)
 	{
 		handle_scale(key, fdf);
 	}
+	else
+	{
+		return (0);
+	}
+	fdf->redraw = true;
 	return (0);
 }

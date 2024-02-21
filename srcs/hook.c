@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 23:17:02 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:42:30 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 	else if (button == Button4)
 	{
 		fdf->scale++;
+		fdf->redraw = true;
 	}
 	else if (button == Button5 && fdf->scale - 1 > 0)
 	{
 		fdf->scale--;
+		fdf->redraw = true;
 	}
 	return (0);
 }
@@ -54,6 +56,7 @@ int	motion_notify(int x, int y, t_fdf *fdf)
 		fdf->y_move += (y - fdf->mouse_press_y);
 		fdf->mouse_press_x = x;
 		fdf->mouse_press_y = y;
+		fdf->redraw = true;
 	}
 	return (0);
 }

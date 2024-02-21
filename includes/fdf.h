@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 23:17:20 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:37:30 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_fdf
 	bool			is_mouse_dragging;
 	int				mouse_press_x;
 	int				mouse_press_y;
+	bool			redraw;
 
 }					t_fdf;
 
