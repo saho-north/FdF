@@ -71,9 +71,9 @@ typedef struct s_fdf
 	int				y_degree;
 	int				z_degree;
 	t_projections	projection;
-	bool			is_mouse_dragging;
 	int				mouse_press_x;
 	int				mouse_press_y;
+	bool			is_mouse_dragging;
 	bool			redraw;
 	bool			colorful;
 

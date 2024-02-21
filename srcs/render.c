@@ -34,7 +34,16 @@ void	pixel_put(t_fdf *fdf, int x, int y, int color)
  */
 static void	clear_image(t_fdf *fdf)
 {
-	ft_bzero(fdf->addr, WIN_WIDTH * WIN_HEIGHT * fdf->bpp);
+	int		y;
+	char	*row_start;
+
+	y = 0;
+	while (y < WIN_HEIGHT)
+	{
+		row_start = fdf->addr + (y * fdf->stride);
+		ft_bzero(row_start, WIN_WIDTH * (fdf->bpp / 8));
+		y++;
+	}
 }
 
 /**

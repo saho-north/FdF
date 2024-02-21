@@ -92,12 +92,12 @@ static void	init_point_matrix(t_fdf *fdf)
 void	init_fdf(t_fdf *fdf, const char *filename)
 {
 	ft_memset(fdf, 0, sizeof(t_fdf));
-	init_mlx_env(fdf);
-	get_map_size(fdf, filename);
-	init_point_matrix(fdf);
 	fdf->max_z = INT_MIN;
 	fdf->min_z = INT_MAX;
 	fdf->projection = ISOMETRIC;
+	init_mlx_env(fdf);
+	get_map_size(fdf, filename);
+	init_point_matrix(fdf);
 	parse_map(fdf, filename);
 	reset_render_param(fdf);
 }

@@ -28,7 +28,7 @@ static bool	parse_line(char *line, t_fdf *fdf, int y)
 		return (false);
 	}
 	x = 0;
-	while (split_line[x] && x < fdf->max_x)
+	while (split_line[x] && split_line[x][0] != '\n' && x < fdf->max_x)
 	{
 		if (!parse_point(fdf, &fdf->points[y][x], split_line[x]))
 		{

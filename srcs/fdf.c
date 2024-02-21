@@ -57,6 +57,7 @@ int	main(int argc, const char *argv[])
 	mlx_hook(fdf.win, ConfigureNotify, StructureNotifyMask, &render, &fdf);
 	mlx_loop_hook(fdf.mlx, &handle_loop_hook, &fdf);
 	mlx_loop(fdf.mlx);
+	clean_exit(&fdf);
 	return (0);
 }
 
@@ -65,7 +66,7 @@ int	main(int argc, const char *argv[])
  * It is used to check for memory leaks using the leaks command.
  * TODO: It will be commented out in the final version.
  */
-__attribute__((destructor)) static void destructor()
-{
-	system("leaks -q fdf");
-}
+// __attribute__((destructor)) static void destructor()
+// {
+// 	system("leaks -q fdf");
+// }
