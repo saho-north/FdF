@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 15:08:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:53:06 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ static void	handle_mouse_scale(int button, int x, int y, t_fdf *fdf)
 	y_offset = (y - fdf->y_move) / fdf->scale;
 	if (button == Button4)
 	{
-		fdf->scale++;
-		fdf->x_move -= x_offset;
-		fdf->y_move -= y_offset;
+		fdf->scale += SCALE_STEP;
+		fdf->x_move -= x_offset * SCALE_STEP;
+		fdf->y_move -= y_offset * SCALE_STEP;
 	}
 	else if (button == Button5 && fdf->scale - 1 > 0)
 	{
-		fdf->scale--;
-		fdf->x_move += x_offset;
-		fdf->y_move += y_offset;
+		fdf->scale -= SCALE_STEP;
+		fdf->x_move += x_offset * SCALE_STEP;
+		fdf->y_move += y_offset * SCALE_STEP;
 	}
 }
 

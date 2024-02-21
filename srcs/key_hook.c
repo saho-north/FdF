@@ -6,16 +6,13 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 15:25:24 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:52:05 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
 #include <X11/keysym.h>
-
-// TODO: depth_scaleを変更する関数を実装する
-// TODO: 虹色？にする機能をつける
 
 int	key_press(int key, t_fdf *fdf)
 {
@@ -24,6 +21,8 @@ int	key_press(int key, t_fdf *fdf)
 		fdf->projection = ISOMETRIC;
 		reset_render_param(fdf);
 	}
+	else if (key == XK_c)
+		fdf->colorful = !fdf->colorful;
 	else if (key == XK_0)
 		fdf->projection = ISOMETRIC;
 	else if (key == XK_1)
@@ -44,19 +43,19 @@ static void	handle_scale(int key, t_fdf *fdf)
 {
 	if (key == XK_plus || key == XK_p)
 	{
-		fdf->scale++;
+		fdf->scale += SCALE_STEP;
 	}
 	else if ((key == XK_minus || key == XK_m) && fdf->scale - 1 > 0)
 	{
-		fdf->scale--;
+		fdf->scale -= SCALE_STEP;
 	}
 	else if (key == XK_z)
 	{
-		fdf->depth_scale++;
+		fdf->depth_scale += DEPTH_SCALE_STEP;
 	}
 	else if (key == XK_x && fdf->depth_scale - 1 > 0)
 	{
-		fdf->depth_scale--;
+		fdf->depth_scale -= DEPTH_SCALE_STEP;
 	}
 }
 

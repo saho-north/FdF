@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 15:28:12 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:14:09 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	}
 }
 
-static void	set_line_data(t_line_draw_data *line_data, t_point *p0, t_point *p1)
+static void	set_line_data(t_fdf *fdf, t_line_draw_data *line_data, t_point *p0,
+		t_point *p1)
 {
 	line_data->abs_dx = abs(p1->x_2d - p0->x_2d);
 	line_data->abs_dy = abs(p1->y_2d - p0->y_2d);
@@ -81,8 +82,8 @@ static void	set_line_data(t_line_draw_data *line_data, t_point *p0, t_point *p1)
 	{
 		line_data->y_direction = -1;
 	}
-	line_data->color0 = p0->color;
-	line_data->color1 = p1->color;
+	line_data->color0 = get_color(fdf, p0);
+	line_data->color1 = get_color(fdf, p1);
 }
 
 static void	draw_line(t_fdf *fdf, t_point *p0, t_point *p1)
@@ -93,7 +94,7 @@ static void	draw_line(t_fdf *fdf, t_point *p0, t_point *p1)
 	{
 		return ;
 	}
-	set_line_data(&line_data, p0, p1);
+	set_line_data(fdf, &line_data, p0, p1);
 	if (line_data.abs_dx > line_data.abs_dy)
 	{
 		draw_shallow(fdf, p0, &line_data);
