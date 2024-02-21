@@ -6,13 +6,14 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 15:20:56 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:12:14 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+# include "color.h"
 # include "error.h"
 # include "libft.h"
 
@@ -22,9 +23,8 @@
 
 # define MOVE_STEP 10
 # define ROTATE_STEP 5
-
-# define WHITE 0xFFFFFF
-# define BLACK 0x000000
+# define SCALE_STEP 1
+# define DEPTH_SCALE_STEP 0.5
 
 typedef enum e_projections
 {
@@ -49,7 +49,6 @@ typedef struct s_point
 
 }					t_point;
 
-// TODO: Do I need max_z and min_z?
 typedef struct s_fdf
 {
 	void			*mlx;
@@ -76,6 +75,7 @@ typedef struct s_fdf
 	int				mouse_press_x;
 	int				mouse_press_y;
 	bool			redraw;
+	bool			colorful;
 
 }					t_fdf;
 
@@ -88,6 +88,9 @@ typedef struct s_line_draw_data
 	int				color0;
 	int				color1;
 }					t_line_draw_data;
+
+/* color.c */
+int					get_color(t_fdf *fdf, t_point *p);
 
 /* draw.c */
 void				draw_wireframe(t_fdf *fdf);

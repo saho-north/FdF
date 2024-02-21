@@ -14,7 +14,7 @@ HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 
 SRCS       = draw.c error.c fdf.c free.c get_map_size.c hook.c init.c key_hook.c \
 			 parse_map.c parse_point.c projection.c render.c rotation.c transform.c \
-			 liang_barsky.c reset.c
+			 liang_barsky.c reset.c color.c
 
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
