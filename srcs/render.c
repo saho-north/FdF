@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 14:51:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:27:34 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "mlx.h"
 #include "usage.h"
 
+/**
+ * Put a pixel on the window.
+ */
 void	pixel_put(t_fdf *fdf, int x, int y, int color)
 {
 	char	*dst;
@@ -26,11 +29,17 @@ void	pixel_put(t_fdf *fdf, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+/**
+ * Clear the image buffer to prepare for the next render.
+ */
 static void	clear_image(t_fdf *fdf)
 {
 	ft_bzero(fdf->addr, WIN_WIDTH * WIN_HEIGHT * fdf->bpp);
 }
 
+/**
+ * Draw the usage on the window.
+ */
 static void	draw_usage(t_fdf *fdf)
 {
 	size_t	x;
@@ -50,6 +59,9 @@ static void	draw_usage(t_fdf *fdf)
 	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEZ_USAGE);
 }
 
+/**
+ * Render the wireframe on the window after transforming the points.
+ */
 int	render(t_fdf *fdf)
 {
 	float	scale;

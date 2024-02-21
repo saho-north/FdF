@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:41:08 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 12:05:31 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:28:05 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ static void	cavalier_projection(t_point *point, float depth_scale)
 	point->y_2d = point->y + (point->z * depth_scale) * sin(deg_to_rad(45));
 }
 
+/**
+ * Project the 3D point to 2D point based on the projection type.
+ */
 void	projection(t_fdf *fdf, t_point *point)
 {
 	if (fdf->projection == ISOMETRIC)

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 15:53:06 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:30:39 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 
+/**
+ * Handle mouse event for scaling
+ */
 static void	handle_mouse_scale(int button, int x, int y, t_fdf *fdf)
 {
 	int	x_offset;
@@ -36,6 +39,9 @@ static void	handle_mouse_scale(int button, int x, int y, t_fdf *fdf)
 	}
 }
 
+/**
+ * Handle mouse event for pressing
+ */
 int	button_press(int button, int x, int y, t_fdf *fdf)
 {
 	if (button == Button1)
@@ -52,6 +58,9 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 	return (0);
 }
 
+/**
+ * Handle mouse event for dragging
+ */
 int	motion_notify(int x, int y, t_fdf *fdf)
 {
 	if (fdf->is_mouse_dragging)
@@ -65,6 +74,9 @@ int	motion_notify(int x, int y, t_fdf *fdf)
 	return (0);
 }
 
+/**
+ * Handle mouse event for releasing
+ */
 int	button_release(int button, int x, int y, t_fdf *fdf)
 {
 	(void)x;
@@ -78,6 +90,9 @@ int	button_release(int button, int x, int y, t_fdf *fdf)
 	return (0);
 }
 
+/**
+ * Handle redraw when needed
+ */
 int	handle_loop_hook(t_fdf *fdf)
 {
 	if (fdf->redraw)

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 15:52:05 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:29:27 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "mlx.h"
 #include <X11/keysym.h>
 
+/**
+ * Handle key press event
+ */
 int	key_press(int key, t_fdf *fdf)
 {
 	if (key == XK_r)
@@ -107,6 +110,9 @@ static void	handle_rotation(int key, t_fdf *fdf)
 	}
 }
 
+/**
+ * Handle key release event
+ */
 int	key_release(int key, t_fdf *fdf)
 {
 	if (key == XK_Up || key == XK_Left || key == XK_Down || key == XK_Right)

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:08:12 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 12:28:43 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:28:51 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ static bool	clip_test(float p[], float q[])
 	return (t0 <= t1);
 }
 
+/**
+ * Clip the line with Liang-Barsky algorithm.
+ */
 bool	liang_barsky(t_point *point0, t_point *point1)
 {
 	int		dx;
