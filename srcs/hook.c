@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 12:17:29 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:06:45 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,27 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 
-// TODO: その場でscalingする
+static void	handle_mouse_scale(int button, int x, int y, t_fdf *fdf)
+{
+	int	x_offset;
+	int	y_offset;
+
+	x_offset = (x - fdf->x_move) / fdf->scale;
+	y_offset = (y - fdf->y_move) / fdf->scale;
+	if (button == Button4)
+	{
+		fdf->scale++;
+		fdf->x_move -= x_offset;
+		fdf->y_move -= y_offset;
+	}
+	else if (button == Button5 && fdf->scale - 1 > 0)
+	{
+		fdf->scale--;
+		fdf->x_move += x_offset;
+		fdf->y_move += y_offset;
+	}
+}
+
 int	button_press(int button, int x, int y, t_fdf *fdf)
 {
 	if (button == Button1)
@@ -24,29 +44,10 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 		fdf->mouse_press_y = y;
 		fdf->is_mouse_dragging = true;
 	}
-	else if (button == Button4)
+	else if (button == Button4 || button == Button5)
 	{
-		fdf->scale++;
+		handle_mouse_scale(button, x, y, fdf);
 		fdf->redraw = true;
-	}
-	else if (button == Button5 && fdf->scale - 1 > 0)
-	{
-		fdf->scale--;
-		fdf->redraw = true;
-	}
-	return (0);
-}
-
-// CHECK: if I need to set redraw flag here
-
-int	button_release(int button, int x, int y, t_fdf *fdf)
-{
-	(void)x;
-	(void)y;
-	(void)fdf;
-	if (button == Button1)
-	{
-		fdf->is_mouse_dragging = false;
 	}
 	return (0);
 }
@@ -60,6 +61,19 @@ int	motion_notify(int x, int y, t_fdf *fdf)
 		fdf->mouse_press_x = x;
 		fdf->mouse_press_y = y;
 		fdf->redraw = true;
+	}
+	return (0);
+}
+
+int	button_release(int button, int x, int y, t_fdf *fdf)
+{
+	(void)x;
+	(void)y;
+	(void)fdf;
+	if (button == Button1)
+	{
+		motion_notify(x, y, fdf);
+		fdf->is_mouse_dragging = false;
 	}
 	return (0);
 }
