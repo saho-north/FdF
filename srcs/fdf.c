@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 14:50:25 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:14:29 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	main(int argc, const char *argv[])
 		print_error_exit(ERR_ARG);
 	}
 	init_fdf(&fdf, argv[1]);
-	parse_map(argv[1], &fdf);
 	fdf.redraw = true;
 	mlx_hook(fdf.win, KeyPress, KeyPressMask, &key_press, &fdf);
 	mlx_key_hook(fdf.win, &key_release, &fdf);

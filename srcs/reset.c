@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:35:23 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:42:41 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:30:37 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	reset_scale(t_fdf *fdf)
 	{
 		fdf->scale /= 1.2;
 	}
-	fdf->depth_scale = 5;
+	fdf->depth_scale = 3;
 }
 
 static void	reset_move(t_fdf *fdf)

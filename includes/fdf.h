@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 12:32:52 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:20:56 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int					key_release(int keysym, t_fdf *fdf);
 bool				liang_barsky(t_point *point0, t_point *point1);
 
 /* parse_map.c */
-void				parse_map(const char *filename, t_fdf *fdf);
+void				parse_map(t_fdf *fdf, const char *filename);
 
 /* parse_point.c */
 bool				parse_point(t_fdf *fdf, t_point *point, char *str);

@@ -45,7 +45,7 @@ static bool	parse_line(char *line, t_fdf *fdf, int y)
  * Processes the map file and stores the result in the struct.
  * Exits the program if an error occurs during the process.
  */
-void	parse_map(const char *filename, t_fdf *fdf)
+void	parse_map(t_fdf *fdf, const char *filename)
 {
 	int			fd;
 	t_gnl_res	res;

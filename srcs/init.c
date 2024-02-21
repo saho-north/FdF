@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 12:35:18 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:15:23 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,6 @@ static void	init_point_matrix(t_fdf *fdf)
 /**
  * Initializes the fdf struct with default values.
  */
-// TODO: Check if all the values correctly initialized
-/*
-// TODO: Later to delete the debug printf
-	printf("Initial scale: %f\n", fdf->scale);
-	printf("Initial depth scale: %f\n", fdf->depth_scale);
-	printf("Initial scale / depth scale: %f\n", fdf->scale / fdf->depth_scale);
-	printf("Initial x_move: %d\n", fdf->x_move);
-	printf("Initial y_move: %d\n", fdf->y_move);
-	fdf->max_z = INT_MIN; // TODO: これはなんのために？
-	fdf->min_z = INT_MAX; // TODO: これはなんのために？
- */
 void	init_fdf(t_fdf *fdf, const char *filename)
 {
 	ft_memset(fdf, 0, sizeof(t_fdf));
@@ -109,5 +98,6 @@ void	init_fdf(t_fdf *fdf, const char *filename)
 	fdf->max_z = INT_MIN;
 	fdf->min_z = INT_MAX;
 	fdf->projection = ISOMETRIC;
+	parse_map(fdf, filename);
 	reset_render_param(fdf);
 }

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 13:18:22 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:25:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ static void	handle_scale(int key, t_fdf *fdf)
 	else if ((key == XK_minus || key == XK_m) && fdf->scale - 1 > 0)
 	{
 		fdf->scale--;
+	}
+	else if (key == XK_z)
+	{
+		fdf->depth_scale++;
+	}
+	else if (key == XK_x && fdf->depth_scale - 1 > 0)
+	{
+		fdf->depth_scale--;
 	}
 }
 
@@ -103,25 +111,17 @@ static void	handle_rotation(int key, t_fdf *fdf)
 int	key_release(int key, t_fdf *fdf)
 {
 	if (key == XK_Up || key == XK_Left || key == XK_Down || key == XK_Right)
-	{
 		handle_movement(key, fdf);
-	}
 	else if (key == XK_w || key == XK_s || key == XK_a)
-	{
 		handle_rotation(key, fdf);
-	}
 	else if (key == XK_d || key == XK_q || key == XK_e)
-	{
 		handle_rotation(key, fdf);
-	}
 	else if (key == XK_plus || key == XK_minus || key == XK_p || key == XK_m)
-	{
 		handle_scale(key, fdf);
-	}
+	else if (key == XK_z || key == XK_x)
+		handle_scale(key, fdf);
 	else
-	{
 		return (0);
-	}
 	fdf->redraw = true;
 	return (0);
 }
