@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 23:40:47 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:50:25 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,6 @@ static bool	is_valid_extension(const char *filename, const char *extension)
 	return (result == 0);
 }
 
-int	handle_loop_hook(t_fdf *fdf)
-{
-	if (fdf->redraw)
-	{
-		printf("redraw\n");
-		render(fdf);
-		fdf->redraw = false;
-	}
-	return (0);
-}
-
 int	main(int argc, const char *argv[])
 {
 	t_fdf	fdf;
@@ -75,9 +64,8 @@ int	main(int argc, const char *argv[])
 /**
  * The destructor function of the program.
  * It is used to check for memory leaks using the leaks command.
- * TODO: It will be deleted before the final submission.
+ * TODO: It will be commented out in the final version.
  */
-
 __attribute__((destructor)) static void destructor()
 {
 	system("leaks -q fdf");

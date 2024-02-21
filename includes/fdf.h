@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 23:37:30 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:32:52 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void				get_map_size(t_fdf *fdf, const char *filename);
 int					button_press(int button, int x, int y, t_fdf *fdf);
 int					button_release(int button, int x, int y, t_fdf *fdf);
 int					motion_notify(int x, int y, t_fdf *fdf);
+int					handle_loop_hook(t_fdf *fdf);
 
 /* init.c */
 void				init_fdf(t_fdf *fdf, const char *filename);
@@ -131,7 +132,6 @@ void				parse_map(const char *filename, t_fdf *fdf);
 bool				parse_point(t_fdf *fdf, t_point *point, char *str);
 
 /* projection.c */
-float				deg_to_rad(float degrees);
 void				projection(t_fdf *fdf, t_point *point);
 
 /* render.c */
@@ -142,10 +142,10 @@ int					render(t_fdf *fdf);
 void				reset_render_param(t_fdf *fdf);
 
 /* rotation.c */
+float				deg_to_rad(float degrees);
 void				rotation(t_fdf *fdf, t_point *point);
 
 /* transform.c */
-void				transform(t_fdf *fdf, float scale, float z_scale,
-						int x_move, int y_move);
+void				transform(t_fdf *fdf, float scale, float z_scale);
 
 #endif

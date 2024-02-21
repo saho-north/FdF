@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:18:43 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:32:57 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ static void	translate(t_point *point, int x_move, int y_move)
 	point->y_2d += y_move;
 }
 
-void	transform(t_fdf *fdf, float scale, float z_scale, int x_move,
-		int y_move)
+void	transform(t_fdf *fdf, float scale, float z_scale)
 {
 	int	x;
 	int	y;
+	int	x_move;
+	int	y_move;
 
+	x_move = fdf->x_move;
+	y_move = fdf->y_move;
 	y = 0;
 	while (y < fdf->max_y)
 	{

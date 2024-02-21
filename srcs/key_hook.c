@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 23:43:17 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:18:22 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,39 @@
 #include "mlx.h"
 #include <X11/keysym.h>
 
-//TODO: depth_scaleを変更する関数を実装する
+// TODO: depth_scaleを変更する関数を実装する
+// TODO: 虹色？にする機能をつける
 
 int	key_press(int key, t_fdf *fdf)
 {
-	if (key == XK_Escape)
-	{
-		clean_exit(fdf);
-	}
-	else if (key == XK_r)
+	if (key == XK_r)
 	{
 		fdf->projection = ISOMETRIC;
 		reset_render_param(fdf);
 	}
 	else if (key == XK_0)
-	{
 		fdf->projection = ISOMETRIC;
-	}
 	else if (key == XK_1)
-	{
 		fdf->projection = ORTHOGRAPHIC;
-	}
 	else if (key == XK_2)
-	{
 		fdf->projection = OBLIQUE;
-	}
 	else if (key == XK_3)
-	{
 		fdf->projection = CAVALIER;
-	}
+	else if (key == XK_Escape)
+		clean_exit(fdf);
 	else
-	{
 		return (0);
-	}
 	fdf->redraw = true;
 	return (0);
 }
 
 static void	handle_scale(int key, t_fdf *fdf)
 {
-	if (key == XK_plus)
+	if (key == XK_plus || key == XK_p)
 	{
 		fdf->scale++;
 	}
-	else if (key == XK_minus && fdf->scale - 1 > 0)
+	else if ((key == XK_minus || key == XK_m) && fdf->scale - 1 > 0)
 	{
 		fdf->scale--;
 	}
@@ -125,7 +114,7 @@ int	key_release(int key, t_fdf *fdf)
 	{
 		handle_rotation(key, fdf);
 	}
-	else if (key == XK_plus || key == XK_minus)
+	else if (key == XK_plus || key == XK_minus || key == XK_p || key == XK_m)
 	{
 		handle_scale(key, fdf);
 	}

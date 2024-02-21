@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:22:53 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 23:42:30 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:17:29 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <X11/X.h>
 #include <X11/keysym.h>
 
+// TODO: その場でscalingする
 int	button_press(int button, int x, int y, t_fdf *fdf)
 {
 	if (button == Button1)
@@ -35,6 +36,8 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 	}
 	return (0);
 }
+
+// CHECK: if I need to set redraw flag here
 
 int	button_release(int button, int x, int y, t_fdf *fdf)
 {
@@ -57,6 +60,16 @@ int	motion_notify(int x, int y, t_fdf *fdf)
 		fdf->mouse_press_x = x;
 		fdf->mouse_press_y = y;
 		fdf->redraw = true;
+	}
+	return (0);
+}
+
+int	handle_loop_hook(t_fdf *fdf)
+{
+	if (fdf->redraw)
+	{
+		render(fdf);
+		fdf->redraw = false;
 	}
 	return (0);
 }

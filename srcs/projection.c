@@ -6,20 +6,12 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:41:08 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/20 16:27:37 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:05:31 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
-
-/**
- * Converts degrees to radians.
- */
-float	deg_to_rad(float degrees)
-{
-	return (degrees * M_PI / 180.0);
-}
 
 static void	isometric_projection(t_point *point)
 {

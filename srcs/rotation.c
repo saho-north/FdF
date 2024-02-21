@@ -6,12 +6,20 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:23:47 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/15 16:07:09 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:05:38 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
+
+/**
+ * Converts degrees to radians.
+ */
+float	deg_to_rad(float degrees)
+{
+	return (degrees * M_PI / 180.0);
+}
 
 /**
  * Rotates the given point around the X-axis.
