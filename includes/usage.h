@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:59:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 14:51:20 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:25:15 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@
 # define ROTATEX_USAGE "ROTATE (x-axis): W or S Key"
 # define ROTATEY_USAGE "ROTATE (y-axis): A or D Key"
 # define ROTATEZ_USAGE "ROTATE (z-axis): Q or E Key"
+# define DEPTH_USAGE "DEPTH: 'z' or 'x' Key"
+# define COLOR_USAGE "COLOR: 'c' Key"
 
 #endif

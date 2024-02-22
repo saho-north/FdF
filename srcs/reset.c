@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:35:23 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 16:26:36 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:28:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,6 @@ void	reset_render_param(t_fdf *fdf)
 	reset_scale(fdf);
 	reset_move(fdf);
 	reset_degree(fdf);
+	fdf->projection = ISOMETRIC;
+	fdf->colorful = false;
 }

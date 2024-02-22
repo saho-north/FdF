@@ -9,6 +9,8 @@ INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx -I/opt/X11/include
 LIBFT      = $(LIBFT_DIR)libft.a
 LIBFT_DIR  = ./libft/
 
+MLX        = mlx/libmlx.a
+
 HDR_LIST  = fdf.h error.h
 HDR_DIR   = ./includes/
 HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
@@ -20,11 +22,14 @@ SRCS       = draw.c error.c fdf.c free.c get_map_size.c hook.c init.c key_hook.c
 SRCS_DIR   = ./srcs/
 OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) $(MLX)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBRARY) $(LDFLAGS) $(INCLUDE)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
+
+$(MLX):
+	make -C mlx
 
 all: $(NAME)
 
@@ -34,6 +39,7 @@ all: $(NAME)
 clean:
 	rm -f $(OBJS)
 	make -C $(LIBFT_DIR) clean
+	make -C mlx clean
 
 fclean: clean
 	rm -f $(NAME) $(LIBFT)

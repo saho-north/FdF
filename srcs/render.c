@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 16:27:34 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:25:25 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static void	draw_usage(t_fdf *fdf)
 	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEX_USAGE);
 	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEY_USAGE);
 	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEZ_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, DEPTH_USAGE);
+	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, COLOR_USAGE);
 }
 
 /**
