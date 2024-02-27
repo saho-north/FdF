@@ -1,7 +1,6 @@
 NAME       = fdf
 CC         = cc
-CFLAGS     =
-#  -Wall -Wextra -Werror
+CFLAGS     = -Wall -Wextra -Werror
 LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
 LIBRARY    = -L$(LIBFT_DIR) -lft
 INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx -I/opt/X11/include
@@ -39,7 +38,6 @@ all: $(NAME)
 clean:
 	rm -f $(OBJS)
 	make -C $(LIBFT_DIR) clean
-	make -C mlx clean
 
 fclean: clean
 	rm -f $(NAME) $(LIBFT)
@@ -49,49 +47,10 @@ re: fclean all
 
 bonus: $(ALL)
 
+42: $(NAME)
+	./$(NAME) test_maps/42.fdf
+
 test: $(NAME)
-	./$(NAME) test_maps/42.fdf
-
-small: $(NAME)
-	./$(NAME) test_maps/10-2.fdf
-	./$(NAME) test_maps/10-70.fdf
-	./$(NAME) test_maps/20-60.fdf
-	./$(NAME) test_maps/42.fdf
-	./$(NAME) test_maps/basictest.fdf
-	./$(NAME) test_maps/elem.fdf
-	./$(NAME) test_maps/elem2.fdf
-	./$(NAME) test_maps/pentenegpos.fdf
-	./$(NAME) test_maps/plat.fdf
-	./$(NAME) test_maps/pnp_flat.fdf
-	./$(NAME) test_maps/pyra.fdf
-
-medium: $(NAME)
-	./$(NAME) test_maps/50-4.fdf
-	./$(NAME) test_maps/pylone.fdf
-
-large: $(NAME)
-	./$(NAME) test_maps/100-6.fdf
-
-color: $(NAME)
-	./$(NAME) test_maps/elem-col.fdf
-	./$(NAME) test_maps/pyramide.fdf
-
-fract: $(NAME)
-	./$(NAME) test_maps/elem-fract.fdf
-
-julia: $(NAME)
-	./$(NAME) test_maps/julia.fdf
-
-mars: $(NAME)
-	./$(NAME) test_maps/mars.fdf
-
-t1: $(NAME)
-	./$(NAME) test_maps/t1.fdf
-
-t2: $(NAME)
-	./$(NAME) test_maps/t2.fdf
-
-testall: $(NAME)
 	./$(NAME) test_maps/10-2.fdf
 	./$(NAME) test_maps/10-70.fdf
 	./$(NAME) test_maps/20-60.fdf
@@ -114,4 +73,4 @@ testall: $(NAME)
 	./$(NAME) test_maps/t1.fdf
 	./$(NAME) test_maps/t2.fdf
 
-.PHONY: all clean fclean re bonus test small medium large color fract julia mars t1 t2 testall
+.PHONY: all clean fclean re bonus 42 test
