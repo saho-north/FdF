@@ -14,6 +14,14 @@
 #include <fcntl.h>
 
 /**
+ * Returns true if the character indicates the end of the line.
+ */
+static	bool	is_eol(char c)
+{
+	return (c == '\0' || c == '\n');
+}
+
+/**
  * Parses the single line and stores the result in the struct.
  * Returns false if an error occurs during the process.
  */
@@ -28,7 +36,7 @@ static bool	parse_line(char *line, t_fdf *fdf, int y)
 		return (false);
 	}
 	x = 0;
-	while (split_line[x] && split_line[x][0] != '\n' && x < fdf->max_x)
+	while (x < fdf->max_x && split_line[x] && !is_eol(split_line[x][0]))
 	{
 		if (!parse_point(fdf, &fdf->points[y][x], split_line[x]))
 		{
@@ -36,6 +44,11 @@ static bool	parse_line(char *line, t_fdf *fdf, int y)
 			return (false);
 		}
 		x++;
+	}
+	if (split_line[x] && !is_eol(split_line[x][0]))
+	{
+		free_split_line(split_line);
+		return (false);
 	}
 	free_split_line(split_line);
 	return (true);
