@@ -1,7 +1,7 @@
 NAME       = fdf
 CC         = cc
 CFLAGS     = -Wall -Wextra -Werror
-LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -framework OpenGL -framework AppKit
+LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext 
 LIBRARY    = -L$(LIBFT_DIR) -lft
 INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx -I/opt/X11/include
 
@@ -17,9 +17,10 @@ HDR       = $(addprefix $(HDR_DIR), $(HDR_LIST))
 SRCS       = draw.c error.c fdf.c free.c get_map_size.c hook.c init.c key_hook.c \
 			 parse_map.c parse_point.c projection.c render.c rotation.c transform.c \
 			 liang_barsky.c reset.c color.c
-
+			 
 SRCS_DIR   = ./srcs/
-OBJS       = $(addprefix $(SRCS_DIR), $(SRCS:.c=.o))
+OBJ_DIR    = ./obj/
+OBJS       = $(addprefix $(OBJ_DIR),$(SRCS:.c=.o))
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBRARY) $(LDFLAGS) $(INCLUDE)
@@ -32,7 +33,7 @@ $(MLX):
 
 all: $(NAME)
 
-%.o: %.c $(HDR)
+$(OBJ_DIR)%.o: $(SRCS_DIR)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
@@ -40,7 +41,7 @@ clean:
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME) $(LIBFT)
+	rm -f $(NAME) $(LIBFT) 
 	make -C $(LIBFT_DIR) fclean
 
 re: fclean all
