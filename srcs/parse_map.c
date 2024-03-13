@@ -16,7 +16,7 @@
 /**
  * Returns true if the character indicates the end of the line.
  */
-static	bool	is_eol(char c)
+static bool	is_eol(char c)
 {
 	return (c == '\0' || c == '\n');
 }
@@ -60,28 +60,29 @@ static bool	parse_line(char *line, t_fdf *fdf, int y)
  */
 void	parse_map(t_fdf *fdf, const char *filename)
 {
-	int			fd;
-	t_gnl_res	res;
-	int			y;
-	bool		is_valid_map;
+	int		fd;
+	int		processed_y;
+	char	*line;
+	bool	line_status;
+	bool	is_valid_map;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		free_and_perror_exit(fdf, ERR_FILE_OPEN);
+	processed_y = 0;
 	is_valid_map = true;
-	y = 0;
 	while (true)
 	{
-		res = get_next_line(fd);
-		if (!res.line || res.line_status == LINE_ERROR)
+		line = get_next_line(fd, &line_status);
+		if (!line || !line_status)
 			break ;
-		if (y < fdf->max_y && !parse_line(res.line, fdf, y))
+		if (processed_y < fdf->max_y && !parse_line(line, fdf, processed_y))
 			is_valid_map = false;
-		free(res.line);
-		res.line = NULL;
-		y++;
+		free(line);
+		line = NULL;
+		processed_y++;
 	}
 	close(fd);
-	if (!is_valid_map || res.line_status == LINE_ERROR)
+	if (!line_status || !is_valid_map)
 		free_and_error_exit(fdf, ERR_MAP);
 }

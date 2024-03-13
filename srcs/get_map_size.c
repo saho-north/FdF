@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/15 15:57:01 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/13 23:20:40 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 /**
  * Counts the number of point elements in the given line.
+ * TODO: add error handling when founding continuous delimiter "1 2 3  4 5"
  */
 static size_t	count_points_in_line(char *str, char delimiter)
 {
@@ -49,30 +50,32 @@ static size_t	count_points_in_line(char *str, char delimiter)
  */
 static void	count_lines(t_fdf *fdf, int fd)
 {
-	t_gnl_res	res;
+	char	*line;
+	bool	line_status;
 
-	ft_memset(&res, 0, sizeof(t_gnl_res));
-	while (res.line_status != LINE_EOF_REACHED)
+	line = NULL;
+	line_status = false;
+	while (true)
 	{
-		res = get_next_line(fd);
-		if (res.line_status == LINE_ERROR)
+		line = get_next_line(fd, &line_status);
+		if (!line_status)
 		{
 			close(fd);
 			free_and_error_exit(fdf, ERR_READ_LINE);
 		}
-		if (res.line == NULL)
+		if (!line)
 		{
-			break ;
+			return ;
 		}
 		if (fdf->max_x == 0)
 		{
-			fdf->max_x = count_points_in_line(res.line, ' ');
+			fdf->max_x = count_points_in_line(line, ' ');
 		}
-		if (res.line[0] != '\n' && res.line[0] != '\0')
+		if (*line != '\n' && *line != '\0')
 		{
 			fdf->max_y++;
 		}
-		free(res.line);
+		free(line);
 	}
 }
 
