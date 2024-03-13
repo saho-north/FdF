@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 16:47:30 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 15:14:29 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/13 23:39:16 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(int argc, const char *argv[])
  * It is used to check for memory leaks using the leaks command.
  * TODO: It will be commented out in the final version.
  */
-// __attribute__((destructor)) static void destructor()
-// {
-// 	system("leaks -q fdf");
-// }
+__attribute__((destructor)) static void destructor()
+{
+	system("leaks -q fdf");
+}
