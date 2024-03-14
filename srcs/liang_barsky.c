@@ -6,15 +6,15 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 15:08:12 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 16:28:51 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:33:31 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static bool	evaluate_clip_param(float p, float q, float *t0, float *t1)
+static bool	evaluate_clip_param(double p, double q, double *t0, double *t1)
 {
-	float	t;
+	double	t;
 
 	if (p == 0)
 	{
@@ -40,10 +40,10 @@ static bool	evaluate_clip_param(float p, float q, float *t0, float *t1)
 	return (true);
 }
 
-static bool	clip_test(float p[], float q[])
+static bool	clip_test(double p[], double q[])
 {
-	float	t0;
-	float	t1;
+	double	t0;
+	double	t1;
 	size_t	k;
 
 	t0 = 0.0;
@@ -67,8 +67,8 @@ bool	liang_barsky(t_point *point0, t_point *point1)
 {
 	int		dx;
 	int		dy;
-	float	p[4];
-	float	q[4];
+	double	p[4];
+	double	q[4];
 
 	dx = point1->x_2d - point0->x_2d;
 	dy = point1->y_2d - point0->y_2d;

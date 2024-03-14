@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 16:25:26 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:34:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 /**
  * Scale the point based on the scale and z_scale values.
  */
-static void	scaling(t_point *point, float scale, float z_scale)
+static void	scaling(t_point *point, double scale, double z_scale)
 {
-	point->x = (float)point->original_x * scale;
-	point->y = (float)point->original_y * scale;
-	point->z = (float)point->original_z * z_scale;
+	point->x = (double)point->original_x * scale;
+	point->y = (double)point->original_y * scale;
+	point->z = (double)point->original_z * z_scale;
 }
 
 /**
@@ -35,7 +35,7 @@ static void	translate(t_point *point, int x_move, int y_move)
 /**
  * transform the point to prepare for drawing
  */
-void	transform(t_fdf *fdf, float scale, float z_scale)
+void	transform(t_fdf *fdf, double scale, double z_scale)
 {
 	int	x;
 	int	y;

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:23:47 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 12:05:38 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:33:52 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /**
  * Converts degrees to radians.
  */
-float	deg_to_rad(float degrees)
+double	deg_to_rad(double degrees)
 {
 	return (degrees * M_PI / 180.0);
 }
@@ -24,9 +24,9 @@ float	deg_to_rad(float degrees)
 /**
  * Rotates the given point around the X-axis.
  */
-static void	rotate_x(t_point *point, float radians)
+static void	rotate_x(t_point *point, double radians)
 {
-	float	original_y;
+	double	original_y;
 
 	original_y = point->y;
 	point->y = original_y * cos(radians) - point->z * sin(radians);
@@ -36,9 +36,9 @@ static void	rotate_x(t_point *point, float radians)
 /**
  * Rotates the given point around the Y-axis.
  */
-static void	rotate_y(t_point *point, float radians)
+static void	rotate_y(t_point *point, double radians)
 {
-	float	original_x;
+	double	original_x;
 
 	original_x = point->x;
 	point->x = original_x * cos(radians) + point->z * sin(radians);
@@ -48,10 +48,10 @@ static void	rotate_y(t_point *point, float radians)
 /**
  * Rotates the given point around the Z-axis.
  */
-static void	rotate_z(t_point *point, float radians)
+static void	rotate_z(t_point *point, double radians)
 {
-	float	original_x;
-	float	original_y;
+	double	original_x;
+	double	original_y;
 
 	original_x = point->x;
 	original_y = point->y;
@@ -61,7 +61,7 @@ static void	rotate_z(t_point *point, float radians)
 
 /**
  * Rotates the map around the X, Y and Z axes.
-*/
+ */
 void	rotation(t_fdf *fdf, t_point *point)
 {
 	rotate_x(point, deg_to_rad(fdf->x_degree));
