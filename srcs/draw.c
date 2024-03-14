@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/21 16:14:09 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:33:22 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	i = 0;
 	while (i++ <= line_data->abs_dy)
 	{
-		color = ft_lerpcolor(line_data->color0, line_data->color1, (float)i
+		color = ft_lerpcolor(line_data->color0, line_data->color1, (double)i
 				/ line_data->abs_dy);
 		pixel_put(fdf, x, y, color);
 		err += 2 * line_data->abs_dx;
@@ -54,7 +54,7 @@ static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	i = 0;
 	while (i++ <= line_data->abs_dx)
 	{
-		color = ft_lerpcolor(line_data->color0, line_data->color1, (float)i
+		color = ft_lerpcolor(line_data->color0, line_data->color1, (double)i
 				/ line_data->abs_dx);
 		pixel_put(fdf, x, y, color);
 		err += 2 * line_data->abs_dy;

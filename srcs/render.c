@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/22 21:25:25 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:33:39 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ static void	draw_usage(t_fdf *fdf)
  */
 int	render(t_fdf *fdf)
 {
-	float	scale;
-	float	z_scale;
+	double	scale;
+	double	z_scale;
 
 	scale = fdf->scale;
 	z_scale = scale / fdf->depth_scale;
