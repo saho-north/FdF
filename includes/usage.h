@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:59:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/22 21:25:15 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:58:53 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define TITLE_USAGE "<< Usage >>"
 # define EXIT_USAGE "EXIT: 'ESC' Key"
 # define RESET_USAGE "RESET: 'R' Key"
-# define PROJ_USAGE "0: ISO 1: ORTHO 2: OBLIQUE 3: CAVALIER"
+# define PROJ_USAGE "0: ISO 1: ORTHO 2: CABINET 3: TRIMETRIC"
 # define ZOOM_IN_USAGE "ZOOM IN: '+' or 'p' Key"
 # define ZOOM_OUT_USAGE "ZOOM OUT: '-' or 'm' Key"
 # define MOVE_USAGE "MOVE: Arrow Keys"

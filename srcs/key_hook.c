@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/22 21:28:41 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:55:08 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	key_press(int key, t_fdf *fdf)
 	else if (key == XK_1)
 		fdf->projection = ORTHOGRAPHIC;
 	else if (key == XK_2)
-		fdf->projection = OBLIQUE;
+		fdf->projection = CABINET;
 	else if (key == XK_3)
-		fdf->projection = CAVALIER;
+		fdf->projection = TRIMETRIC;
 	else if (key == XK_Escape)
 		clean_exit(fdf);
 	else
