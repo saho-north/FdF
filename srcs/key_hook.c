@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 01:17:37 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 14:55:08 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 15:51:14 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@
  */
 int	key_press(int key, t_fdf *fdf)
 {
-	if (key == XK_r)
+	if (key == XK_Shift_L || key == XK_Shift_R)
+	{
+		fdf->is_shift_pressed = true;
+		return (0);
+	}
+	else if (key == XK_r)
 		reset_render_param(fdf);
 	else if (key == XK_c)
 		fdf->colorful = !fdf->colorful;
@@ -41,11 +46,11 @@ int	key_press(int key, t_fdf *fdf)
 
 static void	handle_scale(int key, t_fdf *fdf)
 {
-	if (key == XK_plus || key == XK_p)
+	if (key == XK_plus || (fdf->is_shift_pressed && key == XK_equal))
 	{
 		fdf->scale += SCALE_STEP;
 	}
-	else if ((key == XK_minus || key == XK_m) && fdf->scale - 1 > 0)
+	else if (key == XK_minus && fdf->scale - 1 > 0)
 	{
 		fdf->scale -= SCALE_STEP;
 	}
@@ -112,13 +117,18 @@ static void	handle_rotation(int key, t_fdf *fdf)
  */
 int	key_release(int key, t_fdf *fdf)
 {
+	if (key == XK_Shift_L || key == XK_Shift_R)
+	{
+		fdf->is_shift_pressed = false;
+		return (0);
+	}
 	if (key == XK_Up || key == XK_Left || key == XK_Down || key == XK_Right)
 		handle_movement(key, fdf);
 	else if (key == XK_w || key == XK_s || key == XK_a)
 		handle_rotation(key, fdf);
 	else if (key == XK_d || key == XK_q || key == XK_e)
 		handle_rotation(key, fdf);
-	else if (key == XK_plus || key == XK_minus || key == XK_p || key == XK_m)
+	else if (key == XK_plus || key == XK_minus || key == XK_equal)
 		handle_scale(key, fdf);
 	else if (key == XK_z || key == XK_x)
 		handle_scale(key, fdf);

@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 14:55:19 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 15:29:37 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_fdf
 	t_projections	projection;
 	int				mouse_press_x;
 	int				mouse_press_y;
+	bool			is_shift_pressed;
 	bool			is_mouse_dragging;
 	bool			redraw;
 	bool			colorful;
