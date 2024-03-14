@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:41:08 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 13:33:35 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:56:19 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 
 static void	isometric_projection(t_point *point)
 {
-	point->x_2d = (point->x - point->y) * cos(deg_to_rad(30));
-	point->y_2d = (point->x + point->y) * sin(deg_to_rad(30)) - point->z;
+	double	radian;
+
+	radian = deg_to_rad(ISO_DEGREE);
+	point->x_2d = (point->x - point->y) * cos(radian);
+	point->y_2d = (point->x + point->y) * sin(radian) - point->z;
 }
 
 static void	orthographic_projection(t_point *point)
@@ -25,16 +28,27 @@ static void	orthographic_projection(t_point *point)
 	point->y_2d = point->y;
 }
 
-static void	oblique_projection(t_point *point, double degrees)
+static void	cabinet_projection(t_point *point)
 {
-	point->x_2d = point->x + point->z * cos(deg_to_rad(degrees));
-	point->y_2d = point->y + point->z * sin(deg_to_rad(degrees));
+	double	radian;
+
+	radian = deg_to_rad(CABINET_DEGREE);
+	point->x_2d = point->x + 0.5 * point->z * cos(radian);
+	point->y_2d = point->y + 0.5 * point->z * sin(radian);
 }
 
-static void	cavalier_projection(t_point *point, double depth_scale)
+static void	trimetric_projection(t_point *point)
 {
-	point->x_2d = point->x + (point->z * depth_scale) * cos(deg_to_rad(45));
-	point->y_2d = point->y + (point->z * depth_scale) * sin(deg_to_rad(45));
+	double	angle_x;
+	double	angle_y;
+	double	angle_z;
+
+	angle_x = deg_to_rad(TRIMETRIC_DEGREE_X);
+	angle_y = deg_to_rad(TRIMETRIC_DEGREE_Y);
+	angle_z = deg_to_rad(TRIMETRIC_DEGREE_Z);
+	point->x_2d = point->x * cos(angle_x) - point->y * sin(angle_y);
+	point->y_2d = point->x * sin(angle_x) + point->y * cos(angle_y) - point->z
+		* sin(angle_z);
 }
 
 /**
@@ -50,12 +64,12 @@ void	projection(t_fdf *fdf, t_point *point)
 	{
 		orthographic_projection(point);
 	}
-	else if (fdf->projection == OBLIQUE)
+	else if (fdf->projection == CABINET)
 	{
-		oblique_projection(point, 45);
+		cabinet_projection(point);
 	}
-	else if (fdf->projection == CAVALIER)
+	else if (fdf->projection == TRIMETRIC)
 	{
-		cavalier_projection(point, fdf->depth_scale);
+		trimetric_projection(point);
 	}
 }

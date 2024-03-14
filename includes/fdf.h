@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 13:30:17 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:55:19 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,18 @@
 # define SCALE_STEP 1
 # define DEPTH_SCALE_STEP 0.5
 
+# define ISO_DEGREE 30
+# define CABINET_DEGREE 45
+# define TRIMETRIC_DEGREE_X 20
+# define TRIMETRIC_DEGREE_Y 30
+# define TRIMETRIC_DEGREE_Z 45
+
 typedef enum e_projections
 {
 	ISOMETRIC,
 	ORTHOGRAPHIC,
-	OBLIQUE,
-	CAVALIER
+	CABINET,
+	TRIMETRIC
 }					t_projections;
 
 typedef struct s_point
@@ -45,7 +51,7 @@ typedef struct s_point
 	double			z;
 	int				x_2d;
 	int				y_2d;
-	// TODO: add z_2d for z-buffering
+	double			z_2d;
 	bool			is_exist;
 
 }					t_point;
