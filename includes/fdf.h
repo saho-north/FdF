@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 15:29:37 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:05:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int					clean_exit(t_fdf *fdf);
 void				get_map_size(t_fdf *fdf, const char *filename);
 
 /* hook.c */
-
 int					button_press(int button, int x, int y, t_fdf *fdf);
 int					button_release(int button, int x, int y, t_fdf *fdf);
 int					motion_notify(int x, int y, t_fdf *fdf);
@@ -128,6 +127,13 @@ int					handle_loop_hook(t_fdf *fdf);
 
 /* init.c */
 void				init_fdf(t_fdf *fdf, const char *filename);
+
+/* key_handler.c */
+void				handle_simple_actions(int key, t_fdf *fdf);
+void				handle_projection(int key, t_fdf *fdf);
+void				handle_scale(int key, t_fdf *fdf);
+void				handle_movement(int key, t_fdf *fdf);
+void				handle_rotation(int key, t_fdf *fdf);
 
 /* key_hook.c */
 int					key_press(int keysym, t_fdf *fdf);
