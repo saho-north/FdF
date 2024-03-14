@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 23:36:03 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 23:41:30 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 23:46:14 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	pixel_put(t_fdf *fdf, int x, int y, int color)
 }
 
 /**
- * Check and put a pixel on the window if it's valid based on depth buffer.
+ * Check if the pixel is valid to draw on the window.
  */
 bool	is_valid_pixel(t_fdf *fdf, int x, int y, double z)
 {
@@ -40,11 +40,17 @@ bool	is_valid_pixel(t_fdf *fdf, int x, int y, double z)
 	return (true);
 }
 
+/**
+ * Interpolate the value based on the start and end values.
+ */
 double	get_depth(t_line_draw_data *line_data, double t)
 {
 	return (ft_interpolate(line_data->start_z, line_data->end_z, t));
 }
 
+/**
+ * Interpolate the color based on the start and end colors.
+ */
 int	get_lerpcolor(t_line_draw_data *line_data, double t)
 {
 	return (ft_lerpcolor(line_data->color0, line_data->color1, t));
