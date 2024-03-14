@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/22 21:19:52 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:30:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ typedef struct s_point
 	int				original_y;
 	int				original_z;
 	int				color;
-	float			x;
-	float			y;
-	float			z;
+	double			x;
+	double			y;
+	double			z;
 	int				x_2d;
 	int				y_2d;
+	// TODO: add z_2d for z-buffering
 	bool			is_exist;
 
 }					t_point;
@@ -63,8 +64,8 @@ typedef struct s_fdf
 	int				max_z;
 	int				min_z;
 	t_point			**points;
-	float			scale;
-	float			depth_scale;
+	double			scale;
+	double			depth_scale;
 	int				x_move;
 	int				y_move;
 	int				x_degree;
@@ -145,10 +146,10 @@ int					render(t_fdf *fdf);
 void				reset_render_param(t_fdf *fdf);
 
 /* rotation.c */
-float				deg_to_rad(float degrees);
+double				deg_to_rad(double degrees);
 void				rotation(t_fdf *fdf, t_point *point);
 
 /* transform.c */
-void				transform(t_fdf *fdf, float scale, float z_scale);
+void				transform(t_fdf *fdf, double scale, double z_scale);
 
 #endif
