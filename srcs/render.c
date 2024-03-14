@@ -6,27 +6,32 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:25:32 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 13:33:39 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 23:38:26 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
-#include "usage.h"
 
 /**
- * Put a pixel on the window.
+ * Clear the z_buffer to prepare for the next render.
  */
-void	pixel_put(t_fdf *fdf, int x, int y, int color)
+static void	clear_depth_buffer(t_fdf *fdf)
 {
-	char	*dst;
+	int	y;
+	int	x;
 
-	if (x < 0 || x >= WIN_WIDTH || y < 0 || y >= WIN_HEIGHT)
+	y = 0;
+	while (y < WIN_HEIGHT)
 	{
-		return ;
+		x = 0;
+		while (x < WIN_WIDTH)
+		{
+			fdf->depth_buffer[y][x] = (double)INT_MIN;
+			x++;
+		}
+		y++;
 	}
-	dst = fdf->addr + (y * fdf->stride + x * (fdf->bpp / 8));
-	*(unsigned int *)dst = color;
 }
 
 /**
@@ -47,30 +52,6 @@ static void	clear_image(t_fdf *fdf)
 }
 
 /**
- * Draw the usage on the window.
- */
-static void	draw_usage(t_fdf *fdf)
-{
-	size_t	x;
-	size_t	y;
-
-	x = 20;
-	y = 10;
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, TITLE_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, EXIT_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, RESET_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, PROJ_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ZOOM_IN_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ZOOM_OUT_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, MOVE_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEX_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEY_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, ROTATEZ_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, DEPTH_USAGE);
-	mlx_string_put(fdf->mlx, fdf->win, x, y += 20, WHITE, COLOR_USAGE);
-}
-
-/**
  * Render the wireframe on the window after transforming the points.
  */
 int	render(t_fdf *fdf)
@@ -81,6 +62,7 @@ int	render(t_fdf *fdf)
 	scale = fdf->scale;
 	z_scale = scale / fdf->depth_scale;
 	transform(fdf, scale, z_scale);
+	clear_depth_buffer(fdf);
 	clear_image(fdf);
 	draw_wireframe(fdf);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);

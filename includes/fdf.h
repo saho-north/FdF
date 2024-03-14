@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 17:05:17 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 23:42:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_point
 	double			z;
 	int				x_2d;
 	int				y_2d;
-	double			z_2d;
 	bool			is_exist;
 
 }					t_point;
@@ -70,6 +69,7 @@ typedef struct s_fdf
 	int				max_z;
 	int				min_z;
 	t_point			**points;
+	double			depth_buffer[WIN_HEIGHT][WIN_WIDTH];
 	double			scale;
 	double			depth_scale;
 	int				x_move;
@@ -95,10 +95,18 @@ typedef struct s_line_draw_data
 	int				y_direction;
 	int				color0;
 	int				color1;
+	double			start_z;
+	double			end_z;
 }					t_line_draw_data;
 
 /* color.c */
 int					get_color(t_fdf *fdf, t_point *p);
+
+/* draw_utils.c */
+void				pixel_put(t_fdf *fdf, int x, int y, int color);
+bool				is_valid_pixel(t_fdf *fdf, int x, int y, double z);
+double				get_depth(t_line_draw_data *line_data, double t);
+int					get_lerpcolor(t_line_draw_data *line_data, double t);
 
 /* draw.c */
 void				draw_wireframe(t_fdf *fdf);
@@ -152,7 +160,7 @@ bool				parse_point(t_fdf *fdf, t_point *point, char *str);
 void				projection(t_fdf *fdf, t_point *point);
 
 /* render.c */
-void				pixel_put(t_fdf *fdf, int x, int y, int color);
+// void				put_pixel_if_valid(t_fdf *fdf, int x, int y, int color);
 int					render(t_fdf *fdf);
 
 /* reset.c */
@@ -164,5 +172,8 @@ void				rotation(t_fdf *fdf, t_point *point);
 
 /* transform.c */
 void				transform(t_fdf *fdf, double scale, double z_scale);
+
+/* usage.c */
+void				draw_usage(t_fdf *fdf);
 
 #endif

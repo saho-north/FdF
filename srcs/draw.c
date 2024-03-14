@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 13:33:22 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/14 23:43:24 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 {
-	int	err;
-	int	x;
-	int	y;
-	int	i;
-	int	color;
+	int		err;
+	int		x;
+	int		y;
+	int		i;
+	double	t;
 
 	err = 2 * line_data->abs_dx - line_data->abs_dy;
 	x = p->x_2d;
@@ -27,9 +27,9 @@ static void	draw_steep(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	i = 0;
 	while (i++ <= line_data->abs_dy)
 	{
-		color = ft_lerpcolor(line_data->color0, line_data->color1, (double)i
-				/ line_data->abs_dy);
-		pixel_put(fdf, x, y, color);
+		t = (double)i / line_data->abs_dy;
+		if (is_valid_pixel(fdf, x, y, get_depth(line_data, t)))
+			pixel_put(fdf, x, y, get_lerpcolor(line_data, t));
 		err += 2 * line_data->abs_dx;
 		if (err > 0)
 		{
@@ -46,7 +46,7 @@ static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	int	x;
 	int	y;
 	int	i;
-	int	color;
+	int	t;
 
 	err = 2 * line_data->abs_dy - line_data->abs_dx;
 	x = p->x_2d;
@@ -54,9 +54,9 @@ static void	draw_shallow(t_fdf *fdf, t_point *p, t_line_draw_data *line_data)
 	i = 0;
 	while (i++ <= line_data->abs_dx)
 	{
-		color = ft_lerpcolor(line_data->color0, line_data->color1, (double)i
-				/ line_data->abs_dx);
-		pixel_put(fdf, x, y, color);
+		t = (double)i / line_data->abs_dx;
+		if (is_valid_pixel(fdf, x, y, get_depth(line_data, t)))
+			pixel_put(fdf, x, y, get_lerpcolor(line_data, t));
 		err += 2 * line_data->abs_dy;
 		if (err > 0)
 		{
@@ -84,6 +84,8 @@ static void	set_line_data(t_fdf *fdf, t_line_draw_data *line_data, t_point *p0,
 	}
 	line_data->color0 = get_color(fdf, p0);
 	line_data->color1 = get_color(fdf, p1);
+	line_data->start_z = p0->z;
+	line_data->end_z = p1->z;
 }
 
 static void	draw_line(t_fdf *fdf, t_point *p0, t_point *p1)
