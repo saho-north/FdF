@@ -16,7 +16,7 @@
 /**
  * Returns true if the character indicates the end of the line.
  */
-static bool	is_eol(char c)
+bool	is_eol(char c)
 {
 	return (c == '\0' || c == '\n');
 }
