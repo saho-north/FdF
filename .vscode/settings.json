@@ -24,6 +24,7 @@
 		"mlx_int.h": "c",
 		"libft.h": "c",
 		"__node_handle": "c",
-		"keysym.h": "c"
+		"keysym.h": "c",
+		"ft_stdlib.h": "c"
 	}
 }

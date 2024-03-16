@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/16 11:53:46 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 20:52:43 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,7 @@
  */
 bool	is_empty_line(char *line)
 {
-	if (!line || *line == '\0')
-	{
-		return (true);
-	}
-	if (*line == '\n' && *(line + 1) == '\0')
+	if (!line || *line == '\0' || (*line == '\n' && *(line + 1) == '\0'))
 	{
 		return (true);
 	}
@@ -38,7 +34,9 @@ static int	count_points_in_line(char *str)
 	bool	is_point;
 
 	if (!str)
+	{
 		return (0);
+	}
 	point_count = 0;
 	is_point = false;
 	while (*str)
@@ -57,26 +55,27 @@ static int	count_points_in_line(char *str)
 	return (point_count);
 }
 
+/**
+ * Validates the given line and updates the map validation status.
+ */
 static void	validate_line(t_fdf *fdf, char *line, bool *eom, bool *is_map_valid)
 {
 	int	counted_points;
 
 	if (!is_map_valid)
-	{
 		return ;
-	}
 	counted_points = count_points_in_line(line);
 	if (fdf->max_x == 0 && fdf->max_y == 0)
 	{
-		fdf->max_x = counted_points;
-		if (fdf->max_x == 0)
+		if (counted_points == 0)
 			*is_map_valid = false;
+		fdf->max_x = counted_points;
 	}
-	if (*eom && !is_empty_line(line))
-		*is_map_valid = false;
-	else if (!*eom && is_empty_line(line))
+	if (!*eom && is_empty_line(line))
 		*eom = true;
 	else if (!*eom && fdf->max_x != counted_points)
+		*is_map_valid = false;
+	else if (*eom && !is_empty_line(line))
 		*is_map_valid = false;
 }
 
@@ -105,7 +104,6 @@ static void	count_lines(t_fdf *fdf, int fd, bool *is_map_valid)
 		validate_line(fdf, line, &end_of_map, is_map_valid);
 		if (!end_of_map && *is_map_valid)
 		{
-			printf("Adding 1 to max_y(%d)\n", fdf->max_y);
 			fdf->max_y++;
 		}
 		free(line);
@@ -127,14 +125,8 @@ void	get_map_size(t_fdf *fdf, const char *filename)
 		free_and_perror_exit(fdf, ERR_FILE_OPEN);
 	}
 	is_map_valid = true;
-	printf("Before count_lines\n");
-	printf("max_x: %d, max_y: %d\n", fdf->max_x, fdf->max_y);
-	printf("is_map_valid: %d\n", is_map_valid);
 	count_lines(fdf, fd, &is_map_valid);
 	close(fd);
-	printf("\nAfter count_lines\n");
-	printf("max_x: %d, max_y: %d\n", fdf->max_x, fdf->max_y);
-	printf("is_map_valid: %d\n", is_map_valid);
 	if (fdf->max_x == 0 || fdf->max_y == 0 || !is_map_valid)
 	{
 		free_and_error_exit(fdf, ERR_MAP);

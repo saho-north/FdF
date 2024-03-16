@@ -1,7 +1,7 @@
 NAME       = fdf
 CC         = cc
-CFLAGS     = -Wall -Wextra -Werror
-LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext
+CFLAGS     = -Wall -Wextra -Werror  -g -fsanitize=address
+LDFLAGS    = -Lmlx -lmlx -L/opt/X11/lib -lX11 -lXext -fsanitize=address
 LIBRARY    = -L$(LIBFT_DIR) -lft
 INCLUDE    = -I$(HDR_DIR) -I$(LIBFT_DIR)includes/ -Imlx -I/opt/X11/include
 
@@ -48,6 +48,9 @@ re: fclean all
 
 bonus: $(ALL)
 
+a: $(NAME)
+	./$(NAME) test_maps/a.fdf
+
 42: $(NAME)
 	./$(NAME) test_maps/42.fdf
 
@@ -68,7 +71,15 @@ test: $(NAME)
 	./$(NAME) test_maps/pentenegpos.fdf
 	./$(NAME) test_maps/plat.fdf
 	./$(NAME) test_maps/pnp_flat.fdf
+	./$(NAME) test_maps/pyra.fdf
+	./$(NAME) test_maps/pyramide.fdf
+	./$(NAME) test_maps/t1.fdf
+	./$(NAME) test_maps/t2.fdf
+
+error: $(NAME)
 	./$(NAME) test_maps/pylone.fdf
+
+tmp: $(NAME)
 	./$(NAME) test_maps/pyra.fdf
 	./$(NAME) test_maps/pyramide.fdf
 	./$(NAME) test_maps/t1.fdf
