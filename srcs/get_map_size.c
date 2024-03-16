@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/16 21:01:18 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:51:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /**
  * Returns true if the character indicates the empty line.
  */
-bool	is_empty_line(char *line)
+static bool	is_empty_line(char *line)
 {
 	if (!line || *line == '\0' || (*line == '\n' && *(line + 1) == '\0'))
 	{

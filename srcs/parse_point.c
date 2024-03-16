@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 16:57:10 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/19 17:59:44 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:58:58 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*set_point_color(t_point *point, char *str)
 	char	*endptr;
 	long	num;
 
-	if (str[0] != ',' || str[1] != '0' || str[2] != 'x')
+	if (ft_strncmp(str, ",0x", 3) != 0)
 	{
 		return (NULL);
 	}
@@ -92,7 +92,6 @@ bool	parse_point(t_fdf *fdf, t_point *point, char *str)
 	}
 	if (is_valid_end(endptr))
 	{
-		point->is_exist = true;
 		return (true);
 	}
 	endptr = set_point_color(point, endptr);
@@ -100,6 +99,5 @@ bool	parse_point(t_fdf *fdf, t_point *point, char *str)
 	{
 		return (false);
 	}
-	point->is_exist = true;
 	return (true);
 }

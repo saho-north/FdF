@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/15 14:33:36 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:51:25 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_point
 	double			z;
 	int				x_2d;
 	int				y_2d;
-	bool			is_exist;
 
 }					t_point;
 
@@ -151,7 +150,6 @@ int					key_release(int keysym, t_fdf *fdf);
 bool				liang_barsky(t_point *point0, t_point *point1);
 
 /* parse_map.c */
-bool				is_eol(char c);
 void				parse_map(t_fdf *fdf, const char *filename);
 
 /* parse_point.c */

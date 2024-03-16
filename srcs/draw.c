@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 23:43:24 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:24:03 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	draw_line(t_fdf *fdf, t_point *p0, t_point *p1)
 {
 	t_line_draw_data	line_data;
 
-	if (!p0->is_exist || !p1->is_exist || !liang_barsky(p0, p1))
+	if (!liang_barsky(p0, p1))
 	{
 		return ;
 	}
