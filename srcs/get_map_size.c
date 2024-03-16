@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/15 17:03:58 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 11:53:46 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,40 +57,12 @@ static int	count_points_in_line(char *str)
 	return (point_count);
 }
 
-/**
- * Checks if the line format is valid.
- */
-static bool	is_line_format_valid(char *str)
-{
-	bool	is_space;
-
-	is_space = false;
-	while (*str)
-	{
-		if (*str == ' ')
-		{
-			if (is_space)
-			{
-				return (false);
-			}
-			is_space = true;
-		}
-		else
-		{
-			is_space = false;
-		}
-		str++;
-	}
-	return (true);
-}
-
 static void	validate_line(t_fdf *fdf, char *line, bool *eom, bool *is_map_valid)
 {
 	int	counted_points;
 
-	if (!is_map_valid || !is_line_format_valid(line))
+	if (!is_map_valid)
 	{
-		*is_map_valid = false;
 		return ;
 	}
 	counted_points = count_points_in_line(line);
@@ -132,7 +104,10 @@ static void	count_lines(t_fdf *fdf, int fd, bool *is_map_valid)
 			return ;
 		validate_line(fdf, line, &end_of_map, is_map_valid);
 		if (!end_of_map && *is_map_valid)
+		{
+			printf("Adding 1 to max_y(%d)\n", fdf->max_y);
 			fdf->max_y++;
+		}
 		free(line);
 	}
 }
@@ -152,8 +127,14 @@ void	get_map_size(t_fdf *fdf, const char *filename)
 		free_and_perror_exit(fdf, ERR_FILE_OPEN);
 	}
 	is_map_valid = true;
+	printf("Before count_lines\n");
+	printf("max_x: %d, max_y: %d\n", fdf->max_x, fdf->max_y);
+	printf("is_map_valid: %d\n", is_map_valid);
 	count_lines(fdf, fd, &is_map_valid);
 	close(fd);
+	printf("\nAfter count_lines\n");
+	printf("max_x: %d, max_y: %d\n", fdf->max_x, fdf->max_y);
+	printf("is_map_valid: %d\n", is_map_valid);
 	if (fdf->max_x == 0 || fdf->max_y == 0 || !is_map_valid)
 	{
 		free_and_error_exit(fdf, ERR_MAP);
