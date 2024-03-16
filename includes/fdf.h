@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 23:42:24 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:51:25 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_point
 	double			z;
 	int				x_2d;
 	int				y_2d;
-	bool			is_exist;
 
 }					t_point;
 

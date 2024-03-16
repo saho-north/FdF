@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:08:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/02/22 21:29:32 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:23:10 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static void	init_point_row(t_point *point, int max_x, int current_y)
 		point[current_x].original_x = current_x;
 		point[current_x].original_y = current_y;
 		point[current_x].color = WHITE;
-		point[current_x].is_exist = false;
 		current_x++;
 	}
 }

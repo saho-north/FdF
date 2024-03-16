@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:54:48 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/13 23:20:40 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:51:17 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,23 @@
 #include <fcntl.h>
 
 /**
- * Counts the number of point elements in the given line.
- * TODO: add error handling when founding continuous delimiter "1 2 3  4 5"
+ * Returns true if the character indicates the empty line.
  */
-static size_t	count_points_in_line(char *str, char delimiter)
+static bool	is_empty_line(char *line)
 {
-	size_t	point_count;
+	if (!line || *line == '\0' || (*line == '\n' && *(line + 1) == '\0'))
+	{
+		return (true);
+	}
+	return (false);
+}
+
+/**
+ * Counts the number of point elements in the given line.
+ */
+static int	count_points_in_line(char *str)
+{
+	int		point_count;
 	bool	is_point;
 
 	if (!str)
@@ -30,12 +41,12 @@ static size_t	count_points_in_line(char *str, char delimiter)
 	is_point = false;
 	while (*str)
 	{
-		if (!is_point && *str != delimiter && *str != '\n')
+		if (!is_point && *str != ' ' && *str != '\n')
 		{
 			point_count++;
 			is_point = true;
 		}
-		else if (is_point && *str == delimiter)
+		else if (is_point && *str == ' ')
 		{
 			is_point = false;
 		}
@@ -45,16 +56,41 @@ static size_t	count_points_in_line(char *str, char delimiter)
 }
 
 /**
- * Counts the number of rows and columns in the map.
- * The empty line is ignored.
+ * Validates the given line and updates the map validation status.
  */
-static void	count_lines(t_fdf *fdf, int fd)
+static void	validate_line(t_fdf *fdf, char *line, bool *eom, bool *is_map_valid)
+{
+	int	counted_points;
+
+	if (!is_map_valid)
+		return ;
+	counted_points = count_points_in_line(line);
+	if (fdf->max_x == 0 && fdf->max_y == 0)
+	{
+		if (counted_points == 0)
+			*is_map_valid = false;
+		fdf->max_x = counted_points;
+	}
+	if (!*eom && is_empty_line(line))
+		*eom = true;
+	else if (!*eom && fdf->max_x != counted_points)
+		*is_map_valid = false;
+	else if (*eom && !is_empty_line(line))
+		*is_map_valid = false;
+}
+
+/**
+ * Counts the number of rows and columns in the map.
+ */
+static void	count_lines(t_fdf *fdf, int fd, bool *is_map_valid)
 {
 	char	*line;
 	bool	line_status;
+	bool	end_of_map;
 
 	line = NULL;
 	line_status = false;
+	end_of_map = false;
 	while (true)
 	{
 		line = get_next_line(fd, &line_status);
@@ -64,14 +100,9 @@ static void	count_lines(t_fdf *fdf, int fd)
 			free_and_error_exit(fdf, ERR_READ_LINE);
 		}
 		if (!line)
-		{
 			return ;
-		}
-		if (fdf->max_x == 0)
-		{
-			fdf->max_x = count_points_in_line(line, ' ');
-		}
-		if (*line != '\n' && *line != '\0')
+		validate_line(fdf, line, &end_of_map, is_map_valid);
+		if (!end_of_map && *is_map_valid)
 		{
 			fdf->max_y++;
 		}
@@ -85,16 +116,18 @@ static void	count_lines(t_fdf *fdf, int fd)
  */
 void	get_map_size(t_fdf *fdf, const char *filename)
 {
-	int	fd;
+	int		fd;
+	bool	is_map_valid;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
 		free_and_perror_exit(fdf, ERR_FILE_OPEN);
 	}
-	count_lines(fdf, fd);
+	is_map_valid = true;
+	count_lines(fdf, fd, &is_map_valid);
 	close(fd);
-	if (fdf->max_x == 0 || fdf->max_y == 0)
+	if (fdf->max_x == 0 || fdf->max_y == 0 || !is_map_valid)
 	{
 		free_and_error_exit(fdf, ERR_MAP);
 	}

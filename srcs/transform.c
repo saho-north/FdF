@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:41:59 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/14 13:34:24 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/16 21:22:53 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	transform(t_fdf *fdf, double scale, double z_scale)
 	while (y < fdf->max_y)
 	{
 		x = 0;
-		while (x < fdf->max_x && fdf->points[y][x].is_exist)
+		while (x < fdf->max_x)
 		{
 			scaling(&fdf->points[y][x], scale, z_scale);
 			rotation(fdf, &fdf->points[y][x]);
