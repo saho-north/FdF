@@ -6,7 +6,7 @@
 /*   By: sakitaha <sakitaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 02:28:25 by sakitaha          #+#    #+#             */
-/*   Updated: 2024/03/16 21:51:25 by sakitaha         ###   ########.fr       */
+/*   Updated: 2024/03/17 01:47:13 by sakitaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_fdf
 	int				max_z;
 	int				min_z;
 	t_point			**points;
-	double			depth_buffer[WIN_HEIGHT][WIN_WIDTH];
+	double			**depth_buffer;
 	double			scale;
 	double			depth_scale;
 	int				x_move;
@@ -133,7 +133,7 @@ int					motion_notify(int x, int y, t_fdf *fdf);
 int					handle_loop_hook(t_fdf *fdf);
 
 /* init.c */
-void				init_fdf(t_fdf *fdf, const char *filename);
+t_fdf				*init_fdf(const char *filename);
 
 /* key_handler.c */
 void				handle_simple_actions(int key, t_fdf *fdf);
