@@ -59,6 +59,6 @@ void	free_and_perror_exit(t_fdf *fdf, char *message)
  */
 void	free_and_error_exit(t_fdf *fdf, char *message)
 {
-	free_all(fdf);	
+	free_all(fdf);
 	print_error_exit(message);
 }
