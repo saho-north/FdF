@@ -21,10 +21,4 @@
 # define ERR_MAP "Error: Invalid map"
 # define ERR_MALLOC "Error: Failed to allocate memory"
 
-// Below are not edited yet
-# define ERR_MAP_READING "Reading error"
-# define ERR_MAP_INIT "Map initialization error"
-# define ERR_CONV_TO_ARR "Conversion to array"
-# define ERR_CAMERA_INIT "Camera initialization error"
-
 #endif
