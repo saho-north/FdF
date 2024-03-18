@@ -46,9 +46,15 @@ int	button_press(int button, int x, int y, t_fdf *fdf)
 {
 	if (button == Button1)
 	{
-		fdf->mouse_press_x = x;
-		fdf->mouse_press_y = y;
+		fdf->button1_press_x = x;
+		fdf->button1_press_y = y;
 		fdf->is_mouse_dragging = true;
+	}
+	else if (button == Button3)
+	{
+		fdf->button3_press_x = x;
+		fdf->button3_press_y = y;
+		fdf->is_mouse_rotating = true;
 	}
 	else if (button == Button4 || button == Button5)
 	{
@@ -65,10 +71,18 @@ int	motion_notify(int x, int y, t_fdf *fdf)
 {
 	if (fdf->is_mouse_dragging)
 	{
-		fdf->x_move += (x - fdf->mouse_press_x);
-		fdf->y_move += (y - fdf->mouse_press_y);
-		fdf->mouse_press_x = x;
-		fdf->mouse_press_y = y;
+		fdf->x_move += (x - fdf->button1_press_x);
+		fdf->y_move += (y - fdf->button1_press_y);
+		fdf->button1_press_x = x;
+		fdf->button1_press_y = y;
+		fdf->redraw = true;
+	}
+	if (fdf->is_mouse_rotating)
+	{
+		fdf->y_degree += (y - fdf->button3_press_y) * 0.4;
+		fdf->x_degree += (x - fdf->button3_press_x) * 0.4;
+		fdf->button3_press_x = x;
+		fdf->button3_press_y = y;
 		fdf->redraw = true;
 	}
 	return (0);
@@ -86,6 +100,11 @@ int	button_release(int button, int x, int y, t_fdf *fdf)
 	{
 		motion_notify(x, y, fdf);
 		fdf->is_mouse_dragging = false;
+	}
+	else if (button == Button3)
+	{
+		motion_notify(x, y, fdf);
+		fdf->is_mouse_rotating = false;
 	}
 	return (0);
 }

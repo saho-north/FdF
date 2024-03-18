@@ -80,10 +80,13 @@ typedef struct s_fdf
 	int				y_degree;
 	int				z_degree;
 	t_projections	projection;
-	int				mouse_press_x;
-	int				mouse_press_y;
+	int				button1_press_x;
+	int				button1_press_y;
+	int				button3_press_x;
+	int				button3_press_y;
 	bool			is_shift_pressed;
 	bool			is_mouse_dragging;
+	bool			is_mouse_rotating;
 	bool			redraw;
 	bool			colorful;
 
