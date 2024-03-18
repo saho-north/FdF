@@ -13,41 +13,6 @@
 #include "fdf.h"
 #include "mlx.h"
 
-for (int i = 0; i < WIN_HEIGHT; i++)
-{
-	depth_buffer[i] = (double *)malloc(WIN_WIDTH * sizeof(double));
-	if (depth_buffer[i] == NULL)
-	{
-		// エラー処理
-	}
-}
-
-double	**init_depth_buffer(t_fdf *fdf)
-{
-	double	**depth_buffer;
-	int		i;
-
-	depth_buffer = (double **)ft_calloc(WIN_HEIGHT, sizeof(double *));
-	if (!depth_buffer)
-	{
-		free_and_perror_exit(fdf, ERR_MALLOC);
-	}
-	i = 0;
-	while (i < WIN_HEIGHT)
-	{
-		depth_buffer[i] = (double *)ft_calloc(WIN_WIDTH, sizeof(double));
-		if (!depth_buffer[i])
-		{
-			free_mlx_ptr(fdf);
-			free_point_matrix(fdf->points, y);
-			free_point_matrix(depth_buffer, y);
-			print_error_exit(ERR_MALLOC);
-		}
-		y++;
-	}
-	return (depth_buffer);
-}
-
 /**
  * Initializes the mlx environment for graphics rendering.
  */
@@ -56,7 +21,7 @@ static void	init_mlx_env(t_fdf *fdf, char *filename)
 	fdf->mlx = mlx_init();
 	if (!fdf->mlx)
 	{
-		print_error_exit(ERR_FDF_INIT);
+		free_and_error_exit(fdf, ERR_FDF_INIT);
 	}
 	fdf->win = mlx_new_window(fdf->mlx, WIN_WIDTH, WIN_HEIGHT, filename);
 	if (!fdf->win)
@@ -112,12 +77,27 @@ static void	init_point_matrix(t_fdf *fdf)
 		if (!fdf->points[y])
 		{
 			free_mlx_ptr(fdf);
-			free_point_matrix(fdf->points, y);
+			ft_free2d((void **)fdf->points, y);
 			print_error_exit(ERR_MALLOC);
 		}
 		init_point_row(fdf->points[y], fdf->max_x, y);
 		y++;
 	}
+}
+
+/**
+ * Initializes the depth buffer for z-buffering.
+ */
+static double	**init_depth_buffer(t_fdf *fdf)
+{
+	double	**depth_buffer;
+
+	depth_buffer = (double **)ft_alloc2d(WIN_HEIGHT, WIN_WIDTH, sizeof(double));
+	if (!depth_buffer)
+	{
+		free_and_perror_exit(fdf, ERR_MALLOC);
+	}
+	return (depth_buffer);
 }
 
 /**
@@ -134,7 +114,7 @@ t_fdf	*init_fdf(const char *filename)
 	}
 	fdf->max_z = INT_MIN;
 	fdf->min_z = INT_MAX;
-	init_depth_buffer(fdf);
+	fdf->depth_buffer = init_depth_buffer(fdf);
 	init_mlx_env(fdf, (char *)filename);
 	get_map_size(fdf, filename);
 	init_point_matrix(fdf);

@@ -42,6 +42,7 @@ int	main(int argc, const char *argv[])
 {
 	t_fdf	*fdf;
 
+	(void)fdf;
 	if (argc != 2 || !is_valid_extension(argv[1], ".fdf"))
 	{
 		print_error_exit(ERR_ARG);
@@ -66,7 +67,7 @@ int	main(int argc, const char *argv[])
  * It is used to check for memory leaks using the leaks command.
  * TODO: It will be commented out in the final version.
  */
-// __attribute__((destructor)) static void destructor()
-// {
-// 	system("leaks -q fdf");
-// }
+__attribute__((destructor)) static void destructor()
+{
+	system("leaks -q fdf");
+}

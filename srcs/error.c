@@ -49,8 +49,7 @@ void	print_error_exit(char *message)
  */
 void	free_and_perror_exit(t_fdf *fdf, char *message)
 {
-	free_mlx_ptr(fdf);
-	free_point_matrix(fdf->points, fdf->max_y);
+	free_all(fdf);
 	perror_exit(message);
 }
 
@@ -60,7 +59,6 @@ void	free_and_perror_exit(t_fdf *fdf, char *message)
  */
 void	free_and_error_exit(t_fdf *fdf, char *message)
 {
-	free_mlx_ptr(fdf);
-	free_point_matrix(fdf->points, fdf->max_y);
+	free_all(fdf);	
 	print_error_exit(message);
 }

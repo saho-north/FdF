@@ -39,49 +39,14 @@ void	free_mlx_ptr(t_fdf *fdf)
 }
 
 /**
- * Safely frees a dynamically allocated 2D array (matrix) of t_point structures.
- * Essential for preventing memory leaks by ensuring that all allocated memory
- * is properly freed when an error occurs or when the program ends.
+ * Frees all dynamically allocated memory
  */
-void	free_point_matrix(t_point **points, size_t max_y)
+void	free_all(t_fdf *fdf)
 {
-	size_t	i;
-
-	if (points == NULL)
-	{
-		return ;
-	}
-	i = 0;
-	while (i < max_y && points[i])
-	{
-		free(points[i]);
-		points[i] = NULL;
-		i++;
-	}
-	free(points);
-	points = NULL;
-}
-
-/**
- * Safely frees a dynamically allocated splited lines of str.
- */
-void	free_split_line(char **split_line)
-{
-	size_t	i;
-
-	if (split_line == NULL)
-	{
-		return ;
-	}
-	i = 0;
-	while (split_line[i])
-	{
-		free(split_line[i]);
-		split_line[i] = NULL;
-		i++;
-	}
-	free(split_line);
-	split_line = NULL;
+	free_mlx_ptr(fdf);
+	ft_free2d((void **)fdf->points, fdf->max_y);
+	ft_free2d((void **)fdf->depth_buffer, WIN_HEIGHT);
+	free(fdf);
 }
 
 /**
@@ -90,8 +55,7 @@ void	free_split_line(char **split_line)
   */
 int	clean_exit(t_fdf *fdf)
 {
-	free_mlx_ptr(fdf);
-	free_point_matrix(fdf->points, fdf->max_y);
+	free_all(fdf);
 	exit(0);
 	return (0);
 }

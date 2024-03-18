@@ -119,8 +119,7 @@ void				free_and_error_exit(t_fdf *fdf, char *message);
 
 /* free.c */
 void				free_mlx_ptr(t_fdf *fdf);
-void				free_point_matrix(t_point **points, size_t max_y);
-void				free_split_line(char **split_line);
+void				free_all(t_fdf *fdf);
 int					clean_exit(t_fdf *fdf);
 
 /* get_map_size.c */
@@ -159,7 +158,6 @@ bool				parse_point(t_fdf *fdf, t_point *point, char *str);
 void				projection(t_fdf *fdf, t_point *point);
 
 /* render.c */
-// void				put_pixel_if_valid(t_fdf *fdf, int x, int y, int color);
 int					render(t_fdf *fdf);
 
 /* reset.c */
