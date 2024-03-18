@@ -45,7 +45,7 @@ fclean: clean
 
 re: fclean all
 
-bonus: $(ALL)
+bonus: all
 
 a: $(NAME)
 	./$(NAME) test_maps/a.fdf
