@@ -24,7 +24,7 @@ static char	*set_point_num(t_fdf *fdf, t_point *point, char *str)
 	errno = 0;
 	endptr = str;
 	num = ft_strtol(str, &endptr, 10);
-	if (errno != 0 || num < INT_MIN || INT_MAX < num)
+	if (errno != 0 || num < LOWER_BOUND || UPPER_BOUND < num)
 	{
 		return (NULL);
 	}

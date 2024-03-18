@@ -21,6 +21,9 @@
 # define WIN_WIDTH 1600
 # define WIN_HEIGHT 900
 
+# define UPPER_BOUND 1000
+# define LOWER_BOUND -1000
+
 # define MOVE_STEP 10
 # define ROTATE_STEP 5
 # define SCALE_STEP 1
