@@ -40,17 +40,17 @@ static bool	parse_line(char *line, t_fdf *fdf, int y)
 	{
 		if (!parse_point(fdf, &fdf->points[y][x], split_line[x]))
 		{
-			free_split_line(split_line);
+			ft_free2dnull((void **)split_line);
 			return (false);
 		}
 		x++;
 	}
 	if (split_line[x] && !is_eol(split_line[x][0]))
 	{
-		free_split_line(split_line);
+		ft_free2dnull((void **)split_line);
 		return (false);
 	}
-	free_split_line(split_line);
+	ft_free2dnull((void **)split_line);
 	return (true);
 }
 
