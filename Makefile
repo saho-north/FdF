@@ -33,6 +33,7 @@ $(MLX):
 all: $(NAME)
 
 $(OBJ_DIR)%.o: $(SRCS_DIR)%.c $(HDR)
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
@@ -70,15 +71,6 @@ test: $(NAME)
 	./$(NAME) test_maps/pentenegpos.fdf
 	./$(NAME) test_maps/plat.fdf
 	./$(NAME) test_maps/pnp_flat.fdf
-	./$(NAME) test_maps/pyra.fdf
-	./$(NAME) test_maps/pyramide.fdf
-	./$(NAME) test_maps/t1.fdf
-	./$(NAME) test_maps/t2.fdf
-
-error: $(NAME)
-	./$(NAME) test_maps/pylone.fdf
-
-tmp: $(NAME)
 	./$(NAME) test_maps/pyra.fdf
 	./$(NAME) test_maps/pyramide.fdf
 	./$(NAME) test_maps/t1.fdf
